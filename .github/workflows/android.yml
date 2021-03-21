@@ -1,25 +1,22 @@
-name: Android CI
+name: Example install of Ruby 2.6.5 (cached)
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: push
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-
-      
-  
-    - name: Setup Ruby environment with ruby-build
-      uses: clupprich/ruby-build-action@v1.3.0
-      
-    - name: install fir.im
-      run: gem install fir-cli
-    - name: Upload to Fir.im
-      run: fir login ${{ secrets.FIRTOKEN }}
-    - run: fir publish app/build/outputs/apk/debug/app-debug.apk
+    - uses: actions/checkout@v1
+    - uses: actions/cache@preview
+      id: cache
+      with:
+        path: ~/local/rubies
+        key: ruby-2.6.5
+    - uses: clupprich/ruby-build-action@master
+      id: ruby
+      with:
+        ruby-version: 2.6.5
+        cache-available: ${{ steps.cache.outputs.cache-hit == 'true' }}
+    - name: Print version
+      run: ${{ steps.ruby.outputs.ruby-path }} --version
