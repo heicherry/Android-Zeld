@@ -22,21 +22,23 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew assembleDebug
       
+  
     - uses: actions/checkout@v1
     - uses: actions/cache@preview
       id: cache
       with:
         path: ~/local/rubies
-        key: ruby-2.6.5
-    - uses: clupprich/ruby-build-action@master
+        key: ruby-2.6.5-${{ matrix.os }}
+    - uses: ./
       id: ruby
       with:
         ruby-version: 2.6.5
-        cache-available: ${{ steps.cache.outputs.cache-hit == 'true' }}   
-        files: app/build/outputs/apk/debug/app-release.apk
+        cache-available: ${{ steps.cache.outputs.cache-hit == 'true' }}
+    - name: Print version
+      run: ${{ steps.ruby.outputs.ruby-path }} --version
       
     - name: install fir.im
       run: gem install fir-cli
     - name: Upload to Fir.im
       run: fir login ${{ secrets.FIRTOKEN }}
-    - run: fir publish app/build/outputs/apk/release/app-release.apk
+    - run: fir publish app/build/outputs/apk/debug/app-debug.apk
