@@ -17,6 +17,6 @@ jobs:
       id: ruby
       with:
         ruby-version: 2.6.5
-        cache-available: ${{ steps.cache.outputs.cache-hit == 'true' }}
+        cache-available: true
     - name: Print version
       run: ${{ steps.ruby.outputs.ruby-path }} --version
