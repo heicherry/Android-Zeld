@@ -33,10 +33,6 @@ jobs:
       with:
         ruby-version: 2.6.5
         cache-available: ${{ steps.cache.outputs.cache-hit == 'true' }}   
-    - uses: clupprich/ruby-build-action@master
-      id: ruby
-      with:
-        ruby-version: 2.6.5
         files: app/build/outputs/apk/debug/app-release.apk
       
     - name: install fir.im
