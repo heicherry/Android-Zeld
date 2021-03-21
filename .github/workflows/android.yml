@@ -22,11 +22,17 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew assembleDebug
       
+    - uses: actions/checkout@v1
     - uses: actions/cache@preview
       id: cache
       with:
         path: ~/local/rubies
-        key: ruby-2.6.5    
+        key: ruby-2.6.5
+    - uses: clupprich/ruby-build-action@master
+      id: ruby
+      with:
+        ruby-version: 2.6.5
+        cache-available: ${{ steps.cache.outputs.cache-hit == 'true' }}   
     - uses: clupprich/ruby-build-action@master
       id: ruby
       with:
