@@ -25,5 +25,6 @@ jobs:
     - name: Upload to Fir.im
       run: fir login ${{ secrets.FIRTOKEN }}
     - run: pwd
+    - run: tree
     - run: fir publish app/build/outputs/apk/debug/app-debug.apk
 
