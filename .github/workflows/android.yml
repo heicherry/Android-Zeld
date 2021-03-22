@@ -17,15 +17,16 @@ jobs:
       with:
         ruby-version: 2.6 # Not needed with a .ruby-version file
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-
+    - name: login to Fir.im
+        run: fir login ${{ secrets.FIRTOKEN }}
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew assembleDebug
 
-    - name: Upload to Fir.im
-      run: fir login ${{ secrets.FIRTOKEN }}
+
     - run: pwd
     - run: tree
-    - run: fir publish app/build/outputs/apk/debug/app-debug.apk
+    - name: upload to Fir.im
+      run: fir publish app/build/outputs/apk/debug/app-debug.apk
 
