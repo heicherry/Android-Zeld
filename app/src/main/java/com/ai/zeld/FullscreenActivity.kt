@@ -19,6 +19,7 @@ class FullscreenActivity : AppCompatActivity() {
     private lateinit var fullscreenContentControls: LinearLayout
     private val hideHandler = Handler()
 
+    
     @SuppressLint("InlinedApi")
     private val hidePart2Runnable = Runnable {
         // Delayed removal of status and navigation bar
