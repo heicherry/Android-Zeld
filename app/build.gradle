@@ -17,8 +17,18 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        signConfig {
+            storeFile file ('../keystore/keystore.jks')
+            storePassword 'zeld2021'
+            keyAlias 'zeld'
+            keyPassword 'zeld2021'
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.signConfig
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

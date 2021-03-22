@@ -25,11 +25,8 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew assembleDebug
+      run: ./gradlew assembleRelease
 
-
-    - run: pwd
-    - run: tree
     - name: upload to Fir.im
-      run: fir publish app/build/outputs/apk/debug/app-debug.apk
+      run: fir publish app/build/outputs/apk/release/app-release.apk
 
