@@ -1,4 +1,6 @@
-include ':bussiness:storyline'
+include ':common:service'
+include ':common:basesection'
+include ':business:storyline'
 include ':common:util'
 include ':app'
 rootProject.name = "Zeld"
