@@ -1,4 +1,4 @@
-name: My workflow
+name: 测试版
 on: [push, pull_request]
 jobs:
   test:
@@ -19,11 +19,11 @@ jobs:
       with:
         ruby-version: 2.6 # Not needed with a .ruby-version file
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-        run: files:app/build/outputs/apk/debug/app-debug.apk
         
     - name: install fir.im
       run: gem install fir-cli
     - name: Upload to Fir.im
       run: fir login ${{ secrets.FIRTOKEN }}
+    - run: pwd
     - run: fir publish app/build/outputs/apk/debug/app-debug.apk
 
