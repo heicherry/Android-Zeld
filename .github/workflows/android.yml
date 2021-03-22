@@ -10,15 +10,17 @@ jobs:
       with:
         java-version: 1.8
 
-    - name: install fir.im
-      run: gem install fir-cli
+
     - uses: actions/checkout@v2
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.6 # Not needed with a .ruby-version file
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+    - name: install fir.im
+        run: gem install fir-cli
     - name: login to Fir.im
         run: fir login ${{ secrets.FIRTOKEN }}
+
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
