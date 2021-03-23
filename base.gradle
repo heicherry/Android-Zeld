@@ -1,0 +1,30 @@
+apply plugin :"com.android.library"
+apply plugin :"kotlin-android"
+apply plugin :"kotlin-android-extensions"
+apply plugin :"kotlin-kapt"
+
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 30
+    }
+}
+
+androidExtensions{
+    experimental = true
+}
+
+dependencies {
+    implementation fileTree(dir:'libs',include:['*.jar'])
+    implementation Deps.kotlin_stdlib
+    implementation Deps.androidx_appcompat
+    implementation Deps.androidx_core_ktx
+    implementation Deps.rxjava2
+    implementation Deps.rxandroid
+    implementation Deps.kotlin_coroutines
+    implementation Deps.kotlin_coroutines_android
+}
