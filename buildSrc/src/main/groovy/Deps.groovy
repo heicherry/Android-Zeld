@@ -1,5 +1,5 @@
 class Deps{
-    static androidx_core_ktx                           = "androidx.core:core-ktx:${Versions.androidx_core_ktx}"
+    static androidx_core_ktx                       = "androidx.core:core-ktx:${Versions.androidx_core_ktx}"
     static androidx_appcompat                      = "androidx.appcompat:appcompat:${Versions.androidx_appcompat}"
     static androidx_lifecycle_runtime              = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.androidx_lifecycle}"
     static androidx_lifecycle_viewmodel            = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.androidx_lifecycle}"
