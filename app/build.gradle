@@ -53,6 +53,8 @@ dependencies {
 
     // business
     implementation(project(":business:storyline"))
+    implementation(project(":business:splash"))
+    implementation(project(":business:world"))
 
 
 }

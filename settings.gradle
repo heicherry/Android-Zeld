@@ -1,3 +1,5 @@
+include ':business:world'
+include ':business:splash'
 ext.appProjectName = 'app'
 rootProject.name = 'Zeld'
 include ':dependency'
