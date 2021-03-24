@@ -4,4 +4,6 @@ dependencies {
     implementation(project(":common:service"))
     implementation(project(":common:basesection"))
     implementation(project(":common:util"))
+
+    implementation Deps.androidx_constraintlayout
 }

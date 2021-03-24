@@ -22,6 +22,10 @@ abstract class BaseSection : Fragment() {
      */
     fun onSectionEnter(){}
 
+    fun onExitSection(){
+
+    }
+
     fun exitSection(){
 
     }

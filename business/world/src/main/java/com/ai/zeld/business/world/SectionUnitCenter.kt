@@ -3,7 +3,6 @@ package com.ai.zeld.business.world
 import android.content.Context
 import android.os.Build
 import android.util.AndroidRuntimeException
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.ai.zeld.common.basesection.annotation.Section
 import com.ai.zeld.common.basesection.section.BaseSection
@@ -15,13 +14,50 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class SectionControl(private val context: Context) {
-    private val sections = mutableListOf<SectionInfo>()
+class SectionUnitCenter(private val context: Context) {
+    private val sectionUnits = mutableListOf<SectionUnit>()
     private val sectionMap = mutableMapOf<Int, String>()
 
     fun init() {
         buildSectionMap()
         buildSections()
+        instanceAllSections()
+    }
+
+    fun getInitialSectionId(): Int {
+        return sectionMap.keys.minOrNull()!!
+    }
+
+    fun getSectionById(id: Int): BaseSection {
+        if (!sectionMap.keys.contains(id)) throw AndroidRuntimeException("getSectionById id $id is not exit")
+        return sectionUnits.firstOrNull { it.id == id }!!.section
+    }
+
+    fun findNextSectionId(id: Int): Int {
+        if (!sectionMap.keys.contains(id)) return -1
+        sectionMap.keys.sorted().let {
+            val index = it.indexOf(id)
+            return if (index + 1 < it.size) {
+                index + 1
+            } else {
+                -1
+            }
+        }
+    }
+
+    fun getSectionNameById(id: Int): String {
+        if (!sectionMap.keys.contains(id)) throw AndroidRuntimeException("getSectionNameById id $id is not exit")
+        return sectionMap[id]!!
+    }
+
+    fun getSectionId(section: BaseSection): Int {
+        return sectionUnits.firstOrNull { it.section == section }?.id ?: -1
+    }
+
+    private fun instanceAllSections() {
+        sectionUnits.forEach {
+            it.section = it.clazz.newInstance() as BaseSection
+        }
     }
 
     private fun buildSections() {
@@ -43,8 +79,8 @@ class SectionControl(private val context: Context) {
         }
     }
 
-    private fun getSectionInfoById(id: Int): SectionInfo? {
-        return sections.firstOrNull { it.id == id }
+    private fun getSectionInfoById(id: Int): SectionUnit? {
+        return sectionUnits.firstOrNull { it.id == id }
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -61,13 +97,16 @@ class SectionControl(private val context: Context) {
                 if (annotation != null) {
                     val sectionName = sectionMap[annotation.value]
                     if (getSectionInfoById(annotation.value) == null && sectionName != null) {
-                        sections.add(SectionInfo(annotation.value, sectionName, clazz))
+                        sectionUnits.add(SectionUnit(annotation.value, sectionName, clazz))
                     }
                 }
             }
         }
         return classes
     }
+
+    private data class SectionUnit(val id: Int, val name: String, val clazz: Class<*>) {
+        lateinit var section: BaseSection
+    }
 }
 
-data class SectionInfo(val id: Int, val name: String, val clazz: Class<*>)

@@ -18,7 +18,7 @@ class FullscreenActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-        (IWorld::class.java.load() as World).initWorld(this)
         setContentView(R.layout.activity_fullscreen)
+        (IWorld::class.java.load() as World).initWorld(this, R.id.main_container)
     }
 }
