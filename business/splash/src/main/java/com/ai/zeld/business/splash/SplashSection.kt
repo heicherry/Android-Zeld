@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.ai.zeld.common.basesection.annotation.Section
 import com.ai.zeld.common.basesection.section.BaseSection
 import com.ai.zeld.common.basesection.section.SectionConfig
+import kotlinx.android.synthetic.main.splash_main.*
 
 @Section(SectionConfig.SPLASH)
 class SplashSection : BaseSection() {
@@ -20,6 +21,11 @@ class SplashSection : BaseSection() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.splash_main, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        bar.progress = 30
     }
 
     override fun onForeplayShow() {
