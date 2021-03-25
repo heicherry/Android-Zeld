@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import com.ai.zeld.common.basesection.annotation.Section
 import com.ai.zeld.common.basesection.section.BaseSection
 import com.ai.zeld.common.basesection.section.SectionConfig
+import com.ai.zeld.common.service.world.IWorld
+import com.ai.zeld.util.claymore.load
+import com.ai.zeld.util.postInMainDelay
 import kotlinx.android.synthetic.main.splash_main.*
 
 @Section(SectionConfig.SPLASH)
@@ -26,6 +29,9 @@ class SplashSection : BaseSection() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bar.progress = 30
+        postInMainDelay(lifecycle, 5000) {
+            IWorld::class.java.load().gotoNextSection()
+        }
     }
 
     override fun onForeplayShow() {

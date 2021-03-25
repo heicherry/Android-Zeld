@@ -25,10 +25,6 @@ abstract class BaseSection : Fragment() {
     fun onExitSection(){
 
     }
-
-    fun exitSection(){
-
-    }
 }
 
 

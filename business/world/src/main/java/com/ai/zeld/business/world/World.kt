@@ -45,8 +45,10 @@ class World : IWorld {
     }
 
     override fun gotoNextSection() {
-
-
+        val nextSectionId = sectionCenter.findNextSectionId(currentSectionId)
+        if (-1 != nextSectionId) {
+            switchSection(nextSectionId)
+        }
     }
 
     override fun getCurrentSectionId(): Int {
