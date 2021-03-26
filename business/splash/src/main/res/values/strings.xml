@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="splash_loading_hint">正在加载资源，过程中不消耗流量</string>
+</resources>

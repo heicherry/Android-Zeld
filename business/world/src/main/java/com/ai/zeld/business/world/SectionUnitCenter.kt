@@ -24,6 +24,14 @@ class SectionUnitCenter(private val context: Context) {
         instanceAllSections()
     }
 
+    fun getAllSectionId(): List<Int> {
+        val ids = mutableListOf<Int>()
+        sectionUnits.forEach {
+            ids.add(it.id)
+        }
+        return ids.toList()
+    }
+
     fun getInitialSectionId(): Int {
         return sectionMap.keys.minOrNull()!!
     }
@@ -57,6 +65,8 @@ class SectionUnitCenter(private val context: Context) {
     private fun instanceAllSections() {
         sectionUnits.forEach {
             it.section = it.clazz.newInstance() as BaseSection
+            it.section.setSectionId(it.id)
+            it.section.setContext(context)
         }
     }
 
