@@ -1,5 +1,6 @@
 package com.ai.zeld.business.storyline
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,19 +12,13 @@ import com.ai.zeld.common.basesection.section.SectionConfig
 @Section(SectionConfig.STORYLINE)
 class StorylineSection : BaseSection() {
     override fun onPreload() {
+        super.onPreload()
+        Thread.sleep(3000)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.storyline_main, container, false)
-    }
 
-    override fun onForeplayShow() {
-    }
-
-    override fun onDinnerShow() {
+    @SuppressLint("InflateParams")
+    override fun onBuildViewTree(): View {
+        return LayoutInflater.from(localContext).inflate(R.layout.storyline_main, null)
     }
 }

@@ -1,5 +1,6 @@
 package com.ai.zeld.business.splash
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,29 +16,38 @@ import kotlinx.android.synthetic.main.splash_main.*
 @Section(SectionConfig.SPLASH)
 class SplashSection : BaseSection() {
     override fun onPreload() {
+        super.onPreload()
         // 这里不能做任何事情。
+        Thread.sleep(3000)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.splash_main, container, false)
+    @SuppressLint("InflateParams")
+    override fun onBuildViewTree(): View {
+        return LayoutInflater.from(localContext).inflate(R.layout.splash_main, null)
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bar.progress = 30
-        postInMainDelay(lifecycle, 5000) {
-            IWorld::class.java.load().gotoNextSection()
+        updateProgress(0F)
+        IWorld::class.java.load().preloadAllSection {
+            updateProgress(it)
+            if (it == 1F) {
+                onPreloadFinished()
+            }
         }
     }
 
-    override fun onForeplayShow() {
-
+    @SuppressLint("SetTextI18n")
+    private fun updateProgress(progress: Float) {
+        bar.progress = (progress * 100).toInt()
+        val progressHintPre = localContext.getString(R.string.splash_loading_hint)
+        loading_hint.text = "$progressHintPre(${bar.progress}%)"
     }
 
-    override fun onDinnerShow() {
+    private fun onPreloadFinished() {
+        postInMainDelay(1000) {
+            IWorld::class.java.load().gotoNextSection()
+        }
     }
 }

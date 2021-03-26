@@ -28,3 +28,21 @@ fun postInMainDelay(lifecycle: Lifecycle?, delay: Long, run: () -> Unit) {
         }
     }
 }
+
+fun postInMain(run: () -> Unit) {
+    ThreadPlus.mainHandler.post {
+        run.invoke()
+    }
+}
+
+fun postInMainDelay(delay: Long, run: () -> Unit) {
+    ThreadPlus.mainHandler.postDelayed(delay) {
+        run.invoke()
+    }
+}
+
+fun postInPreload(run: () -> Unit) {
+    ThreadPlus.preloadHandler.post {
+        run.invoke()
+    }
+}

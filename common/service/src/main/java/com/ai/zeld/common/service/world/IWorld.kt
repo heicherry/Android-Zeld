@@ -4,23 +4,17 @@ import android.content.Context
 import com.ai.zeld.common.basesection.section.ISectionChangeListener
 
 interface IWorld {
-    fun getContext():Context
+    fun getContext(): Context
 
     fun gotoNextSection()
 
-    fun getCurrentSectionId():Int
+    fun gotoNextSectionLater()
 
-    fun getCurrentSectionName():String
+    fun getCurrentSectionId(): Int
 
-    fun getSectionId(name:String):Int
+    fun preloadAllSection(progress: ((Float) -> Unit)? = null)
 
-    fun gotoSection(id:Int)
+    fun setOnSectionChangeListener(listener: ISectionChangeListener)
 
-    fun gotoSection(name:String)
-
-    fun preloadAllSection()
-
-    fun setOnSectionChangeListener(listener:ISectionChangeListener)
-
-    fun removeSectionChangeListener(listener:ISectionChangeListener)
+    fun removeSectionChangeListener(listener: ISectionChangeListener)
 }

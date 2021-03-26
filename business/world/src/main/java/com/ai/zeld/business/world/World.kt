@@ -2,15 +2,16 @@ package com.ai.zeld.business.world
 
 import android.app.Activity
 import android.content.Context
+import android.util.AndroidRuntimeException
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import androidx.fragment.app.FragmentActivity
 import com.ai.zeld.common.basesection.section.ISectionChangeListener
 import com.ai.zeld.common.service.world.IWorld
-import com.ai.zeld.util.ListenerWrap
-import com.ai.zeld.util.gone
-import com.ai.zeld.util.visible
+import com.ai.zeld.util.*
+import com.ai.zeld.util.thread.ThreadPlus
+import com.ai.zeld.util.thread.checkMainThread
 
 class World : IWorld {
     private lateinit var context: Activity
@@ -18,6 +19,7 @@ class World : IWorld {
     private var currentSectionId = 0
     private val sectionChangeListeners = ListenerWrap<ISectionChangeListener>()
     private var worldContainerViewId = 0
+    private var isSectionSwitching = false
 
     // 世界布局
     private lateinit var stageWorld: View
@@ -32,6 +34,7 @@ class World : IWorld {
         initStage()
         switchSection(currentSectionId)
     }
+
 
     private fun initStage() {
         val root = context.findViewById<FrameLayout>(worldContainerViewId)
@@ -51,28 +54,33 @@ class World : IWorld {
         }
     }
 
+    override fun gotoNextSectionLater() {
+        val nextSectionId = sectionCenter.findNextSectionId(currentSectionId)
+        if (-1 != nextSectionId) {
+            switchSectionLater(nextSectionId)
+        }
+    }
+
     override fun getCurrentSectionId(): Int {
         return 1
     }
 
-    override fun getCurrentSectionName(): String {
-        return ""
-    }
-
-    override fun getSectionId(name: String): Int {
-        return -1
-    }
-
-    override fun gotoSection(id: Int) {
-
-    }
-
-    override fun gotoSection(name: String) {
-
-    }
-
-    override fun preloadAllSection() {
-
+    override fun preloadAllSection(progress: ((Float) -> Unit)?) {
+        val allSectionId = sectionCenter.getAllSectionId()
+        allSectionId.forEach {
+            postInPreload {
+                sectionCenter.getSectionById(it).onPreload()
+                postInMain {
+                    progress?.invoke((it + 1).toFloat() / allSectionId.size)
+                }
+            }
+        }
+        postInPreload {
+            postInMain {
+                ThreadPlus.preloadThread?.quitSafely()
+                progress?.invoke(1F)
+            }
+        }
     }
 
     override fun setOnSectionChangeListener(listener: ISectionChangeListener) {
@@ -84,6 +92,11 @@ class World : IWorld {
     }
 
     private fun switchSection(targetId: Int) {
+        checkMainThread("section switch must do in main thread!")
+        if (isSectionSwitching) {
+            throw AndroidRuntimeException("current is switching!")
+        }
+        isSectionSwitching = true
         sectionChangeListeners.dispatchInvoke { it.onSectionPreChange(currentSectionId, targetId) }
         val lastSectionId = currentSectionId
 
@@ -100,11 +113,19 @@ class World : IWorld {
         val section = sectionCenter.getSectionById(targetId)
         fragmentActivity.supportFragmentManager.beginTransaction().replace(R.id.stage, section)
             .commitNowAllowingStateLoss()
+        section.onSectionEnter()
         sectionChangeListeners.dispatchInvoke {
             it.onSectionChanged(
                 lastSectionId,
                 currentSectionId
             )
+        }
+        isSectionSwitching = false
+    }
+
+    private fun switchSectionLater(targetId: Int) {
+        postInMain {
+            switchSection(targetId)
         }
     }
 }
