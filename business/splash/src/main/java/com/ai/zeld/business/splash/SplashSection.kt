@@ -18,7 +18,6 @@ class SplashSection : BaseSection() {
     override fun onPreload() {
         super.onPreload()
         // 这里不能做任何事情。
-        Thread.sleep(3000)
     }
 
     @SuppressLint("InflateParams")

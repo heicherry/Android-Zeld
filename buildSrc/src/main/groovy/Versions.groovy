@@ -10,7 +10,6 @@ class Versions{
     static androidx_recyclerview                            = "1.1.0"
     static androidx_material                                = "1.0"
 
-
     static kotlin_coroutines                                = "1.3.3"
     static rxjava                                           = "2.2.15"
     static rxandroid                                        = "2.1.1"
