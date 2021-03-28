@@ -18,7 +18,6 @@ class SplashSection : BaseSection() {
     override fun onPreload() {
         super.onPreload()
         // 这里不能做任何事情。
-        Thread.sleep(3000)
     }
 
     @SuppressLint("InflateParams")
@@ -30,11 +29,10 @@ class SplashSection : BaseSection() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         updateProgress(0F)
-        IWorld::class.java.load().preloadAllSection {
+        IWorld::class.java.load().preloadAllSection({
             updateProgress(it)
-            if (it == 1F) {
-                onPreloadFinished()
-            }
+        }) {
+            onPreloadFinished()
         }
     }
 

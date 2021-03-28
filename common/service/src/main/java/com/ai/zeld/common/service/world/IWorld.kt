@@ -12,7 +12,7 @@ interface IWorld {
 
     fun getCurrentSectionId(): Int
 
-    fun preloadAllSection(progress: ((Float) -> Unit)? = null)
+    fun preloadAllSection(progress: ((Float) -> Unit)? = null, onEnd: (() -> Unit)? = null)
 
     fun setOnSectionChangeListener(listener: ISectionChangeListener)
 

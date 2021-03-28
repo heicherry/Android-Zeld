@@ -9,7 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="@android:color/darker_gray"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.ai.zeld.business.world.views.HorseTextView
+            android:id="@+id/speak_stage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@android:color/white" />
+    </FrameLayout>
 
     <FrameLayout
         android:id="@+id/stage"

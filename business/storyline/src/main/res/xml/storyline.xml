@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<storyline>
+    <segment>
+        <still src="@drawable/story_line_test" />
+        <narrator>
+            <speech text="你好，我是测试代码" />
+            <speech
+                elapse_time="3000"
+                text="我是测试代码 2" />
+        </narrator>
+    </segment>
+
+    <segment>
+        <still src="@drawable/story_line_test" />
+        <narrator>
+            <speech text="你好，我是测试代码3" />
+            <speech
+                elapse_time="2000"
+                text="我是测试代码 4" />
+        </narrator>
+    </segment>
+</storyline>
