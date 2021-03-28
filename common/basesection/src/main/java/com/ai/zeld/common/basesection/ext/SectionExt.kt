@@ -4,9 +4,9 @@ import com.ai.zeld.common.basesection.speak.ISpeakStage
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-suspend fun ISpeakStage.boySpeakWaitForClick(content: String, timeElapse: Long = -1) {
+suspend fun ISpeakStage.speakWaitForClick(prefix: String, content: String, timeElapse: Long = -1) {
     return suspendCoroutine { ret ->
-        boySpeak(content, timeElapse, {
+        speak(prefix, content, timeElapse, {
             ret.resume(Unit)
         }, null)
     }

@@ -23,11 +23,12 @@ class SpeakStage(private val speakStage: HorseTextView) : ISpeakStage {
     }
 
     override fun speak(
+        prefix: String,
         content: String,
         timeElapse: Long,
         waitingForClick: (() -> Unit)?,
         onEnd: (() -> Unit)?
     ) {
-        speakStage.update(content, "", onEnd, waitingForClick, 1000L, timeElapse)
+        speakStage.update(content, prefix, onEnd, waitingForClick, 1000L, timeElapse)
     }
 }

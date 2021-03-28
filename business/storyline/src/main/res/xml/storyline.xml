@@ -3,9 +3,12 @@
     <segment>
         <still src="@drawable/story_line_test" />
         <narrator>
-            <speech text="你好，我是测试代码" />
+            <speech
+                prefix="英雄说"
+                text="你好，我是测试代码" />
             <speech
                 elapse_time="3000"
+                prefix="英雄说"
                 text="我是测试代码 2" />
         </narrator>
     </segment>
@@ -13,8 +16,11 @@
     <segment>
         <still src="@drawable/story_line_test" />
         <narrator>
-            <speech text="你好，我是测试代码3" />
             <speech
+                prefix="英雄说"
+                text="你好，我是测试代码3" />
+            <speech
+                prefix="女英雄说"
                 elapse_time="2000"
                 text="我是测试代码 4" />
         </narrator>

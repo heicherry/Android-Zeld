@@ -4,4 +4,6 @@ class Speech {
     var text: String = ""
 
     var elapseTime = 1000L
+
+    var prefix = ""
 }
