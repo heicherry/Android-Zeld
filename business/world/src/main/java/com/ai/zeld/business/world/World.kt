@@ -16,6 +16,10 @@ import com.ai.zeld.util.thread.ThreadPlus
 import com.ai.zeld.util.thread.checkMainThread
 
 class World : IWorld {
+    companion object {
+        private const val TAG = "World"
+    }
+
     private lateinit var context: Activity
     private lateinit var sectionCenter: SectionUnitCenter
     private var currentSectionId = 0
@@ -82,7 +86,11 @@ class World : IWorld {
         val allSectionId = sectionCenter.getAllSectionId()
         allSectionId.forEach {
             postInPreload {
+                val sectionName = sectionCenter.getSectionNameById(it)
+                val timeStart = System.currentTimeMillis()
                 sectionCenter.getSectionById(it).onPreload()
+                val timeElapse = System.currentTimeMillis() - timeStart
+                Log.i(TAG, "preload section($sectionName) elapse: $timeElapse")
                 postInMain {
                     progress?.invoke((it + 1).toFloat() / allSectionId.size)
                 }
