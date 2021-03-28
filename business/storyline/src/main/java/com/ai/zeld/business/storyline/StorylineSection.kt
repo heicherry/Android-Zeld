@@ -1,8 +1,10 @@
 package com.ai.zeld.business.storyline
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import com.ai.zeld.business.storyline.model.*
 import com.ai.zeld.common.basesection.annotation.Section
 import com.ai.zeld.common.basesection.section.BaseSection
@@ -11,10 +13,12 @@ import org.xmlpull.v1.XmlPullParser
 
 @Section(SectionConfig.STORYLINE)
 class StorylineSection : BaseSection() {
+    private lateinit var storyline: Storyline
     override fun onPreload() {
         super.onPreload()
+        storyline = parseXml()
+        preloadAllResource()
     }
-
 
     @SuppressLint("InflateParams")
     override fun onBuildViewTree(): View {
@@ -23,7 +27,9 @@ class StorylineSection : BaseSection() {
 
     override fun onSectionEnter() {
         super.onSectionEnter()
-        parseXml()
+        speakStage.boySpeak("你好，见到你很高兴") {
+            Log.i("ayy", "播放结束")
+        }
     }
 
     private fun parseXml(): Storyline {
@@ -40,12 +46,7 @@ class StorylineSection : BaseSection() {
                         }
                         "still" -> {
                             segment?.still = Still()
-                            val src = parser.getAttributeValue(null, "src")
-                            segment?.still?.src = localContext.resources.getIdentifier(
-                                src,
-                                "drawable",
-                                localContext.packageName
-                            )
+                            segment?.still?.src = parser.getAttributeResourceValue(null, "src", -1)
                         }
                         "narrator" -> {
                             segment?.narrator = Narrator()
@@ -59,12 +60,18 @@ class StorylineSection : BaseSection() {
                         }
                     }
                 }
-                XmlPullParser.END_TAG -> {
-
-                }
             }
             parser.next()
         }
         return storyline
+    }
+
+    private fun preloadAllResource() {
+        storyline.segments.forEach {
+            val srcId = it.still?.src ?: -1
+            if (srcId != -1) {
+                it.still?.srcDrawable = localContext.resources.getDrawable(srcId, null)
+            }
+        }
     }
 }

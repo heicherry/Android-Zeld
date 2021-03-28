@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
+import com.ai.zeld.common.basesection.speak.ISpeakStage
 
 abstract class BaseSection : Fragment() {
     protected var rootViewTree: View? = null
     private var sectionId = 0
     protected lateinit var localContext: Context
+    lateinit var speakStage: ISpeakStage
 
     fun setContext(context: Context) {
         localContext = context

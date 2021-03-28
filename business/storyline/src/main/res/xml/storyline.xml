@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <storyline>
     <segment>
-        <still src="story_line_test" />
+        <still src="@drawable/story_line_test" />
         <narrator>
             <speech text="你好，我是测试代码" />
             <speech
@@ -11,7 +11,7 @@
     </segment>
 
     <segment>
-        <still src="story_line_test" />
+        <still src="@drawable/story_line_test" />
         <narrator>
             <speech text="你好，我是测试代码3" />
             <speech

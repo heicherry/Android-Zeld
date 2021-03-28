@@ -29,11 +29,10 @@ class SplashSection : BaseSection() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         updateProgress(0F)
-        IWorld::class.java.load().preloadAllSection {
+        IWorld::class.java.load().preloadAllSection({
             updateProgress(it)
-            if (it == 1F) {
-                onPreloadFinished()
-            }
+        }) {
+            onPreloadFinished()
         }
     }
 

@@ -3,10 +3,12 @@ package com.ai.zeld.business.world
 import android.app.Activity
 import android.content.Context
 import android.util.AndroidRuntimeException
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import androidx.fragment.app.FragmentActivity
+import com.ai.zeld.business.world.views.HorseTextView
 import com.ai.zeld.common.basesection.section.ISectionChangeListener
 import com.ai.zeld.common.service.world.IWorld
 import com.ai.zeld.util.*
@@ -21,9 +23,11 @@ class World : IWorld {
     private var worldContainerViewId = 0
     private var isSectionSwitching = false
 
+
     // 世界布局
     private lateinit var stageWorld: View
     private lateinit var speakerWorld: View
+    private lateinit var speakStage: SpeakStage
 
     fun initWorld(context: Activity, container: Int) {
         this.context = context
@@ -32,6 +36,7 @@ class World : IWorld {
         sectionCenter.init()
         currentSectionId = sectionCenter.getInitialSectionId()
         initStage()
+        initSpeakStage()
         switchSection(currentSectionId)
     }
 
@@ -41,6 +46,14 @@ class World : IWorld {
         LayoutInflater.from(context).inflate(R.layout.world_base_layout, root, true)
         stageWorld = context.findViewById(R.id.stage)
         speakerWorld = context.findViewById(R.id.speaker)
+    }
+
+    private fun initSpeakStage() {
+        val speakView = context.findViewById<HorseTextView>(R.id.speak_stage)
+        speakStage = SpeakStage(speakView)
+        sectionCenter.getAllSectionId().forEach {
+            sectionCenter.getSectionById(it).speakStage = speakStage
+        }
     }
 
     override fun getContext(): Context {
@@ -65,7 +78,7 @@ class World : IWorld {
         return 1
     }
 
-    override fun preloadAllSection(progress: ((Float) -> Unit)?) {
+    override fun preloadAllSection(progress: ((Float) -> Unit)?, onEnd: (() -> Unit)?) {
         val allSectionId = sectionCenter.getAllSectionId()
         allSectionId.forEach {
             postInPreload {
@@ -77,8 +90,13 @@ class World : IWorld {
         }
         postInPreload {
             postInMain {
-                ThreadPlus.preloadThread?.quitSafely()
                 progress?.invoke(1F)
+            }
+        }
+        postInPreload {
+            postInMain {
+                ThreadPlus.preloadThread?.quitSafely()
+                onEnd?.invoke()
             }
         }
     }
