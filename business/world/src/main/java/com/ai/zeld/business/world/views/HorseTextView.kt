@@ -2,15 +2,19 @@ package com.ai.zeld.business.world.views
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Typeface
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.os.postDelayed
 import com.ai.zeld.util.thread.ThreadPlus
 
+
 class HorseTextView : AppCompatTextView {
     constructor(context: Context) : super(context)
 
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs){
+        typeface = Typeface.createFromAsset(context.assets, "pmzd.TTF")
+    }
 
     private var content: String = ""
     private var index = 0
