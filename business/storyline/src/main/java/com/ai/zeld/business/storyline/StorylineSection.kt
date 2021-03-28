@@ -4,11 +4,14 @@ import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
 import com.ai.zeld.business.storyline.model.*
 import com.ai.zeld.common.basesection.annotation.Section
+import com.ai.zeld.common.basesection.ext.boySpeakWaitForClick
 import com.ai.zeld.common.basesection.section.BaseSection
 import com.ai.zeld.common.basesection.section.SectionConfig
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.xmlpull.v1.XmlPullParser
 
 @Section(SectionConfig.STORYLINE)
@@ -27,9 +30,7 @@ class StorylineSection : BaseSection() {
 
     override fun onSectionEnter() {
         super.onSectionEnter()
-        speakStage.boySpeak("你好，见到你很高兴") {
-            Log.i("ayy", "播放结束")
-        }
+        startTalkStoryLine()
     }
 
     private fun parseXml(): Storyline {
@@ -72,6 +73,14 @@ class StorylineSection : BaseSection() {
             if (srcId != -1) {
                 it.still?.srcDrawable = localContext.resources.getDrawable(srcId, null)
             }
+        }
+    }
+
+    private fun startTalkStoryLine() {
+        GlobalScope.launch(Dispatchers.Main) {
+
+            speakStage.boySpeakWaitForClick("哈哈哈哈",5000)
+
         }
     }
 }
