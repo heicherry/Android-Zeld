@@ -1,5 +1,6 @@
 package com.ai.zeld.business.world.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
@@ -9,13 +10,14 @@ import com.ai.zeld.util.thread.ThreadPlus
 class HorseTextView : AppCompatTextView {
     constructor(context: Context) : super(context)
 
-    constructor(context: Context?,attrs:AttributeSet?):super(context,attrs)
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
 
     private var content: String = ""
     private var index = 0
     private val localHandler = ThreadPlus.mainHandler
 
 
+    @SuppressLint("SetTextI18n")
     fun update(
         content: String,
         prefix: String,
@@ -26,8 +28,7 @@ class HorseTextView : AppCompatTextView {
     ): Long {
         text = ""
         localHandler.removeCallbacksAndMessages(null)
-
-        this.content = content
+        this.content = prefix + content
         index = prefix.length
         localHandler.postDelayed(delay) {
             if (allElapseTime != -1L) {
