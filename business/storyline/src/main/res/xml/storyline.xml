@@ -1,28 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <storyline>
     <segment>
-        <still src="@drawable/story_line_test" />
+        <still src="@drawable/storyline_1" />
         <narrator>
+            <speech text="你好，我是林克，来自塞尔达世界，非常高兴与你见面！" />
             <speech
-                prefix="英雄说"
-                text="你好，我是测试代码" />
-            <speech
-                elapse_time="3000"
-                prefix="英雄说"
-                text="我是测试代码 2" />
+                elapse_time="4000"
+                text="这次来到你的世界，是想学习你们强大的科学知识，以帮助塞尔达提高科学技术，打败魔兽盖侬！" />
         </narrator>
     </segment>
 
     <segment>
-        <still src="@drawable/story_line_test" />
+        <still src="@drawable/storyline_2" />
         <narrator>
+            <speech text="我颜值出众，风流倜傥，备受万千少女喜欢！人人都称我为万人迷！" />
+        </narrator>
+    </segment>
+
+    <segment>
+        <still src="@drawable/storyline_3" />
+        <narrator>
+            <speech text="最近学习到数学，二次函数与解析几何" />
             <speech
-                prefix="英雄说"
-                text="你好，我是测试代码3" />
-            <speech
-                prefix="女英雄说"
-                elapse_time="2000"
-                text="我是测试代码 4" />
+                elapse_time="4000"
+                text="2x的平方 + 3x + 1，能画出一个非常漂亮的图形，但是我调整x的平方前面的参数，图形会发生什么样的变化呢？" />
+            <speech text="我学了很多遍，不知道这些参数与图形的关系" />
+        </narrator>
+    </segment>
+
+    <segment>
+        <still
+            scaletype="center"
+            src="@drawable/storyline_4" />
+        <narrator>
+            <speech text="我很沮丧，我想回到塞尔达！" />
         </narrator>
     </segment>
 </storyline>

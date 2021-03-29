@@ -27,7 +27,7 @@ class HorseTextView : AppCompatTextView {
         prefix: String,
         onEnd: (() -> Unit)? = null,
         waitingForClick: (() -> Unit)? = null,
-        delay: Long = 1000,
+        delay: Long = 300,
         allElapseTime: Long = -1
     ): Long {
         text = ""
