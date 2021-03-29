@@ -53,7 +53,6 @@ abstract class BaseSection : Fragment() {
     }
 }
 
-
 enum class State {
     FOREPLAY, DINNER
 }
