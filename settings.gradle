@@ -1,8 +1,9 @@
+rootProject.name = 'Zeld'
+ext.appProjectName = 'app'
+
+
 include ':business:world'
 include ':business:splash'
-ext.appProjectName = 'app'
-rootProject.name = 'Zeld'
-include ':dependency'
 include ':common:service'
 include ':common:basesection'
 include ':business:storyline'
