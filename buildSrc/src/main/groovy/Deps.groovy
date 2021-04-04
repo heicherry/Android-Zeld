@@ -15,4 +15,10 @@ class Deps{
     static kotlin_gradle_plugin                    = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin_version}"
     static rxjava2                                 = "io.reactivex.rxjava2:rxjava:${Versions.rxjava}"
     static rxandroid                               = "io.reactivex.rxjava2:rxandroid:${Versions.rxandroid}"
+
+
+    static box2d                                   = "com.badlogicgames.gdx:gdx-box2d:${Versions.box2d}"
+    static box2d_native                            = "com.badlogicgames.gdx:gdx-box2d-platform:${Versions.box2d}:natives-armeabi"
+    static box2d_native_v7a                        = "com.badlogicgames.gdx:gdx-box2d-platform:${Versions.box2d}:natives-armeabi-v7a"
+    static box2d_native_v8a                        = "com.badlogicgames.gdx:gdx-box2d-platform:${Versions.box2d}:natives-arm64-v8a"
 }

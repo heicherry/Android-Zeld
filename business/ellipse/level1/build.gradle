@@ -1,0 +1,10 @@
+apply from:rootProject.file("business.gradle")
+
+dependencies {
+    configurations { natives }
+
+    implementation Deps.box2d
+    natives Deps.box2d_native
+    natives Deps.box2d_native_v7a
+    natives Deps.box2d_native_v8a
+}

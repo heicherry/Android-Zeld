@@ -13,4 +13,6 @@ class Versions{
     static kotlin_coroutines                                = "1.3.3"
     static rxjava                                           = "2.2.15"
     static rxandroid                                        = "2.1.1"
+
+    static box2d                                            = "1.9.14"
 }
