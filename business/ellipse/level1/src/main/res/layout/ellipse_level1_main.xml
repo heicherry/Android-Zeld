@@ -6,15 +6,11 @@
     android:layout_height="match_parent"
     android:background="#221918">
 
-    <ImageView
-        android:id="@+id/still"
+    <com.ai.zeld.business.ellipse.level1.Box2DView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
