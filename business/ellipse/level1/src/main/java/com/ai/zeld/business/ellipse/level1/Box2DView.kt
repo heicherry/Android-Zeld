@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import com.ai.zeld.util.objectpool.RectFPool
+import com.ai.zeld.util.path.createPath
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.*
 
@@ -156,12 +158,25 @@ class Box2DView : View {
         world.step(dt, mVelocityIterations, mPosiontIterations)
     }
 
+    private fun buildWave(){
+        val bodyDef = BodyDef()
+        bodyDef.type = BodyDef.BodyType.StaticBody
+
+        val box = PolygonShape()
+
+    }
+
+    private fun drawPathTest(canvas: Canvas){
+
+    }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         // 绘制边界
         doPhysicalStep()
         drawBoundary(canvas)
         drawBall(canvas)
+        drawPathTest(canvas)
         postInvalidate()
     }
 }
