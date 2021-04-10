@@ -4,8 +4,16 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.graphics.PathUtils
+import com.ai.zeld.util.objectpool.PointFPool
+import com.ai.zeld.util.objectpool.RectFPool
+import com.ai.zeld.util.path.createPath
+import com.ai.zeld.util.path.path2Array
+import com.ai.zeld.util.postInMainDelay
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.*
+import kotlin.math.atan
+import kotlin.math.sin
 
 
 class Box2DView : View {
@@ -17,15 +25,19 @@ class Box2DView : View {
         private const val BALL_RADIUS = 50F
     }
 
+    private var inited = false
+
     // Rect 区域
     private val boundaryLeftRectF = RectF()
     private val boundaryRightRectF = RectF()
     private val boundaryTopRectF = RectF()
     private val boundaryBottomRectF = RectF()
     private val ballRectF = RectF()
+    private val coordinateRectF = RectF()
 
     // 绘制工具区域
     private val paint = Paint()
+    private var wavePath: Path? = null
 
     // box2d
     private var world: World = World(Vector2(0F, 10F), true)
@@ -33,12 +45,19 @@ class Box2DView : View {
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        if (w != 0 && h != 0) {
+        if (w != 0 && h != 0 && !inited) {
+            inited = true
+            initCoordinate()
             initBoundary()
+            initWave()
             createBounds()
             createBox2DBall()
         }
         postInvalidate()
+    }
+
+    private fun initCoordinate() {
+        coordinateRectF.set(0F, 0F, width.toFloat(), height.toFloat())
     }
 
     private fun initBoundary() {
@@ -52,6 +71,54 @@ class Box2DView : View {
             width / 2 + BALL_RADIUS,
             height / 2 + BALL_RADIUS
         )
+    }
+
+    private fun initWave() {
+        var body = createWaveBody(150F, 50F, 0F,0F)
+
+        postInMainDelay(5000) {
+            world.destroyBody(body)
+            createWaveBody(150F, 50F, 100F,100F)
+        }
+    }
+
+    private fun createWaveBody(a: Float, b: Float, c: Float, d: Float): Body {
+        val centerPoint = PointFPool.borrow(coordinateRectF.centerX(), coordinateRectF.centerY())
+        val start = -500F
+        val end = 500F
+        val cal: (Float) -> Float = { x: Float ->
+            a * sin(x / b + c) + d
+        }
+        wavePath = createPath(centerPoint, coordinateRectF, start, end, step = 1F, cal)
+        val pointArray = path2Array(wavePath!!, 1F)
+        pointArray.forEachIndexed { index, fl ->
+            pointArray[index] = fl.toBox2D()
+        }
+
+        val pointTest = arrayOf(0F, height / 2F, width.toFloat(), height / 2F)
+        pointTest.forEachIndexed { index, fl ->
+            pointTest[index] = fl.toBox2D()
+        }
+
+        val shape = ChainShape()
+        //shape.createChain(pointTest.toFloatArray())
+        shape.createChain(pointArray)
+
+
+        val bodyDef = BodyDef()
+        bodyDef.type = BodyDef.BodyType.StaticBody
+
+        val fixtureDef = FixtureDef().apply {
+            this.shape = shape
+            density = 0.5f
+            friction = 0.3f
+            restitution = 0.5f
+        }
+
+        bodyDef.position.set(0F, 0F)
+        val body = world.createBody(bodyDef)
+        body.createFixture(fixtureDef)
+        return body
     }
 
     private fun RectF.draw(canvas: Canvas, color: Int, des: String? = null) {
@@ -138,7 +205,10 @@ class Box2DView : View {
         }
 
         box.radius = (ballRectF.width() / 2).toBox2D()
-        bodyDef.position.set((width / 2).toFloat().toBox2D(), (height / 2).toFloat().toBox2D())
+        bodyDef.position.set(
+            (width / 2 + 100).toFloat().toBox2D(),
+            10.toFloat().toBox2D()
+        )
         //bodyDef.linearVelocity[Math.random().toFloat()] = Math.random().toFloat() * 100
 
         ballBody = world.createBody(bodyDef)
@@ -156,12 +226,26 @@ class Box2DView : View {
         world.step(dt, mVelocityIterations, mPosiontIterations)
     }
 
+    private fun calSegmentAngle(x1: Float, y1: Float, x2: Float, y2: Float): Float {
+        if (x1 == x2) return Math.PI.toFloat() / 2
+        val k = (y2 - y1) / (x2 - x1)
+        return atan(k.toDouble()).toFloat()
+    }
+
+    private fun testPath(canvas: Canvas) {
+        paint.color = Color.BLUE
+        paint.style = Paint.Style.STROKE
+        paint.strokeWidth = 3F
+        canvas.drawPath(wavePath!!, paint)
+    }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         // 绘制边界
         doPhysicalStep()
         drawBoundary(canvas)
         drawBall(canvas)
+        testPath(canvas)
         postInvalidate()
     }
 }

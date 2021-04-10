@@ -1,8 +1,7 @@
-include ':business:ellipse:level1'
 rootProject.name = 'Zeld'
 ext.appProjectName = 'app'
 
-
+include ':business:ellipse:level1'
 include ':business:world'
 include ':business:splash'
 include ':common:service'
