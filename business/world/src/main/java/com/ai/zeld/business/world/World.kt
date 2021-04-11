@@ -10,8 +10,10 @@ import android.widget.FrameLayout
 import androidx.fragment.app.FragmentActivity
 import com.ai.zeld.business.world.views.HorseTextView
 import com.ai.zeld.common.basesection.section.ISectionChangeListener
+import com.ai.zeld.common.service.stage.IStage
 import com.ai.zeld.common.service.world.IWorld
 import com.ai.zeld.util.*
+import com.ai.zeld.util.claymore.load
 import com.ai.zeld.util.thread.ThreadPlus
 import com.ai.zeld.util.thread.checkMainThread
 
@@ -27,9 +29,8 @@ class World : IWorld {
     private var worldContainerViewId = 0
     private var isSectionSwitching = false
 
-
     // 世界布局
-    private lateinit var stageWorld: View
+    private lateinit var stageWorldContainer: View
     private lateinit var speakerWorld: View
     private lateinit var speakStage: SpeakStage
 
@@ -44,11 +45,11 @@ class World : IWorld {
         switchSection(currentSectionId)
     }
 
-
     private fun initStage() {
         val root = context.findViewById<FrameLayout>(worldContainerViewId)
         LayoutInflater.from(context).inflate(R.layout.world_base_layout, root, true)
-        stageWorld = context.findViewById(R.id.stage)
+        stageWorldContainer = context.findViewById(R.id.stage_container)
+        (IStage::class.java.load() as Stage).init(stageWorldContainer)
         speakerWorld = context.findViewById(R.id.speaker)
     }
 

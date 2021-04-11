@@ -3,6 +3,7 @@ package com.ai.zeld.business.ellipse.level1
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.core.graphics.PathUtils
 import com.ai.zeld.util.objectpool.PointFPool
@@ -52,6 +53,7 @@ class Box2DView : View {
             initWave()
             createBounds()
             createBox2DBall()
+            testContactListener()
         }
         postInvalidate()
     }
@@ -74,11 +76,19 @@ class Box2DView : View {
     }
 
     private fun initWave() {
-        var body = createWaveBody(150F, 50F, 0F,0F)
+        var body = createWaveBody(150F, 50F, 0F, 0F)
 
         postInMainDelay(5000) {
             world.destroyBody(body)
-            createWaveBody(150F, 50F, 100F,100F)
+            body = createWaveBody(150F, 50F, 100F, 100F)
+
+            postInMainDelay(5000) {
+                //world.destroyBody(body)
+                val pos = body.position
+                pos.y -= 50
+                body.setTransform(pos, 0F)
+                body.isAwake = true
+            }
         }
     }
 
@@ -119,6 +129,30 @@ class Box2DView : View {
         val body = world.createBody(bodyDef)
         body.createFixture(fixtureDef)
         return body
+    }
+
+    private fun testContactListener() {
+        val listener = object : ContactListener {
+            override fun beginContact(contact: Contact) {
+                val posA = contact.fixtureA.body.position
+                val posB = contact.fixtureB.body.position
+                contact.worldManifold
+                Log.i("ayy", "beginContact posA: $posA  posB :$posB")
+            }
+
+            override fun endContact(contact: Contact) {
+                val posA = contact.fixtureA.body.position
+                val posB = contact.fixtureB.body.position
+                Log.i("ayy", "endContact posA: $posA  posB :$posB")
+            }
+
+            override fun preSolve(contact: Contact?, oldManifold: Manifold?) {
+            }
+
+            override fun postSolve(contact: Contact?, impulse: ContactImpulse?) {
+            }
+        }
+        world.setContactListener(listener)
     }
 
     private fun RectF.draw(canvas: Canvas, color: Int, des: String? = null) {
