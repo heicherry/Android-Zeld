@@ -24,10 +24,22 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/stage"
+        android:id="@+id/stage_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="#221918"
         app:layout_constraintBottom_toTopOf="@id/speaker"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <com.ai.zeld.business.world.views.CoordinateSystemView
+            android:id="@+id/coordinate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <FrameLayout
+            android:id="@+id/stage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

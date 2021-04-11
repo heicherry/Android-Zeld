@@ -8,29 +8,26 @@ import com.ai.zeld.business.elllipse.level1.R
 import com.ai.zeld.common.basesection.annotation.Section
 import com.ai.zeld.common.basesection.section.BaseSection
 import com.ai.zeld.common.basesection.section.SectionConfig
-import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.physics.box2d.BodyDef
+import com.ai.zeld.common.service.stage.IStage
+import com.ai.zeld.common.service.world.IWorld
+import com.ai.zeld.util.claymore.load
 import com.badlogic.gdx.physics.box2d.Box2D
-import com.badlogic.gdx.physics.box2d.World
 
 
 @Section(SectionConfig.HERO_CAN_NOT_FLY)
 class EllipseLevel1Section : BaseSection() {
-
+    private lateinit var world: IWorld
 
     override fun onPreload() {
         super.onPreload()
         Box2D.init()
-        initWorld()
+        world = IWorld::class.java.load()
+        IStage::class.java.load().enableCoordinate(true)
     }
 
     @SuppressLint("InflateParams")
     override fun onBuildViewTree(): View {
         return LayoutInflater.from(localContext).inflate(R.layout.ellipse_level1_main, null)
-    }
-
-    private fun initWorld(){
-
     }
 
 
@@ -43,5 +40,4 @@ class EllipseLevel1Section : BaseSection() {
         super.onSectionEnter()
 
     }
-
 }
