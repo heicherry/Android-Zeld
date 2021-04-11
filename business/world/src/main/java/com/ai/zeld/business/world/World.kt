@@ -45,7 +45,6 @@ class World : IWorld {
         switchSection(currentSectionId)
     }
 
-
     private fun initStage() {
         val root = context.findViewById<FrameLayout>(worldContainerViewId)
         LayoutInflater.from(context).inflate(R.layout.world_base_layout, root, true)
