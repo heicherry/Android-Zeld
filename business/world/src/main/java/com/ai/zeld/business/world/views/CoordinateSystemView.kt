@@ -33,6 +33,7 @@ class CoordinateSystemView : View {
             strokeCap = Paint.Cap.ROUND
             strokeJoin = Paint.Join.ROUND
             pathEffect = DashPathEffect(floatArrayOf(1F, 10F), 0F)
+            alpha =  120
         }
 
         trialPaint.apply {
@@ -42,6 +43,7 @@ class CoordinateSystemView : View {
             isAntiAlias = true
             strokeCap = Paint.Cap.ROUND
             strokeJoin = Paint.Join.ROUND
+            alpha =  120
         }
         updatePoints()
     }
