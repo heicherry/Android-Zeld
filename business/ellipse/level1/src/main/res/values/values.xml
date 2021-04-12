@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="ellipse_level1_coordinate_center_offset_bottom">141dp</dimen>
+    <dimen name="ellipse_level1_wave_margin_left">30dp</dimen>
+    <dimen name="ellipse_level1_wave_margin_right">30dp</dimen>
 </resources>

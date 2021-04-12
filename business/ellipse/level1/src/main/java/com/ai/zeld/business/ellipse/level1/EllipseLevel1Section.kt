@@ -19,6 +19,7 @@ import com.badlogic.gdx.physics.box2d.Box2D
 class EllipseLevel1Section : BaseSection() {
     private lateinit var world: IWorld
     private lateinit var stage: IStage
+    private lateinit var box2DView: Box2DView
 
     override fun onPreload() {
         super.onPreload()
@@ -26,6 +27,7 @@ class EllipseLevel1Section : BaseSection() {
         world = IWorld::class.java.load()
         stage = IStage::class.java.load()
         initCoordinate()
+        initViews()
     }
 
     private fun initCoordinate() {
@@ -34,6 +36,11 @@ class EllipseLevel1Section : BaseSection() {
             .height() - resource.getDimension(R.dimen.ellipse_level1_coordinate_center_offset_bottom)
         val newCoordinateCenter = PointF(stage.getCenterPointF().x, newCenterY)
         stage.updateCoordinate(stage.getCoordinateRect(), newCoordinateCenter)
+    }
+
+    private fun initViews() {
+        box2DView = rootViewTree!!.findViewById(R.id.box2d)
+        box2DView.showBoundary(true)
     }
 
     @SuppressLint("InflateParams")

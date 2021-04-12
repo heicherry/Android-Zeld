@@ -46,7 +46,7 @@ fun createPath(
     var temp = start
     while (temp <= end) {
         val x = temp + centerPointF.x
-        val y = cal(temp) + centerPointF.y
+        val y = centerPointF.y - cal(temp)
         if (y <= coordinateSystemRectF.bottom
             && y >= coordinateSystemRectF.top
             && !isInPenaltyZone(x, y)
@@ -56,7 +56,7 @@ fun createPath(
         temp += step
     }
     val x = end + centerPointF.x
-    val y = cal(end) + centerPointF.y
+    val y = centerPointF.y - cal(end)
     if (y <= coordinateSystemRectF.bottom
         && y >= coordinateSystemRectF.top
         && !isInPenaltyZone(x, y)

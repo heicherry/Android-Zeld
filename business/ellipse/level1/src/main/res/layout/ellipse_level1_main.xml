@@ -5,9 +5,9 @@
     android:layout_height="match_parent">
 
     <com.ai.zeld.business.ellipse.level1.Box2DView
+        android:id="@+id/box2d"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp" />
+        android:layout_height="match_parent"/>
 
     <ImageView
         android:id="@+id/step_left"

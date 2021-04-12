@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.ai.zeld.business.world.World
 import com.ai.zeld.common.service.world.IWorld
 import com.ai.zeld.util.claymore.load
+import kotlin.system.exitProcess
 
 
 class FullscreenActivity : AppCompatActivity() {
@@ -20,5 +21,10 @@ class FullscreenActivity : AppCompatActivity() {
         )
         setContentView(R.layout.activity_fullscreen)
         (IWorld::class.java.load() as World).initWorld(this, R.id.main_container)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        exitProcess(0)
     }
 }

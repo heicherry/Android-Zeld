@@ -9,4 +9,10 @@ object PointFPool : SimpleObjectPool<PointF>(100, { PointF() }) {
         pointF.set(x, y)
         return pointF
     }
+
+    fun borrow(src: PointF): PointF {
+        val pointF: PointF = borrow()
+        pointF.set(src)
+        return pointF
+    }
 }
