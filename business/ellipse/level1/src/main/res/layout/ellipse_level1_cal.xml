@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="100dp"
+    android:background="@drawable/uikit_round_rect"
+    android:clipToPadding="false"
+    android:paddingStart="5dp"
+    android:paddingEnd="5dp">
+
+    <com.ai.zeld.business.ellipse.level1.CalView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal" />
+
+    <com.ai.zeld.business.ellipse.level1.TouchView
+        android:id="@+id/move_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ellipse_level1_move_icon"
+        android:translationX="-5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,4 +15,6 @@ class Versions{
     static rxandroid                                        = "2.1.1"
 
     static box2d                                            = "1.9.14"
+
+    static number_picker                                    = "2.4.11"
 }

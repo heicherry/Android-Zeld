@@ -43,6 +43,9 @@ class Box2DView : View {
     private var ballBody: Body? = null
     private val stage = IStage::class.java.load()
 
+    // 绘制资源
+    private var ballBitmap: Bitmap? = null
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         if (w != 0 && h != 0 && !inited) {
@@ -50,7 +53,6 @@ class Box2DView : View {
             initBoundary()
             initWave()
             createBounds()
-            updateBallRectF(RectF(10F, 10F, 100F, 100F))
         }
         postInvalidate()
     }
@@ -74,7 +76,8 @@ class Box2DView : View {
         boundaryShow = show
     }
 
-    fun updateBallRectF(rectF: RectF) {
+    fun updateBall(rectF: RectF, bitmap: Bitmap? = null) {
+        ballBitmap = bitmap
         ballRectF.set(rectF)
         ballBody?.let { world.destroyBody(it) }
         ballBody = ballRectF.convertToBody(world, BodyDef.BodyType.DynamicBody, true)
@@ -82,7 +85,7 @@ class Box2DView : View {
     }
 
     private fun initWave() {
-        var body = createWaveBody(50F, 50F, 0F, 0F)
+        var body = createWaveBody(100F, 50F, 0F, 0F)
 
 //        postInMainDelay(5000) {
 //            world.destroyBody(body)
@@ -96,6 +99,10 @@ class Box2DView : View {
 //                body.isAwake = true
 //            }
 //        }
+    }
+
+    fun updateWaveFun() {
+
     }
 
     private fun createWaveBody(a: Float, b: Float, c: Float, d: Float): Body {
@@ -171,12 +178,19 @@ class Box2DView : View {
             val newX = position.x.toPixels() - ballRectF.width() / 2
             val newY = position.y.toPixels() - ballRectF.height() / 2
             ballRectF.offsetTo(newX, newY)
-            canvas.drawCircle(
-                ballRectF.centerX(),
-                ballRectF.centerY(),
-                ballRectF.height() / 2,
-                paint
-            )
+            if (ballBitmap != null) {
+                val saveCount = canvas.save()
+                canvas.rotate(ballBody!!.angle, ballRectF.centerX(), ballRectF.centerY())
+                canvas.drawBitmap(ballBitmap!!, null, ballRectF, null)
+                canvas.restoreToCount(saveCount)
+            } else {
+                canvas.drawCircle(
+                    ballRectF.centerX(),
+                    ballRectF.centerY(),
+                    ballRectF.height() / 2,
+                    paint
+                )
+            }
         }
     }
 
@@ -186,6 +200,13 @@ class Box2DView : View {
         }
     }
 
+    private fun drawWavePath(canvas: Canvas) {
+        paint.color = Color.BLUE
+        paint.style = Paint.Style.STROKE
+        paint.strokeWidth = 3F
+        canvas.drawPath(wavePath!!, paint)
+    }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         world.stepExt()
@@ -193,6 +214,7 @@ class Box2DView : View {
             drawBoundary(canvas)
         }
         drawBall(canvas)
+        drawWavePath(canvas)
         postInvalidate()
     }
 }

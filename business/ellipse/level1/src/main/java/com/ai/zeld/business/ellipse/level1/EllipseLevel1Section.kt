@@ -1,7 +1,9 @@
 package com.ai.zeld.business.ellipse.level1
 
 import android.annotation.SuppressLint
+import android.graphics.BitmapFactory
 import android.graphics.PointF
+import android.graphics.RectF
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +30,7 @@ class EllipseLevel1Section : BaseSection() {
         stage = IStage::class.java.load()
         initCoordinate()
         initViews()
+        initBall()
     }
 
     private fun initCoordinate() {
@@ -41,6 +44,22 @@ class EllipseLevel1Section : BaseSection() {
     private fun initViews() {
         box2DView = rootViewTree!!.findViewById(R.id.box2d)
         box2DView.showBoundary(true)
+    }
+
+    private fun initBall() {
+        val ballBitmap =
+            BitmapFactory.decodeResource(localContext.resources, R.drawable.ellipse_level1_diamond)
+        val centerPointX =
+            localContext.resources.getDimension(R.dimen.ellipse_level1_wave_margin_left) + 100F
+        val centerPointY = stage.getCenterPointF().y - 300F
+        val ballRectF =
+            RectF(
+                centerPointX - ballBitmap.width / 2,
+                centerPointY - ballBitmap.height / 2,
+                centerPointX + ballBitmap.width / 2,
+                centerPointY + ballBitmap.height / 2
+            )
+        box2DView.updateBall(ballRectF, ballBitmap)
     }
 
     @SuppressLint("InflateParams")
