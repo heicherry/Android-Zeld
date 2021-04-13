@@ -23,4 +23,6 @@ class Deps{
     static box2d_native_v8a                        = "com.badlogicgames.gdx:gdx-box2d-platform:${Versions.box2d}:natives-arm64-v8a"
     static box2d_native_x86                        = "com.badlogicgames.gdx:gdx-box2d-platform:${Versions.box2d}:natives-x86"
     static box2d_native_x86_64                     = "com.badlogicgames.gdx:gdx-box2d-platform:${Versions.box2d}:natives-x86_64"
+
+    static number_picker                           = "com.shawnlin:number-picker:${Versions.number_picker}"
 }

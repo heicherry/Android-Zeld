@@ -1,5 +1,6 @@
 package com.ai.zeld.util
 
+import android.graphics.RectF
 import android.view.View
 import androidx.core.os.postDelayed
 import androidx.lifecycle.Lifecycle
@@ -45,4 +46,16 @@ fun postInPreload(run: () -> Unit) {
     ThreadPlus.preloadHandler.post {
         run.invoke()
     }
+}
+
+operator fun RectF.plus(rectF: RectF): MutableList<RectF> {
+    return mutableListOf<RectF>().apply {
+        add(this@plus)
+        add(rectF)
+    }
+}
+
+operator fun MutableList<RectF>.plus(rectF: RectF): MutableList<RectF> {
+    add(rectF)
+    return this
 }
