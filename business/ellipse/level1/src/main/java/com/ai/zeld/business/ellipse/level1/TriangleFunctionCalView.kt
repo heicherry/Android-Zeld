@@ -1,54 +1,54 @@
 package com.ai.zeld.business.ellipse.level1
 
 import android.content.Context
-import android.os.Vibrator
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.style.RelativeSizeSpan
-import android.text.style.SuperscriptSpan
 import android.util.AttributeSet
-import android.widget.FrameLayout
-import android.widget.TextView
 import com.ai.zeld.business.elllipse.level1.R
 import com.shawnlin.numberpicker.NumberPicker
+import kotlin.math.sin
 
+typealias TriangleFunction = (x: Float) -> Float
 
-class TriangleFunctionCalView(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs),
-    NumberPicker.OnValueChangeListener, NumberPicker.OnScrollListener {
-    private var x_2_pre: NumberPicker
-    private var x_1_pre: NumberPicker
+class TriangleFunctionCalView(context: Context, attrs: AttributeSet?) :
+    BaseFunctionControlView(context, attrs) {
+    private var a: NumberPicker
     private var b: NumberPicker
-    private val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+    private var c: NumberPicker
+    private var d: NumberPicker
+    private var listener: ((function: TriangleFunction) -> Unit)? = null
 
     init {
-        inflate(context, R.layout.ellipse_level1_x_square, this)
-        val x_2 = findViewById<TextView>(R.id.x_2)
-        val m2 = SpannableString("x2")
-        m2.setSpan(RelativeSizeSpan(0.5F), 1, 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        m2.setSpan(SuperscriptSpan(), 1, 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-        val spannableStringBuilder = SpannableStringBuilder("")
-        spannableStringBuilder.append(m2)
-        x_2.text = spannableStringBuilder
-
-        x_2_pre = findViewById(R.id.x_2_pre)
-        x_1_pre = findViewById(R.id.x_pre)
+        inflate(context, R.layout.ellipse_level1_cal_sin, this)
+        a = findViewById(R.id.a)
         b = findViewById(R.id.b)
+        c = findViewById(R.id.c)
+        d = findViewById(R.id.d)
 
-        x_2_pre.setOnValueChangedListener(this)
-        x_1_pre.setOnValueChangedListener(this)
+        a.setOnValueChangedListener(this)
         b.setOnValueChangedListener(this)
+        c.setOnValueChangedListener(this)
+        d.setOnValueChangedListener(this)
 
-        x_2_pre.setOnScrollListener(this)
-        x_1_pre.setOnScrollListener(this)
+        a.setOnScrollListener(this)
         b.setOnScrollListener(this)
+        c.setOnScrollListener(this)
+        d.setOnScrollListener(this)
+    }
+
+    fun setFunctionChangeListener(listener: (function: TriangleFunction) -> Unit) {
+        this.listener = listener
     }
 
     override fun onValueChange(picker: NumberPicker?, oldVal: Int, newVal: Int) {
-        vibrator.vibrate(10)
+        super.onValueChange(picker, oldVal, newVal)
+
     }
 
     override fun onScrollStateChange(view: NumberPicker?, scrollState: Int) {
+        super.onScrollStateChange(view, scrollState)
+        if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {
+            listener?.invoke {
+                a.value * sin(b.value.toFloat() * it + c.value) + d.value
+            }
+        }
     }
 }

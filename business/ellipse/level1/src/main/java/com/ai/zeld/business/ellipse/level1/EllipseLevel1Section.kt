@@ -22,6 +22,12 @@ class EllipseLevel1Section : BaseSection() {
     private lateinit var world: IWorld
     private lateinit var stage: IStage
     private lateinit var box2DView: Box2DView
+    private lateinit var functionControlView: TriangleFunctionCalView
+
+    @SuppressLint("InflateParams")
+    override fun onBuildViewTree(): View {
+        return LayoutInflater.from(localContext).inflate(R.layout.ellipse_level1_main, null)
+    }
 
     override fun onPreload() {
         super.onPreload()
@@ -31,6 +37,7 @@ class EllipseLevel1Section : BaseSection() {
         initCoordinate()
         initViews()
         initBall()
+        initFunctionControlPanel()
     }
 
     private fun initCoordinate() {
@@ -62,11 +69,12 @@ class EllipseLevel1Section : BaseSection() {
         box2DView.updateBall(ballRectF, ballBitmap)
     }
 
-    @SuppressLint("InflateParams")
-    override fun onBuildViewTree(): View {
-        return LayoutInflater.from(localContext).inflate(R.layout.ellipse_level1_main, null)
+    private fun initFunctionControlPanel() {
+        functionControlView = rootViewTree!!.findViewById(R.id.function_control)
+        functionControlView.setFunctionChangeListener {
+            box2DView.updateWaveFun(it)
+        }
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

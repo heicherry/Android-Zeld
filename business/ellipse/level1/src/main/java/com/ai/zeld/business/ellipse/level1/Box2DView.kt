@@ -42,6 +42,7 @@ class Box2DView : View {
     private var world: World = World(Vector2(0F, 10F), true)
     private var ballBody: Body? = null
     private val stage = IStage::class.java.load()
+    private var waveBody: Body? = null
 
     // 绘制资源
     private var ballBitmap: Bitmap? = null
@@ -85,40 +86,29 @@ class Box2DView : View {
     }
 
     private fun initWave() {
-        var body = createWaveBody(100F, 50F, 0F, 0F)
-
-//        postInMainDelay(5000) {
-//            world.destroyBody(body)
-//            body = createWaveBody(150F, 50F, 100F, 100F)
-//
-//            postInMainDelay(5000) {
-//                //world.destroyBody(body)
-//                val pos = body.position
-//                pos.y -= 50
-//                body.setTransform(pos, 0F)
-//                body.isAwake = true
-//            }
-//        }
+        waveBody = createWaveBody {
+            50 * sin(50 * x + 20)
+        }
     }
 
-    fun updateWaveFun() {
 
+    fun updateWaveFun(cal: TriangleFunction) {
+        waveBody?.let { world.destroyBody(it) }
+        waveBody = createWaveBody(cal)
+        postInvalidate()
     }
 
-    private fun createWaveBody(a: Float, b: Float, c: Float, d: Float): Body {
+    private fun createWaveBody(cal: TriangleFunction): Body {
         val start =
             -(stage.getCenterPointF().x - resources.getDimension(R.dimen.ellipse_level1_wave_margin_left))
         val end =
             stage.getCenterPointF().x - resources.getDimension(R.dimen.ellipse_level1_wave_margin_right)
-        val cal: (Float) -> Float = { x: Float ->
-            a * sin(x / b + c) + d
-        }
         wavePath = createPath(
             stage.getCenterPointF(),
             stage.getCoordinateRect(),
             start,
             end,
-            step = 1F,
+            step = 3F,
             cal
         )
         val pointArray = path2Array(wavePath!!, 1F)
