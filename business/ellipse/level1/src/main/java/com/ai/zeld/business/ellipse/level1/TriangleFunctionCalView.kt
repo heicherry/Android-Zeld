@@ -36,6 +36,7 @@ class TriangleFunctionCalView(context: Context, attrs: AttributeSet?) :
 
     fun setFunctionChangeListener(listener: (function: TriangleFunction) -> Unit) {
         this.listener = listener
+        onScrollStateChange(a, NumberPicker.OnScrollListener.SCROLL_STATE_IDLE)
     }
 
     override fun onValueChange(picker: NumberPicker?, oldVal: Int, newVal: Int) {
@@ -47,7 +48,7 @@ class TriangleFunctionCalView(context: Context, attrs: AttributeSet?) :
         super.onScrollStateChange(view, scrollState)
         if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {
             listener?.invoke {
-                a.value * sin(b.value.toFloat() * it + c.value) + d.value
+                a.value * sin(it / b.value.toFloat() + c.value) + d.value
             }
         }
     }

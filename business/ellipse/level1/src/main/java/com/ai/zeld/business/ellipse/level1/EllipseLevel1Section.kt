@@ -38,6 +38,7 @@ class EllipseLevel1Section : BaseSection() {
         initViews()
         initBall()
         initFunctionControlPanel()
+        initPlayGround()
     }
 
     private fun initCoordinate() {
@@ -55,10 +56,13 @@ class EllipseLevel1Section : BaseSection() {
 
     private fun initBall() {
         val ballBitmap =
-            BitmapFactory.decodeResource(localContext.resources, R.drawable.ellipse_level1_diamond)
+            BitmapFactory.decodeResource(
+                localContext.resources,
+                R.drawable.ellipse_level1_diamond
+            )
         val centerPointX =
             localContext.resources.getDimension(R.dimen.ellipse_level1_wave_margin_left) + 100F
-        val centerPointY = stage.getCenterPointF().y - 300F
+        val centerPointY = stage.getCenterPointF().y
         val ballRectF =
             RectF(
                 centerPointX - ballBitmap.width / 2,
@@ -73,7 +77,30 @@ class EllipseLevel1Section : BaseSection() {
         functionControlView = rootViewTree!!.findViewById(R.id.function_control)
         functionControlView.setFunctionChangeListener {
             box2DView.updateWaveFun(it)
+            box2DView.updateFly(
+                it,
+                BitmapFactory.decodeResource(
+                    localContext.resources,
+                    R.drawable.ellipse_level1_bean_eater
+                )
+            )
+            initMonsters()
         }
+    }
+
+    private fun initMonsters() {
+        val ballBitmap =
+            BitmapFactory.decodeResource(
+                localContext.resources,
+                R.drawable.ellipse_level1_diamond
+            )
+        box2DView.addMonster(100F, 100F, ballBitmap)
+    }
+
+    private fun initPlayGround() {
+        val y = stage.getCoordinateRect()
+            .height() - localContext.resources.getDimension(R.dimen.ellipse_level1_coordinate_init_bottom_offset_bottom)
+        box2DView.updatePlayGround(y)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

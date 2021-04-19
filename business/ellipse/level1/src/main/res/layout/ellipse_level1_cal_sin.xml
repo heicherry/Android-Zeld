@@ -134,5 +134,5 @@
         app:np_selectedTextSize="25sp"
         app:np_textColor="@android:color/holo_green_dark"
         app:np_textSize="17sp"
-        app:np_value="3" />
+        app:np_value="500" />
 </androidx.constraintlayout.widget.ConstraintLayout>
