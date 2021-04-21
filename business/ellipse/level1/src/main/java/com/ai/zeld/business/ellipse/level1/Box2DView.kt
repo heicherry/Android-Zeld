@@ -2,11 +2,10 @@ package com.ai.zeld.business.ellipse.level1
 
 import android.content.Context
 import android.graphics.*
-import android.os.Build
 import android.util.AttributeSet
 import android.view.View
-import androidx.annotation.RequiresApi
-import com.ai.zeld.business.ellipse.level1.fly.FlyBody
+import com.ai.zeld.business.ellipse.level1.bodys.BodyManager
+import com.ai.zeld.business.ellipse.level1.bodys.FlyBody
 import com.ai.zeld.business.elllipse.level1.R
 import com.ai.zeld.common.service.stage.IStage
 import com.ai.zeld.util.*
@@ -54,6 +53,11 @@ class Box2DView : View {
     // 绘制资源
     private var ballBitmap: Bitmap? = null
 
+    // 非Box2d的世界
+    private val bodyManager = BodyManager {
+        postInvalidate()
+    }
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         if (w != 0 && h != 0 && !inited) {
@@ -99,10 +103,15 @@ class Box2DView : View {
     }
 
     fun updateFly(cal: TriangleFunction, bitmap: Bitmap) {
-        flyBody = FlyBody(context, bitmap, cal) {
-            postInvalidate()
+        flyBody = bodyManager.createBody(BodyManager.BodyType.FLY, RectF(), bitmap) as FlyBody
+        flyBody?.let {
+            it.setFunctionCal(cal)
+            it.startFly()
         }
-        flyBody?.startFly()
+        bodyManager.createBody(
+            BodyManager.BodyType.BARRIER, PointF(100F, 100F),
+            R.drawable.ellipse_level1_virus.idToBitmap()
+        )
     }
 
     fun addMonster(x: Float, y: Float, bitmap: Bitmap) {
@@ -233,7 +242,7 @@ class Box2DView : View {
     }
 
     private fun drawFlyBody(canvas: Canvas) {
-        flyBody?.draw(canvas)
+        bodyManager.draw(canvas)
     }
 
     private fun drawMonsters(canvas: Canvas) {

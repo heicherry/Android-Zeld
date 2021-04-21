@@ -1,9 +1,12 @@
 package com.ai.zeld.util
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.RectF
 import android.view.View
 import androidx.core.os.postDelayed
 import androidx.lifecycle.Lifecycle
+import com.ai.zeld.util.app.App
 import com.ai.zeld.util.thread.ThreadPlus
 
 fun View.gone() {
@@ -58,4 +61,11 @@ operator fun RectF.plus(rectF: RectF): MutableList<RectF> {
 operator fun MutableList<RectF>.plus(rectF: RectF): MutableList<RectF> {
     add(rectF)
     return this
+}
+
+fun Int.idToBitmap(): Bitmap {
+    return BitmapFactory.decodeResource(
+        App.application.resources,
+        this
+    )
 }

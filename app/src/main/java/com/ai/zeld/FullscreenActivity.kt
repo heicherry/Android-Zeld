@@ -6,6 +6,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.ai.zeld.business.world.World
 import com.ai.zeld.common.service.world.IWorld
+import com.ai.zeld.util.app.App
 import com.ai.zeld.util.claymore.load
 import kotlin.system.exitProcess
 
@@ -14,6 +15,7 @@ class FullscreenActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initApp()
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -21,6 +23,11 @@ class FullscreenActivity : AppCompatActivity() {
         )
         setContentView(R.layout.activity_fullscreen)
         (IWorld::class.java.load() as World).initWorld(this, R.id.main_container)
+    }
+
+    fun initApp() {
+        App.activity = this
+        App.application = application
     }
 
     override fun onDestroy() {
