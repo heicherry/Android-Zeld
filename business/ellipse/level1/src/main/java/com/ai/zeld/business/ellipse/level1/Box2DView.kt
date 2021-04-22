@@ -54,7 +54,7 @@ class Box2DView : View {
     private var ballBitmap: Bitmap? = null
 
     // 非Box2d的世界
-    private val bodyManager = BodyManager {
+    private val bodyManager = BodyManager(world) {
         postInvalidate()
     }
 
@@ -108,22 +108,9 @@ class Box2DView : View {
             it.setFunctionCal(cal)
             it.startFly()
         }
-        bodyManager.createBody(
-            BodyManager.BodyType.BARRIER, PointF(100F, 100F),
-            R.drawable.ellipse_level1_virus.idToBitmap()
-        )
     }
 
-    fun addMonster(x: Float, y: Float, bitmap: Bitmap) {
-        val rectF = RectF(
-            x - bitmap.width / 2,
-            y - bitmap.height / 2,
-            x + bitmap.width / 2,
-            y + bitmap.height / 2
-        )
-        monsterRectFList.add(rectF)
-        monsterBodyList[rectF.convertToBody(world, BodyDef.BodyType.DynamicBody, true)] = bitmap
-    }
+    fun getBodyManager() = bodyManager
 
     fun updatePlayGround(y: Float) {
         val start = resources.getDimension(R.dimen.ellipse_level1_wave_margin_left)

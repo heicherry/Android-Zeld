@@ -6,6 +6,9 @@ import android.graphics.*
 import com.ai.zeld.common.service.stage.IStage
 import com.ai.zeld.util.app.App
 import com.ai.zeld.util.claymore.load
+import com.ai.zeld.util.convertToBody
+import com.badlogic.gdx.physics.box2d.BodyDef
+import com.badlogic.gdx.physics.box2d.World
 
 open class Body(
     val bitmap: Bitmap,
@@ -16,6 +19,7 @@ open class Body(
     protected val paint = Paint()
     protected val context = App.application
     protected val resources: Resources = context.resources
+    protected var world: World? = null
 
     internal lateinit var bodyManager: BodyManager
 
@@ -25,7 +29,11 @@ open class Body(
         }
     }
 
-    fun getCurrentPos() = rectF
+    open fun initBody(world: World) {
+        this.world = world
+    }
+
+    open fun getCurrentPos() = rectF
 
     open fun draw(canvas: Canvas) {
         paint.color = Color.BLUE
