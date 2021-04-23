@@ -86,8 +86,6 @@ class EllipseLevel1Section : BaseSection() {
         createBarrier(240F, 900F, R.drawable.ellipse_level1_mine)
         createBarrier(440F, 790F, R.drawable.ellipse_level1_mine)
         createBarrier(600F, 1000F, R.drawable.ellipse_level1_mine)
-
-        createBarrier(600F, 1000F, R.drawable.ellipse_level1_mine)
     }
 
     private fun createBarrier(x: Float, y: Float, bitmapId: Int) {

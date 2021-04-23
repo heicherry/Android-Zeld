@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.PointF
 import android.graphics.RectF
+import android.util.Log
 import android.view.View
 import androidx.core.os.postDelayed
 import androidx.lifecycle.Lifecycle
@@ -81,11 +82,12 @@ fun Bitmap.realPos(center: PointF) = RectF(
 
 fun Vector2.toPointF() = PointF(x, y)
 
-fun RectF.scale(scale: Float): RectF {
+fun RectF.scale(value: Float): RectF {
     val dest = RectF()
-    dest.left = centerX() - width() / 2 * scale
-    dest.right = centerX() + width() / 2 * scale
-    dest.top = centerY() - height() / 2 * scale
-    dest.bottom = centerY() + height() / 2 * scale
+    Log.i("ayy","value: $value")
+    dest.left = centerX() - (width() / 2) * value
+    dest.right = centerX() + (width() / 2 )* value
+    dest.top = centerY() - (height() / 2) * value
+    dest.bottom = centerY() + (height() / 2) * value
     return dest
 }
