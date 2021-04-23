@@ -20,6 +20,7 @@ open class Body(
     protected val context = App.application
     protected val resources: Resources = context.resources
     protected var world: World? = null
+    var isAlive = true
 
     internal lateinit var bodyManager: BodyManager
 
@@ -43,6 +44,10 @@ open class Body(
     }
 
     fun postInvalidate() {
-        bodyManager.updateCallback.invoke()
+        bodyManager.step()
+    }
+
+    open fun onCollision(allCollisionBody: List<Body>) {
+
     }
 }

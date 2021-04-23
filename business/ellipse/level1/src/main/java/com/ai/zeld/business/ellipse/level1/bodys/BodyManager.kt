@@ -47,4 +47,32 @@ class BodyManager(val world: World, internal val updateCallback: () -> Unit) {
     enum class BodyType {
         BARRIER, FLY, JUMPING_BARRIER
     }
+
+    fun step() {
+        collisionCheck()
+        updateCallback.invoke()
+    }
+
+    private fun collisionCheck() {
+        val all = mutableListOf<Body>()
+        all.addAll(allBody)
+        all.forEach { first ->
+            if (first.isAlive) {
+                val collisionBody = mutableListOf<Body>()
+                all.forEach { second ->
+                    if (second != first && second.isAlive) {
+                        if (first.rectF.contains(second.rectF)
+                            || second.rectF.contains(first.rectF)
+                            || RectF.intersects(first.rectF, second.rectF)
+                        ) {
+                            collisionBody.add(second)
+                        }
+                    }
+                }
+                if (collisionBody.size > 0) {
+                    first.onCollision(collisionBody)
+                }
+            }
+        }
+    }
 }

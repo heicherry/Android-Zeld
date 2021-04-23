@@ -1,6 +1,7 @@
 package com.ai.zeld.business.ellipse.level1.bodys
 
 import android.graphics.*
+import android.util.Log
 import com.ai.zeld.business.elllipse.level1.R
 import com.ai.zeld.util.path.createPath
 import com.ai.zeld.util.path.path2Array
@@ -65,5 +66,10 @@ class FlyBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         paint.strokeWidth = 3F
         path?.let { canvas.drawPath(it, paint) }
         super.draw(canvas)
+    }
+
+    override fun onCollision(allCollisionBody: List<Body>) {
+        super.onCollision(allCollisionBody)
+        Log.i("ayy", "onCollision")
     }
 }
