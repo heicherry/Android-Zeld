@@ -8,7 +8,8 @@
     android:paddingStart="5dp"
     android:paddingEnd="5dp">
 
-    <com.ai.zeld.business.ellipse.level1.CalView
+    <com.ai.zeld.business.ellipse.level1.TriangleFunctionCalView
+        android:id="@+id/function_control"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal" />

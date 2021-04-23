@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import com.ai.zeld.business.ellipse.level1.bodys.BodyManager
+import com.ai.zeld.business.ellipse.level1.bodys.FlyBody
 import com.ai.zeld.business.elllipse.level1.R
 import com.ai.zeld.common.service.stage.IStage
 import com.ai.zeld.util.*
@@ -12,7 +14,6 @@ import com.ai.zeld.util.path.createPath
 import com.ai.zeld.util.path.path2Array
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.*
-import kotlin.math.sin
 
 
 class Box2DView : View {
@@ -32,6 +33,9 @@ class Box2DView : View {
     private val boundaryTopRectF = RectF()
     private val boundaryBottomRectF = RectF()
     private val ballRectF = RectF()
+    private val playGroundRectF = RectF()
+    private var flyBody: FlyBody? = null
+    private val monsterRectFList = mutableListOf<RectF>()
 
     // 绘制工具区域
     private val paint = Paint()
@@ -39,19 +43,26 @@ class Box2DView : View {
     private var boundaryShow = true
 
     // box2d
-    private var world: World = World(Vector2(0F, 10F), true)
+    private var world: World = World(Vector2(0F, 1F), true)
     private var ballBody: Body? = null
     private val stage = IStage::class.java.load()
+    private var waveBody: Body? = null
+    private var playGround: Body? = null
+    private val monsterBodyList = mutableMapOf<Body, Bitmap>()
 
     // 绘制资源
     private var ballBitmap: Bitmap? = null
+
+    // 非Box2d的世界
+    private val bodyManager = BodyManager(world) {
+        postInvalidate()
+    }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         if (w != 0 && h != 0 && !inited) {
             inited = true
             initBoundary()
-            initWave()
             createBounds()
         }
         postInvalidate()
@@ -80,45 +91,48 @@ class Box2DView : View {
         ballBitmap = bitmap
         ballRectF.set(rectF)
         ballBody?.let { world.destroyBody(it) }
-        ballBody = ballRectF.convertToBody(world, BodyDef.BodyType.DynamicBody, true)
+        ballBody = ballRectF.convertToBody(world, BodyDef.BodyType.DynamicBody, true, 0.98F)
+        ballBody?.let { it.applyLinearImpulse(0F, 10F, it.worldCenter.x, it.worldCenter.y, true) }
         postInvalidate()
     }
 
-    private fun initWave() {
-        var body = createWaveBody(100F, 50F, 0F, 0F)
-
-//        postInMainDelay(5000) {
-//            world.destroyBody(body)
-//            body = createWaveBody(150F, 50F, 100F, 100F)
-//
-//            postInMainDelay(5000) {
-//                //world.destroyBody(body)
-//                val pos = body.position
-//                pos.y -= 50
-//                body.setTransform(pos, 0F)
-//                body.isAwake = true
-//            }
-//        }
+    fun updateWaveFun(cal: TriangleFunction) {
+//        waveBody?.let { world.destroyBody(it) }
+//        waveBody = createWaveBody(cal)
+        postInvalidate()
     }
 
-    fun updateWaveFun() {
-
+    fun updateFly(cal: TriangleFunction, bitmap: Bitmap) {
+        flyBody = bodyManager.createBody(BodyManager.BodyType.FLY, RectF(), bitmap) as FlyBody
+        flyBody?.let {
+            it.setFunctionCal(cal)
+            it.startFly()
+        }
     }
 
-    private fun createWaveBody(a: Float, b: Float, c: Float, d: Float): Body {
+    fun getBodyManager() = bodyManager
+
+    fun updatePlayGround(y: Float) {
+        val start = resources.getDimension(R.dimen.ellipse_level1_wave_margin_left)
+        val end =
+            stage.getCoordinateRect().right - resources.getDimension(R.dimen.ellipse_level1_wave_margin_right)
+        playGroundRectF.set(start, y, end, y + 1)
+        playGround?.let { world.destroyBody(it) }
+        playGround = playGroundRectF.convertToBody(world, BodyDef.BodyType.StaticBody, false)
+        postInvalidate()
+    }
+
+    private fun createWaveBody(cal: TriangleFunction): Body {
         val start =
             -(stage.getCenterPointF().x - resources.getDimension(R.dimen.ellipse_level1_wave_margin_left))
         val end =
             stage.getCenterPointF().x - resources.getDimension(R.dimen.ellipse_level1_wave_margin_right)
-        val cal: (Float) -> Float = { x: Float ->
-            a * sin(x / b + c) + d
-        }
         wavePath = createPath(
             stage.getCenterPointF(),
             stage.getCoordinateRect(),
             start,
             end,
-            step = 1F,
+            step = 3F,
             cal
         )
         val pointArray = path2Array(wavePath!!, 1F)
@@ -135,7 +149,7 @@ class Box2DView : View {
         val fixtureDef = FixtureDef().apply {
             this.shape = shape
             density = 0.5f
-            friction = 0.3f
+            friction = 1f
             restitution = 0.5f
         }
 
@@ -196,7 +210,7 @@ class Box2DView : View {
 
     private fun createBounds() {
         (boundaryLeftRectF + boundaryRightRectF + boundaryTopRectF + boundaryBottomRectF).forEach {
-            it.convertToBody(world, BodyDef.BodyType.StaticBody)
+            it.convertToBody(world, BodyDef.BodyType.StaticBody, false, 0.8F)
         }
     }
 
@@ -204,7 +218,27 @@ class Box2DView : View {
         paint.color = Color.BLUE
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = 3F
-        canvas.drawPath(wavePath!!, paint)
+        wavePath?.let { canvas.drawPath(it, paint) }
+    }
+
+    private fun drawPlayGround(canvas: Canvas) {
+        paint.color = Color.BLUE
+        paint.style = Paint.Style.STROKE
+        paint.strokeWidth = 3F
+        canvas.drawRect(playGroundRectF, paint)
+    }
+
+    private fun drawFlyBody(canvas: Canvas) {
+        bodyManager.draw(canvas)
+    }
+
+    private fun drawMonsters(canvas: Canvas) {
+        monsterBodyList.forEach { (body, bitmap) ->
+            val newX = body.position.x.toPixels() - ballRectF.width() / 2
+            val newY = body.position.y.toPixels() - ballRectF.height() / 2
+            val rectF = RectF(newX, newY, newX + bitmap.width, newY + bitmap.height)
+            canvas.drawBitmap(bitmap, null, rectF, paint)
+        }
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -215,6 +249,9 @@ class Box2DView : View {
         }
         drawBall(canvas)
         drawWavePath(canvas)
+        drawPlayGround(canvas)
+        drawFlyBody(canvas)
+        drawMonsters(canvas)
         postInvalidate()
     }
 }

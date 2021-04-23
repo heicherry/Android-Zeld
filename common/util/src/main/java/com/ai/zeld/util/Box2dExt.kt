@@ -12,7 +12,12 @@ fun Float.toPixels(): Float {
     return this * 50
 }
 
-fun RectF.convertToBody(world: World, type: BodyDef.BodyType, isCircle: Boolean = false): Body {
+fun RectF.convertToBody(
+    world: World,
+    type: BodyDef.BodyType,
+    isCircle: Boolean = false,
+    friction: Float = 0.5F
+): Body {
     val bodyDef = BodyDef()
     bodyDef.type = type
     val box: Shape
@@ -27,8 +32,8 @@ fun RectF.convertToBody(world: World, type: BodyDef.BodyType, isCircle: Boolean 
     val fixtureDef = FixtureDef().apply {
         shape = box
         density = 0.5f
-        friction = 0.3f
-        restitution = 0.5f
+        this.friction = friction
+        restitution = 0.98f
     }
     bodyDef.position.set(centerX().toBox2D(), centerY().toBox2D())
     val body = world.createBody(bodyDef)

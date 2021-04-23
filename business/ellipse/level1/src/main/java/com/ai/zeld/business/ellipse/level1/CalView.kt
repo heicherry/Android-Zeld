@@ -14,12 +14,10 @@ import com.ai.zeld.business.elllipse.level1.R
 import com.shawnlin.numberpicker.NumberPicker
 
 
-class CalView(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs),
-    NumberPicker.OnValueChangeListener, NumberPicker.OnScrollListener {
+class CalView(context: Context, attrs: AttributeSet?) : BaseFunctionControlView(context, attrs) {
     private var x_2_pre: NumberPicker
     private var x_1_pre: NumberPicker
     private var b: NumberPicker
-    private val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
     init {
         inflate(context, R.layout.ellipse_level1_x_square, this)
@@ -43,12 +41,5 @@ class CalView(context: Context, attrs: AttributeSet?) : FrameLayout(context, att
         x_2_pre.setOnScrollListener(this)
         x_1_pre.setOnScrollListener(this)
         b.setOnScrollListener(this)
-    }
-
-    override fun onValueChange(picker: NumberPicker?, oldVal: Int, newVal: Int) {
-        vibrator.vibrate(10)
-    }
-
-    override fun onScrollStateChange(view: NumberPicker?, scrollState: Int) {
     }
 }

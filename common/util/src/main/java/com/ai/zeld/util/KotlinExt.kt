@@ -1,10 +1,16 @@
 package com.ai.zeld.util
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.PointF
 import android.graphics.RectF
+import android.util.Log
 import android.view.View
 import androidx.core.os.postDelayed
 import androidx.lifecycle.Lifecycle
+import com.ai.zeld.util.app.App
 import com.ai.zeld.util.thread.ThreadPlus
+import com.badlogic.gdx.math.Vector2
 
 fun View.gone() {
     visibility = View.GONE
@@ -58,4 +64,30 @@ operator fun RectF.plus(rectF: RectF): MutableList<RectF> {
 operator fun MutableList<RectF>.plus(rectF: RectF): MutableList<RectF> {
     add(rectF)
     return this
+}
+
+fun Int.idToBitmap(): Bitmap {
+    return BitmapFactory.decodeResource(
+        App.application.resources,
+        this
+    )
+}
+
+fun Bitmap.realPos(center: PointF) = RectF(
+    center.x - width / 2,
+    center.y - height / 2,
+    center.x + width / 2,
+    center.y + height / 2
+)
+
+fun Vector2.toPointF() = PointF(x, y)
+
+fun RectF.scale(value: Float): RectF {
+    val dest = RectF()
+    Log.i("ayy","value: $value")
+    dest.left = centerX() - (width() / 2) * value
+    dest.right = centerX() + (width() / 2 )* value
+    dest.top = centerY() - (height() / 2) * value
+    dest.bottom = centerY() + (height() / 2) * value
+    return dest
 }
