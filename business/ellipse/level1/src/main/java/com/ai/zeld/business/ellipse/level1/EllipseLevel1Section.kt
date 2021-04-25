@@ -5,9 +5,12 @@ import android.graphics.BitmapFactory
 import android.graphics.PointF
 import android.graphics.RectF
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import com.ai.zeld.business.ellipse.level1.bodys.BodyManager
+import com.ai.zeld.business.ellipse.level1.bodys.FlyBody
 import com.ai.zeld.business.elllipse.level1.R
 import com.ai.zeld.common.basesection.annotation.Section
 import com.ai.zeld.common.basesection.section.BaseSection
@@ -20,12 +23,13 @@ import com.badlogic.gdx.physics.box2d.Box2D
 
 
 @Section(SectionConfig.HERO_CAN_NOT_FLY)
-class EllipseLevel1Section : BaseSection() {
+class EllipseLevel1Section : BaseSection(), IGameResult {
     private lateinit var world: IWorld
     private lateinit var stage: IStage
     private lateinit var box2DView: Box2DView
     private lateinit var functionControlView: TriangleFunctionCalView
     private lateinit var bodyManager: BodyManager
+    private lateinit var flyBody: FlyBody
 
     @SuppressLint("InflateParams")
     override fun onBuildViewTree(): View {
@@ -39,9 +43,10 @@ class EllipseLevel1Section : BaseSection() {
         stage = IStage::class.java.load()
         initCoordinate()
         initViews()
-        initBall()
-        initFunctionControlPanel()
         initPlayGround()
+        initFlyBody()
+        initMonsters()
+        initFunctionControlPanel()
     }
 
     private fun initCoordinate() {
@@ -73,12 +78,22 @@ class EllipseLevel1Section : BaseSection() {
         box2DView.updateBall(ballRectF, ballBitmap)
     }
 
+    private fun initFlyBody() {
+        flyBody = bodyManager.createBody(
+            BodyManager.BodyType.FLY,
+            RectF(),
+            R.drawable.ellipse_level1_bean_eater.idToBitmap()
+        ) as FlyBody
+        rootViewTree!!.findViewById<ImageView>(R.id.go).setOnClickListener {
+            flyBody.startFly()
+        }
+        flyBody.setGameListener(this)
+    }
+
     private fun initFunctionControlPanel() {
         functionControlView = rootViewTree!!.findViewById(R.id.function_control)
         functionControlView.setFunctionChangeListener {
-            box2DView.updateWaveFun(it)
-            box2DView.updateFly(it, R.drawable.ellipse_level1_bean_eater.idToBitmap())
-            initMonsters()
+            flyBody.setFunctionCal(it)
         }
     }
 
@@ -86,16 +101,19 @@ class EllipseLevel1Section : BaseSection() {
         createBarrier(240F, 900F, R.drawable.ellipse_level1_mine)
         createBarrier(440F, 790F, R.drawable.ellipse_level1_mine)
         createBarrier(600F, 1000F, R.drawable.ellipse_level1_mine)
-    }
 
-    private fun createBarrier(x: Float, y: Float, bitmapId: Int) {
         bodyManager.createBody(
-            BodyManager.BodyType.BARRIER,
-            PointF(x, y), bitmapId.idToBitmap()
+            BodyManager.BodyType.VIRUS_BARRIER,
+            PointF(700F, 200F), R.drawable.ellipse_level1_virus.idToBitmap()
+        )
+
+        bodyManager.createBody(
+            BodyManager.BodyType.DIAMOND,
+            PointF(900F, 900F), R.drawable.ellipse_level1_diamond.idToBitmap()
         )
     }
 
-    private fun createDiamond(x: Float, y: Float, bitmapId: Int) {
+    private fun createBarrier(x: Float, y: Float, bitmapId: Int) {
         bodyManager.createBody(
             BodyManager.BodyType.BARRIER,
             PointF(x, y), bitmapId.idToBitmap()
@@ -116,5 +134,13 @@ class EllipseLevel1Section : BaseSection() {
     override fun onSectionEnter() {
         super.onSectionEnter()
 
+    }
+
+    override fun onSucceed(diamondCount: Int) {
+        Log.i("ayy", "成功了")
+    }
+
+    override fun onFailed() {
+        Log.i("ayy", "失败了！！")
     }
 }
