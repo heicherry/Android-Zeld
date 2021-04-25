@@ -82,11 +82,12 @@ fun Bitmap.realPos(center: PointF) = RectF(
 
 fun Vector2.toPointF() = PointF(x, y)
 
+fun Vector2.toRealWorldPointF() = PointF(x.toPixels(), y.toPixels())
+
 fun RectF.scale(value: Float): RectF {
     val dest = RectF()
-    Log.i("ayy","value: $value")
     dest.left = centerX() - (width() / 2) * value
-    dest.right = centerX() + (width() / 2 )* value
+    dest.right = centerX() + (width() / 2) * value
     dest.top = centerY() - (height() / 2) * value
     dest.bottom = centerY() + (height() / 2) * value
     return dest

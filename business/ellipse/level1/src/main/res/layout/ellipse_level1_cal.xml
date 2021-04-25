@@ -11,8 +11,10 @@
     <com.ai.zeld.business.ellipse.level1.TriangleFunctionCalView
         android:id="@+id/function_control"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal" />
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <com.ai.zeld.business.ellipse.level1.TouchView
         android:id="@+id/move_icon"
@@ -22,4 +24,13 @@
         android:translationX="-5dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/go"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ellipse_level1_go"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

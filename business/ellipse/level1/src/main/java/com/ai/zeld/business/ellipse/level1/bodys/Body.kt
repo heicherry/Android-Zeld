@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.World
 
 open class Body(
     val bitmap: Bitmap,
-    val rectF: RectF
+    var rectF: RectF
 ) {
     // 世界相关
     protected val stage = IStage::class.java.load()
@@ -40,7 +40,7 @@ open class Body(
         paint.color = Color.BLUE
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = 3F
-        canvas.drawBitmap(bitmap, null, rectF, paint)
+        canvas.drawBitmap(bitmap, null, getCurrentPos(), paint)
     }
 
     fun postInvalidate() {

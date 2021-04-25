@@ -16,6 +16,8 @@ class BodyManager(val world: World, internal val updateCallback: () -> Unit) {
             BodyType.BARRIER -> BarrierBody(bitmap, rectF)
             BodyType.FLY -> FlyBody(bitmap, rectF)
             BodyType.JUMPING_BARRIER -> JumpingBarrier(bitmap, rectF)
+            BodyType.VIRUS_BARRIER -> VirusBody(bitmap, rectF)
+            BodyType.DIAMOND -> Diamond(bitmap, rectF)
         }.apply {
             bodyManager = this@BodyManager
         }
@@ -45,7 +47,7 @@ class BodyManager(val world: World, internal val updateCallback: () -> Unit) {
     }
 
     enum class BodyType {
-        BARRIER, FLY, JUMPING_BARRIER
+        BARRIER, FLY, JUMPING_BARRIER, VIRUS_BARRIER, DIAMOND
     }
 
     fun step() {
@@ -56,11 +58,15 @@ class BodyManager(val world: World, internal val updateCallback: () -> Unit) {
     private fun collisionCheck() {
         val all = mutableListOf<Body>()
         all.addAll(allBody)
+        val aliveMap = mutableMapOf<Body, Boolean>()
+        all.forEach {
+            aliveMap[it] = it.isAlive
+        }
         all.forEach { first ->
-            if (first.isAlive) {
+            if (aliveMap[first]!!) {
                 val collisionBody = mutableListOf<Body>()
                 all.forEach { second ->
-                    if (second != first && second.isAlive) {
+                    if (second != first && aliveMap[second]!!) {
                         if (first.rectF.contains(second.rectF)
                             || second.rectF.contains(first.rectF)
                             || RectF.intersects(first.rectF, second.rectF)

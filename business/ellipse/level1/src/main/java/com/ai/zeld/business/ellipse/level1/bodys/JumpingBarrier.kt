@@ -18,6 +18,7 @@ class JumpingBarrier(bitmap: Bitmap, rectF: RectF) : BarrierBody(bitmap, rectF) 
     }
 
     override fun getCurrentPos(): RectF {
+
         return bitmap.realPos(box2DBody.position.toPointF())
     }
 }

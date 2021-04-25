@@ -2,6 +2,7 @@ package com.ai.zeld.business.ellipse.level1.bodys
 
 import android.graphics.*
 import android.util.Log
+import com.ai.zeld.business.ellipse.level1.IGameResult
 import com.ai.zeld.business.elllipse.level1.R
 import com.ai.zeld.util.path.createPath
 import com.ai.zeld.util.path.path2Array
@@ -18,15 +19,16 @@ class FlyBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
 
     private var cal: ((Float) -> Float)? = null
 
-    fun setFunctionCal(cal: (Float) -> Float) {
-        this.cal = cal
+    private var gameResultListener: IGameResult? = null
+    private val allDiamonds = mutableListOf<Diamond>()
+
+    fun setGameListener(listener: IGameResult) {
+        gameResultListener = listener
     }
 
-
-    fun isEnd() = index >= floatArray?.size ?: Int.MAX_VALUE
-
-    fun startFly() {
-        if (isEnd() || cal == null) return
+    fun setFunctionCal(cal: (Float) -> Float) {
+        this.cal = cal
+        if (isEnd()) return
         val start =
             -(stage.getCenterPointF().x - resources.getDimension(R.dimen.ellipse_level1_wave_margin_left))
         val end =
@@ -37,9 +39,16 @@ class FlyBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
             start,
             end,
             step = 3F,
-            cal!!
+            cal
         )
         floatArray = path2Array(path!!, 1F)
+    }
+
+
+    fun isEnd() = index >= floatArray?.size ?: Int.MAX_VALUE
+
+    fun startFly() {
+
         run()
     }
 
@@ -54,6 +63,9 @@ class FlyBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
             point.y + bitmap.height / 2
         )
         index += 6
+        if (index >= array.size) {
+            gameResultListener?.onSucceed(allDiamonds.size)
+        }
         postInvalidate()
         postInMainDelay(20) {
             run()
@@ -65,11 +77,21 @@ class FlyBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = 3F
         path?.let { canvas.drawPath(it, paint) }
-        super.draw(canvas)
+        if (isAlive) {
+            super.draw(canvas)
+        }
     }
 
     override fun onCollision(allCollisionBody: List<Body>) {
         super.onCollision(allCollisionBody)
-        Log.i("ayy", "onCollision")
+        allCollisionBody.filterIsInstance<Diamond>().forEach {
+            if (!allDiamonds.contains(it)) {
+                allDiamonds.add(it)
+            }
+        }
+        if (allCollisionBody.filterIsInstance<BarrierBody>().count() > 0) {
+            isAlive = false
+            gameResultListener?.onFailed()
+        }
     }
 }
