@@ -10,6 +10,9 @@ import com.ai.zeld.common.basesection.annotation.Section
 import com.ai.zeld.common.basesection.ext.speakWaitForClick
 import com.ai.zeld.common.basesection.section.BaseSection
 import com.ai.zeld.common.basesection.section.SectionConfig
+import com.ai.zeld.common.media.BackgroundMusicPlayer
+import com.ai.zeld.common.media.MusicClipsPlayerManager
+import com.ai.zeld.util.postInMainDelay
 import kotlinx.android.synthetic.main.storyline_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -24,6 +27,11 @@ class StorylineSection : BaseSection() {
         super.onPreload()
         storyline = parseXml()
         preloadAllResource()
+        BackgroundMusicPlayer.init()
+        postInMainDelay(2000) {
+            BackgroundMusicPlayer.play()
+        }
+        MusicClipsPlayerManager.init()
     }
 
     @SuppressLint("InflateParams")

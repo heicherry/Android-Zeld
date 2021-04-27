@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.ai.zeld.common.basesection.annotation.Section
 import com.ai.zeld.common.basesection.section.BaseSection
 import com.ai.zeld.common.basesection.section.SectionConfig
+import com.ai.zeld.common.media.BackgroundMusicPlayer
 import com.ai.zeld.common.service.world.IWorld
 import com.ai.zeld.util.claymore.load
 import com.ai.zeld.util.postInMainDelay

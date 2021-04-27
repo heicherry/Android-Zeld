@@ -1,7 +1,9 @@
-include ':common:uikit'
+
 rootProject.name = 'Zeld'
 ext.appProjectName = 'app'
 
+include ':common:uikit'
+include ':common:media'
 include ':business:ellipse:level1'
 include ':business:world'
 include ':business:splash'

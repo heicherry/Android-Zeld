@@ -15,10 +15,13 @@ import com.ai.zeld.business.elllipse.level1.R
 import com.ai.zeld.common.basesection.annotation.Section
 import com.ai.zeld.common.basesection.section.BaseSection
 import com.ai.zeld.common.basesection.section.SectionConfig
+import com.ai.zeld.common.media.MusicClip
+import com.ai.zeld.common.media.MusicClipsPlayerManager
 import com.ai.zeld.common.service.stage.IStage
 import com.ai.zeld.common.service.world.IWorld
 import com.ai.zeld.util.claymore.load
 import com.ai.zeld.util.idToBitmap
+import com.ai.zeld.util.postInMainDelay
 import com.badlogic.gdx.physics.box2d.Box2D
 
 
@@ -85,7 +88,10 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
             R.drawable.ellipse_level1_bean_eater.idToBitmap()
         ) as FlyBody
         rootViewTree!!.findViewById<ImageView>(R.id.go).setOnClickListener {
-            flyBody.startFly()
+            MusicClipsPlayerManager.play(MusicClip.GO)
+            postInMainDelay(500) {
+                flyBody.startFly()
+            }
         }
         flyBody.setGameListener(this)
     }
@@ -107,9 +113,15 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
             PointF(700F, 200F), R.drawable.ellipse_level1_virus.idToBitmap()
         )
 
+//        bodyManager.createBody(
+//            BodyManager.BodyType.DIAMOND,
+//            PointF(900F, 900F), R.drawable.ellipse_level1_diamond.idToBitmap()
+//        )
+
         bodyManager.createBody(
-            BodyManager.BodyType.DIAMOND,
-            PointF(900F, 900F), R.drawable.ellipse_level1_diamond.idToBitmap()
+            BodyManager.BodyType.COIN,
+            PointF(900F, 900F),
+            R.drawable.ellipse_level1_coin_1.idToBitmap()
         )
     }
 
