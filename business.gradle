@@ -5,6 +5,7 @@ dependencies {
     implementation(project(":common:basesection"))
     implementation(project(":common:util"))
     implementation(project(":common:uikit"))
+    implementation(project(":common:media"))
 
     implementation Deps.androidx_constraintlayout
 }
