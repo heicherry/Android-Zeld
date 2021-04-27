@@ -11,13 +11,14 @@ class BodyManager(val world: World, internal val updateCallback: () -> Unit) {
     private val context = App.application
     private val allBody = mutableListOf<Body>()
 
-    fun createBody(type: BodyType, rectF: RectF, bitmap: Bitmap): Body {
+    fun createBody(type: BodyType, rectF: RectF, bitmap: Bitmap?): Body {
         val body = when (type) {
-            BodyType.BARRIER -> BarrierBody(bitmap, rectF)
-            BodyType.FLY -> FlyBody(bitmap, rectF)
-            BodyType.JUMPING_BARRIER -> JumpingBarrier(bitmap, rectF)
-            BodyType.VIRUS_BARRIER -> VirusBody(bitmap, rectF)
-            BodyType.DIAMOND -> Diamond(bitmap, rectF)
+            BodyType.BARRIER -> BarrierBody(bitmap!!, rectF)
+            BodyType.FLY -> FlyBody(bitmap!!, rectF)
+            BodyType.JUMPING_BARRIER -> JumpingBarrier(bitmap!!, rectF)
+            BodyType.VIRUS_BARRIER -> VirusBody(bitmap!!, rectF)
+            BodyType.DIAMOND -> Diamond(bitmap!!, rectF)
+            BodyType.COIN -> Coin(rectF)
         }.apply {
             bodyManager = this@BodyManager
         }
@@ -40,6 +41,13 @@ class BodyManager(val world: World, internal val updateCallback: () -> Unit) {
         return createBody(type, rectF, bitmap)
     }
 
+    fun createBody(
+        type: BodyType,
+        rectF: RectF
+    ): Body {
+        return createBody(type, rectF, null)
+    }
+
     fun draw(canvas: Canvas) {
         allBody.forEach {
             it.draw(canvas)
@@ -47,7 +55,7 @@ class BodyManager(val world: World, internal val updateCallback: () -> Unit) {
     }
 
     enum class BodyType {
-        BARRIER, FLY, JUMPING_BARRIER, VIRUS_BARRIER, DIAMOND
+        BARRIER, FLY, JUMPING_BARRIER, VIRUS_BARRIER, DIAMOND, COIN
     }
 
     fun step() {

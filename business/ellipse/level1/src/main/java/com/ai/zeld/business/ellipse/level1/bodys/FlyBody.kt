@@ -57,7 +57,7 @@ class FlyBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         val array = floatArray ?: return
         val point = PointF(array[index], array[index + 1])
         rectF.set(
-            point.x - bitmap.width / 2,
+            point.x - bitmap!!.width / 2,
             point.y - bitmap.height / 2,
             point.x + bitmap.width / 2,
             point.y + bitmap.height / 2

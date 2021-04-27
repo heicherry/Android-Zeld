@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.World
 
 open class Body(
-    val bitmap: Bitmap,
+    val bitmap: Bitmap?,
     var rectF: RectF
 ) {
     // 世界相关
@@ -37,10 +37,12 @@ open class Body(
     open fun getCurrentPos() = rectF
 
     open fun draw(canvas: Canvas) {
-        paint.color = Color.BLUE
-        paint.style = Paint.Style.STROKE
-        paint.strokeWidth = 3F
-        canvas.drawBitmap(bitmap, null, getCurrentPos(), paint)
+        bitmap?.let {
+            paint.color = Color.BLUE
+            paint.style = Paint.Style.STROKE
+            paint.strokeWidth = 3F
+            canvas.drawBitmap(it, null, getCurrentPos(), paint)
+        }
     }
 
     fun postInvalidate() {

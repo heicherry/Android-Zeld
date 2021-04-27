@@ -28,7 +28,7 @@ class StorylineSection : BaseSection() {
         storyline = parseXml()
         preloadAllResource()
         BackgroundMusicPlayer.init()
-        postInMainDelay(3000) {
+        postInMainDelay(2000) {
             BackgroundMusicPlayer.play()
         }
         MusicClipsPlayerManager.init()

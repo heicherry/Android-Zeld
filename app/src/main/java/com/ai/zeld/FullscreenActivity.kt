@@ -24,8 +24,6 @@ class FullscreenActivity : AppCompatActivity() {
         )
         setContentView(R.layout.activity_fullscreen)
         (IWorld::class.java.load() as World).initWorld(this, R.id.main_container)
-
-        MusicClipsPlayerManager.init()
     }
 
     fun initApp() {

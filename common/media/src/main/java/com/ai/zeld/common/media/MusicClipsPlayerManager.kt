@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.media.AudioManager
 import android.media.SoundPool
+import android.os.Vibrator
 import android.util.Log
 import com.ai.zeld.util.app.App
 import com.ai.zeld.util.postInMainDelay
@@ -16,11 +17,25 @@ object MusicClipsPlayerManager {
     // 能同时播放的最大声音数
     private const val MAX_STREAMS = 5
 
-    private const val SOUND_SAT_ER_DA = 0
+    private val resMap = mutableMapOf<MusicClip, Int>()
+
+    private val vibrator = App.application.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
     fun init() {
         context = App.application
         soundPool = SoundPool(MAX_STREAMS, AudioManager.STREAM_MUSIC, 0)
+        loadAllRes()
+    }
+
+    private fun loadAllRes() {
+        loadResId(MusicClip.BOMB, R.raw.media_bomb)
+        loadResId(MusicClip.DEAD, R.raw.media_dead)
+        loadResId(MusicClip.COIN, R.raw.media_coin)
+        loadResId(MusicClip.GO, R.raw.media_go)
+    }
+
+    private fun loadResId(clip: MusicClip, resId: Int) {
+        resMap[clip] = load(resId)
     }
 
     fun load(resId: Int): Int {
@@ -44,6 +59,13 @@ object MusicClipsPlayerManager {
 
     fun play(soundID: Int): Int {
         return play(soundID, 1F, 1F, 0, 0, 1F)
+    }
+
+    fun play(clip: MusicClip) {
+        resMap[clip]?.let {
+            play(it)
+            vibrator.vibrate(10)
+        }
     }
 
     fun loopPlay(soundID: Int): Int {
@@ -77,5 +99,5 @@ object MusicClipsPlayerManager {
 }
 
 enum class MusicClip {
-    BOMB, DEAD
+    BOMB, DEAD, COIN, GO
 }

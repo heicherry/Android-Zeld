@@ -4,7 +4,10 @@ import android.animation.ValueAnimator
 import android.graphics.*
 import android.util.Log
 import android.view.animation.BounceInterpolator
+import android.view.animation.LinearInterpolator
 import com.ai.zeld.business.elllipse.level1.R
+import com.ai.zeld.common.media.MusicClip
+import com.ai.zeld.common.media.MusicClipsPlayerManager
 import com.ai.zeld.util.idToBitmap
 import com.ai.zeld.util.realPos
 import com.ai.zeld.util.scale
@@ -20,6 +23,11 @@ open class BarrierBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         isAlive = false
         bombRectF.set(bombBitmap.realPos(PointF(rectF.centerX(), rectF.centerY())))
         doBomb()
+        playDeadMusic()
+    }
+
+    open fun playDeadMusic(){
+        MusicClipsPlayerManager.play(MusicClip.BOMB)
     }
 
     private fun doBomb() {
@@ -33,6 +41,8 @@ open class BarrierBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
             interpolator = BounceInterpolator()
         }.start()
     }
+
+
 
     override fun draw(canvas: Canvas) {
         if (isAlive) {

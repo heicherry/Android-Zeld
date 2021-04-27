@@ -12,6 +12,10 @@ object BackgroundMusicPlayer {
 
     fun play() {
         mediaPlayer.start()
+        mediaPlayer.setOnCompletionListener {
+            it.reset()
+            it.start()
+        }
     }
 
     fun stop() {
