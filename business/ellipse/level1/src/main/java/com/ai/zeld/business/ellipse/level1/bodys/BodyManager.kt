@@ -19,6 +19,7 @@ class BodyManager(val world: World, internal val updateCallback: () -> Unit) {
             BodyType.VIRUS_BARRIER -> VirusBody(bitmap!!, rectF)
             BodyType.DIAMOND -> Diamond(bitmap!!, rectF)
             BodyType.COIN -> Coin(rectF)
+            BodyType.SHAKE_BARRIER -> ShakeBarrierBody(bitmap!!, rectF)
         }.apply {
             bodyManager = this@BodyManager
         }
@@ -48,6 +49,10 @@ class BodyManager(val world: World, internal val updateCallback: () -> Unit) {
         return createBody(type, rectF, null)
     }
 
+    fun startPlay() {
+        allBody.filter { it.isAlive }.forEach { it.startPlay() }
+    }
+
     fun draw(canvas: Canvas) {
         allBody.forEach {
             it.draw(canvas)
@@ -55,7 +60,7 @@ class BodyManager(val world: World, internal val updateCallback: () -> Unit) {
     }
 
     enum class BodyType {
-        BARRIER, FLY, JUMPING_BARRIER, VIRUS_BARRIER, DIAMOND, COIN
+        BARRIER, FLY, JUMPING_BARRIER, VIRUS_BARRIER, DIAMOND, COIN, SHAKE_BARRIER
     }
 
     fun step() {

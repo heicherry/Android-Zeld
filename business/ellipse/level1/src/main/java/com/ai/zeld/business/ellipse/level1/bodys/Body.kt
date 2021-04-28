@@ -52,4 +52,8 @@ open class Body(
     open fun onCollision(allCollisionBody: List<Body>) {
 
     }
+
+    open fun startPlay(){
+
+    }
 }

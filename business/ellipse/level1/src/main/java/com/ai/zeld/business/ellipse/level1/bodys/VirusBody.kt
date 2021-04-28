@@ -28,10 +28,12 @@ open class VirusBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
 
     override fun onCollision(allCollisionBody: List<Body>) {
         super.onCollision(allCollisionBody)
-        isAlive = false
-        world?.destroyBody(box2dBody)
-        shake()
-        MusicClipsPlayerManager.play(MusicClip.DEAD)
+        if (allCollisionBody.filterIsInstance<FlyBody>().isNotEmpty()) {
+            isAlive = false
+            world?.destroyBody(box2dBody)
+            shake()
+            MusicClipsPlayerManager.play(MusicClip.DEAD)
+        }
     }
 
     private fun shake() {

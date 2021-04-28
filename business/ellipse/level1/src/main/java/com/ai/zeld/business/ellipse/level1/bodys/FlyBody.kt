@@ -47,8 +47,8 @@ class FlyBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
 
     fun isEnd() = index >= floatArray?.size ?: Int.MAX_VALUE
 
-    fun startFly() {
-
+    override fun startPlay() {
+        super.startPlay()
         run()
     }
 

@@ -102,14 +102,6 @@ class Box2DView : View {
         postInvalidate()
     }
 
-    fun updateFly(cal: TriangleFunction, bitmap: Bitmap) {
-        flyBody = bodyManager.createBody(BodyManager.BodyType.FLY, RectF(), bitmap) as FlyBody
-        flyBody?.let {
-            it.setFunctionCal(cal)
-            it.startFly()
-        }
-    }
-
     fun getBodyManager() = bodyManager
 
     fun updatePlayGround(y: Float) {

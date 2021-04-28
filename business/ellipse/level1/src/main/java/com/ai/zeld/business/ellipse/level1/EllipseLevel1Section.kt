@@ -90,7 +90,7 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
         rootViewTree!!.findViewById<ImageView>(R.id.go).setOnClickListener {
             MusicClipsPlayerManager.play(MusicClip.GO)
             postInMainDelay(500) {
-                flyBody.startFly()
+                bodyManager.startPlay()
             }
         }
         flyBody.setGameListener(this)
@@ -104,13 +104,18 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
     }
 
     private fun initMonsters() {
-        createBarrier(240F, 900F, R.drawable.ellipse_level1_mine)
+       // createBarrier(240F, 900F, R.drawable.ellipse_level1_mine)
         createBarrier(440F, 790F, R.drawable.ellipse_level1_mine)
         createBarrier(600F, 1000F, R.drawable.ellipse_level1_mine)
 
         bodyManager.createBody(
             BodyManager.BodyType.VIRUS_BARRIER,
             PointF(700F, 200F), R.drawable.ellipse_level1_virus.idToBitmap()
+        )
+
+        bodyManager.createBody(
+            BodyManager.BodyType.SHAKE_BARRIER,
+            PointF(900F, 900F), R.drawable.ellipse_level1_mine_2.idToBitmap()
         )
 
 //        bodyManager.createBody(
