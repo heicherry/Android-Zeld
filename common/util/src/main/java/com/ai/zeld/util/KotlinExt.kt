@@ -1,10 +1,7 @@
 package com.ai.zeld.util
 
 import android.animation.Animator
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.PointF
-import android.graphics.RectF
+import android.graphics.*
 import android.util.Log
 import android.view.View
 import androidx.core.animation.doOnCancel
@@ -106,5 +103,26 @@ inline fun Animator.doOnEndExt(crossinline action: (animator: Animator) -> Unit)
         if (!isCancel) {
             action(it)
         }
+    }
+}
+
+private val commonPaint = Paint()
+
+fun RectF.draw(canvas: Canvas, color: Int, des: String? = null) {
+    commonPaint.color = color
+    commonPaint.isAntiAlias = true
+    commonPaint.style = Paint.Style.FILL_AND_STROKE
+    canvas.drawRect(this, commonPaint)
+    if (des != null) {
+        commonPaint.color = Color.RED
+        commonPaint.textSize = 32F
+        val bound = Rect()
+        commonPaint.getTextBounds(des, 0, des.length - 1, bound)
+        canvas.drawText(
+            des,
+            centerX() - bound.width() / 2,
+            centerY() - bound.height() / 2,
+            commonPaint
+        )
     }
 }

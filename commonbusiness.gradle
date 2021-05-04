@@ -1,0 +1,13 @@
+apply from:rootProject.file("base.gradle")
+
+dependencies {
+    implementation(project(":common:service"))
+    implementation(project(":common:basesection"))
+    implementation(project(":common:util"))
+    implementation(project(":common:uikit"))
+    implementation(project(":common:media"))
+
+    implementation Deps.box2d
+    implementation Deps.number_picker
+    implementation Deps.androidx_constraintlayout
+}
