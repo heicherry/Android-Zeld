@@ -44,7 +44,7 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <include
-        layout="@layout/playground_cal"
+        layout="@layout/ellipse_level1_cal_panel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"

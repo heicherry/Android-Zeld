@@ -4,6 +4,7 @@ import android.graphics.Path
 import android.graphics.PathMeasure
 import android.graphics.PointF
 import android.graphics.RectF
+import android.webkit.WebStorage
 
 
 fun path2Array(path: Path, precision: Float): FloatArray {
@@ -30,36 +31,29 @@ fun createPath(
     end: Float,
     step: Float,
     cal: (Float) -> Float,
-    penaltyZone: List<RectF>? = null
+    originPath: Path? = null
 ): Path {
-    fun isInPenaltyZone(x: Float, y: Float): Boolean {
-        val zones = penaltyZone ?: return false
-        for (rectF in zones) {
-            if (x >= rectF.left && x < rectF.right && y >= rectF.top && y < rectF.bottom) {
-                return true
-            }
-        }
-        return false
-    }
+    fun checkIsEnd(temp: Float) = (start < end && temp <= end) || (start > end && temp >= end)
 
-    val path = Path()
+    val path = originPath ?: Path()
     var temp = start
-    while (temp <= end) {
+    while (checkIsEnd(temp)) {
         val x = temp + centerPointF.x
         val y = centerPointF.y - cal(temp)
         if (y <= coordinateSystemRectF.bottom
             && y >= coordinateSystemRectF.top
-            && !isInPenaltyZone(x, y)
         ) {
             path.moveOrLineTo(x, y)
         }
         temp += step
     }
-    val x = end + centerPointF.x
-    val y = centerPointF.y - cal(end)
+
+    val pathEnd = end
+
+    val x = pathEnd + centerPointF.x
+    val y = centerPointF.y - cal(pathEnd)
     if (y <= coordinateSystemRectF.bottom
         && y >= coordinateSystemRectF.top
-        && !isInPenaltyZone(x, y)
     ) {
         path.moveOrLineTo(x, y)
     }

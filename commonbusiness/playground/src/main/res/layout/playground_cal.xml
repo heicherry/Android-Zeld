@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.ai.zeld.business.wave.level1.TriangleFunctionCalView
+    <com.ai.zeld.business.ellipse.level1.TriangleFunctionCalView
         android:id="@+id/function_control"
         android:layout_width="match_parent"
         android:layout_height="0dp"

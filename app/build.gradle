@@ -13,6 +13,10 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+
+        packagingOptions{
+            exclude "META-INF/level1_debug.kotlin_module"
+        }
     }
 
     signingConfigs {
@@ -112,5 +116,5 @@ dependencies {
 
     //sections
     implementation(project(":business:wave:level1"))
-
+    implementation(project(":business:ellipse:level1"))
 }

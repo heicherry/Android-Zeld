@@ -126,3 +126,28 @@ fun RectF.draw(canvas: Canvas, color: Int, des: String? = null) {
         )
     }
 }
+
+fun Float.square(): Float {
+    return this * this
+}
+
+fun Float.sqrt(): Float {
+    return kotlin.math.sqrt(this.toDouble()).toFloat()
+}
+
+private val tempPointF = PointF()
+fun FloatArray.eachPoint(action: (index: Int, point: PointF) -> Unit) {
+    var index = 0
+    while (index < size) {
+        tempPointF.x = get(index)
+        tempPointF.y = get(index + 1)
+        action(index, tempPointF)
+        index += 2
+    }
+}
+
+fun FloatArray.firstPointF() = PointF(get(0), get(1))
+
+fun FloatArray.lastPointF() = PointF(get(lastIndex - 1), get(lastIndex))
+
+fun RectF.center() = PointF(centerX(), centerY())

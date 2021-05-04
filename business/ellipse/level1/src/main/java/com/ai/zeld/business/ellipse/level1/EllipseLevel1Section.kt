@@ -1,4 +1,4 @@
-package com.ai.zeld.business.wave.level1
+package com.ai.zeld.business.ellipse.level1
 
 import android.annotation.SuppressLint
 import android.graphics.PointF
@@ -33,13 +33,13 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
     private lateinit var world: IWorld
     private lateinit var stage: IStage
     private lateinit var box2DView: Box2DView
-    private lateinit var functionControlView: TriangleFunctionCalView
+    private lateinit var functionControlView: EllipseFunctionCalView
     private lateinit var bodyManager: BodyManager
-    private lateinit var flyBody: FlyBody
+    private lateinit var flyBody: BallRing
 
     @SuppressLint("InflateParams")
     override fun onBuildViewTree(): View {
-        return LayoutInflater.from(localContext).inflate(R.layout.wave_main, null)
+        return LayoutInflater.from(localContext).inflate(R.layout.ellipse_level1_main, null)
     }
 
     override fun onPreload() {
@@ -58,7 +58,7 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
     private fun initCoordinate() {
         val resource = localContext.resources
         val newCenterY = stage.getCoordinateRect()
-            .height() - resource.getDimension(R.dimen.wave_coordinate_center_offset_bottom)
+            .height() - resource.getDimension(R.dimen.ellipse_level1_coordinate_center_offset_bottom)
         val newCoordinateCenter = PointF(stage.getCenterPointF().x, newCenterY)
         stage.updateCoordinate(stage.getCoordinateRect(), newCoordinateCenter)
     }
@@ -73,8 +73,8 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
         flyBody = bodyManager.createBody(
             BodyManager.BodyType.HERO,
             RectF(),
-            R.drawable.playground_bean_eater.idToBitmap()
-        ) as FlyBody
+            R.drawable.playground_diamond.idToBitmap()
+        ) as BallRing
         rootViewTree!!.findViewById<ImageView>(R.id.go).setOnClickListener {
             MusicClipsPlayerManager.play(MusicClip.GO)
             postInMainDelay(500) {
@@ -101,9 +101,9 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
             PointF(700F, 200F), R.drawable.playground_virus.idToBitmap()
         )
 
-        bodyManager.createBody<ShakeBarrierBody>(
-            BodyManager.BodyType.BARRIER,
-            PointF(300F, 900F), R.drawable.playground_mine_2.idToBitmap()
+        bodyManager.createBody<BallRing>(
+            BodyManager.BodyType.OTHERS,
+            PointF(300F, 900F), R.drawable.playground_diamond.idToBitmap()
         )
 
         bodyManager.createBody<Coin>(
@@ -122,7 +122,7 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
 
     private fun initPlayGround() {
         val y = stage.getCoordinateRect()
-            .height() - localContext.resources.getDimension(R.dimen.wave_coordinate_init_bottom_offset_bottom)
+            .height() - localContext.resources.getDimension(R.dimen.ellipse_level1_coordinate_init_bottom_offset_bottom)
         box2DView.updatePlayGround(y)
     }
 
