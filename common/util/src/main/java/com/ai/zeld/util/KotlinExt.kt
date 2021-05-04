@@ -1,16 +1,17 @@
 package com.ai.zeld.util
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.PointF
-import android.graphics.RectF
+import android.animation.Animator
+import android.graphics.*
 import android.util.Log
 import android.view.View
+import androidx.core.animation.doOnCancel
+import androidx.core.animation.doOnEnd
 import androidx.core.os.postDelayed
 import androidx.lifecycle.Lifecycle
 import com.ai.zeld.util.app.App
 import com.ai.zeld.util.thread.ThreadPlus
 import com.badlogic.gdx.math.Vector2
+import java.lang.ref.WeakReference
 
 fun View.gone() {
     visibility = View.GONE
@@ -91,4 +92,37 @@ fun RectF.scale(value: Float): RectF {
     dest.top = centerY() - (height() / 2) * value
     dest.bottom = centerY() + (height() / 2) * value
     return dest
+}
+
+inline fun Animator.doOnEndExt(crossinline action: (animator: Animator) -> Unit) {
+    var isCancel = false
+    doOnCancel {
+        isCancel = true
+    }
+    doOnEnd {
+        if (!isCancel) {
+            action(it)
+        }
+    }
+}
+
+private val commonPaint = Paint()
+
+fun RectF.draw(canvas: Canvas, color: Int, des: String? = null) {
+    commonPaint.color = color
+    commonPaint.isAntiAlias = true
+    commonPaint.style = Paint.Style.FILL_AND_STROKE
+    canvas.drawRect(this, commonPaint)
+    if (des != null) {
+        commonPaint.color = Color.RED
+        commonPaint.textSize = 32F
+        val bound = Rect()
+        commonPaint.getTextBounds(des, 0, des.length - 1, bound)
+        canvas.drawText(
+            des,
+            centerX() - bound.width() / 2,
+            centerY() - bound.height() / 2,
+            commonPaint
+        )
+    }
 }

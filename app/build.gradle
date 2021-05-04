@@ -107,8 +107,10 @@ dependencies {
     implementation(project(":business:splash"))
     implementation(project(":business:world"))
 
+    // common business
+    implementation(project(":commonbusiness:playground"))
 
     //sections
-    implementation(project(":business:ellipse:level1"))
+    implementation(project(":business:wave:level1"))
 
 }
