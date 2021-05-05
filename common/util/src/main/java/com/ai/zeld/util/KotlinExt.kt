@@ -2,7 +2,6 @@ package com.ai.zeld.util
 
 import android.animation.Animator
 import android.graphics.*
-import android.util.Log
 import android.view.View
 import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
@@ -11,7 +10,6 @@ import androidx.lifecycle.Lifecycle
 import com.ai.zeld.util.app.App
 import com.ai.zeld.util.thread.ThreadPlus
 import com.badlogic.gdx.math.Vector2
-import java.lang.ref.WeakReference
 
 fun View.gone() {
     visibility = View.GONE
@@ -151,3 +149,9 @@ fun FloatArray.firstPointF() = PointF(get(0), get(1))
 fun FloatArray.lastPointF() = PointF(get(lastIndex - 1), get(lastIndex))
 
 fun RectF.center() = PointF(centerX(), centerY())
+
+fun Int.px2sp(): Int {
+    val fontScale: Float = App.application.resources.displayMetrics.scaledDensity
+    return (this / fontScale + 0.5f).toInt()
+}
+

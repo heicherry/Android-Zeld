@@ -24,6 +24,10 @@ fun path2Array(path: Path, precision: Float): FloatArray {
     return data
 }
 
+val calValue = mutableMapOf<Float, Float>()
+
+val calValue2 = mutableMapOf<Float, Float>()
+
 fun createPath(
     centerPointF: PointF,
     coordinateSystemRectF: RectF,
@@ -37,12 +41,18 @@ fun createPath(
 
     val path = originPath ?: Path()
     var temp = start
+
     while (checkIsEnd(temp)) {
         val x = temp + centerPointF.x
         val y = centerPointF.y - cal(temp)
         if (y <= coordinateSystemRectF.bottom
             && y >= coordinateSystemRectF.top
         ) {
+            if (originPath != null) {
+                calValue[temp] = cal(temp)
+            }else{
+                calValue2[temp] = cal(temp)
+            }
             path.moveOrLineTo(x, y)
         }
         temp += step

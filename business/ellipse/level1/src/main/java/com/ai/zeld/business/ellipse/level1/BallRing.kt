@@ -20,7 +20,7 @@ class BallRing(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
     // 绘制相关
     private var index = 0
 
-    private var cal: ((Float) -> Float)? = null
+    private var cal: TriangleFunction? = null
 
     private var gameResultListener: IGameResult? = null
     private val allDiamonds = mutableListOf<Diamond>()
@@ -29,7 +29,7 @@ class BallRing(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         gameResultListener = listener
     }
 
-    fun setFunctionCal(cal: (Float) -> Float) {
+    fun setFunctionCal(cal: TriangleFunction) {
         this.cal = cal
         val start =
             -(stage.getCenterPointF().x - resources.getDimension(R.dimen.ellipse_level1_margin_left))
@@ -41,7 +41,7 @@ class BallRing(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
             start,
             end,
             step = 3F,
-            cal
+            { cal(it, true) }
         )
 
         path = createPath(
@@ -50,7 +50,7 @@ class BallRing(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
             end,
             start,
             step = -3F,
-            { -cal(it) },
+            { cal(it, false) },
             upPath
         )
 
@@ -65,7 +65,7 @@ class BallRing(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         run()
     }
 
-    private fun run(){
+    private fun run() {
 
     }
 
