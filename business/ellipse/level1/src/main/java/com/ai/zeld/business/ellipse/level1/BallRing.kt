@@ -61,6 +61,7 @@ class BallRing(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
 
         floatArray = path2Array(path!!, 1F)
         containRectF = floatArray?.containRectF()
+        rectF.set(containRectF!!)
         val firstPointF = floatArray!!.firstPointF()
         path!!.moveOrLineTo(firstPointF.x, firstPointF.y)
         postInvalidate()
@@ -90,9 +91,6 @@ class BallRing(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         paint.strokeWidth = 3F
         path?.let { canvas.drawPath(it, paint) }
         hPath?.let { canvas.drawPath(it, paint) }
-        if (isAlive) {
-            super.draw(canvas)
-        }
         checkIsOverlapTarget()
     }
 
@@ -124,7 +122,6 @@ class BallRing(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
 
         dx += 2
         if (dx >= ww) dx = 0
-
     }
 
     override fun onCollision(allCollisionBody: List<Body>) {
@@ -140,11 +137,13 @@ class BallRing(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         }
     }
 
+    override fun getCurrentPos() = containRectF ?: rectF
+
     private fun checkIsOverlapTarget() {
         val currentContainer = containRectF ?: return
         val targetRectF =
-            bodyManager.allBody.filterIsInstance<TargetBallRing>().firstOrNull()?.containRectF
-                ?: return
+            bodyManager.allBody.filterIsInstance<TargetBallRing>()
+                .firstOrNull()?.containRectF ?: return
         if (targetRectF.distance(currentContainer) < 5) {
             gameResultListener?.onSucceed(1)
             gameResultListener = null
