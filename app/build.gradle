@@ -116,5 +116,6 @@ dependencies {
 
     //sections
     implementation(project(":business:wave:level1"))
+    implementation(project(":business:parabola:level1"))
     implementation(project(":business:ellipse:level1"))
 }

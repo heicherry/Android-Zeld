@@ -1,4 +1,4 @@
-package com.ai.zeld.business.ellipse.level1
+package com.ai.zeld.business.parabola.level1
 
 import android.annotation.SuppressLint
 import android.graphics.PointF
@@ -27,18 +27,18 @@ import com.ai.zeld.util.postInMainDelay
 import com.badlogic.gdx.physics.box2d.Box2D
 
 
-class EllipseLevel1Section : BaseSection(), IGameResult {
+@Section(SectionConfig.HERO_CAN_NOT_FLY)
+class ParabolaLevel1Section : BaseSection(), IGameResult {
     private lateinit var world: IWorld
     private lateinit var stage: IStage
     private lateinit var box2DView: Box2DView
-    private lateinit var functionControlView: EllipseFunctionCalView
+    private lateinit var functionControlView: ParabolaFunctionCalView
     private lateinit var bodyManager: BodyManager
-    private lateinit var flyBody: BallRing
-    private lateinit var targetBody: TargetBallRing
+    private lateinit var flyBody: FlyPathBody
 
     @SuppressLint("InflateParams")
     override fun onBuildViewTree(): View {
-        return LayoutInflater.from(localContext).inflate(R.layout.ellipse_level1_main, null)
+        return LayoutInflater.from(localContext).inflate(R.layout.parabola_level1_main, null)
     }
 
     override fun onPreload() {
@@ -52,13 +52,12 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
         initFlyBody()
         initMonsters()
         initFunctionControlPanel()
-        initTargetBody()
     }
 
     private fun initCoordinate() {
         val resource = localContext.resources
         val newCenterY = stage.getCoordinateRect()
-            .height() - resource.getDimension(R.dimen.ellipse_level1_coordinate_center_offset_bottom)
+            .height() - resource.getDimension(R.dimen.parabola_level1_coordinate_center_offset_bottom)
         val newCoordinateCenter = PointF(stage.getCenterPointF().x, newCenterY)
         stage.updateCoordinate(stage.getCoordinateRect(), newCoordinateCenter)
     }
@@ -74,7 +73,7 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
             BodyManager.BodyType.HERO,
             RectF(),
             R.drawable.playground_diamond.idToBitmap()
-        ) as BallRing
+        ) as FlyPathBody
         rootViewTree!!.findViewById<ImageView>(R.id.go).setOnClickListener {
             MusicClipsPlayerManager.play(MusicClip.GO)
             postInMainDelay(500) {
@@ -84,33 +83,10 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
         flyBody.setGameListener(this)
     }
 
-    private fun initTargetBody() {
-        targetBody = bodyManager.createBody(
-            BodyManager.BodyType.OTHERS,
-            RectF(),
-            R.drawable.playground_rose.idToBitmap()
-        )
-        targetBody.setFunctionCal(TriangleFunction(EllipseData(1F, 100F, 100F, 100F)))
-    }
-
     private fun initFunctionControlPanel() {
         functionControlView = rootViewTree!!.findViewById(R.id.function_control)
         functionControlView.setFunctionChangeListener {
             flyBody.setFunctionCal(it)
-            val center = stage.getCenterPointF()
-            val currentH = functionControlView.calCurrentH()
-            currentH.first.apply {
-                x += center.x
-                y = center.y - y
-            }
-            currentH.second.apply {
-                x += center.x
-                y = center.y - y
-            }
-            flyBody.setNearestH(currentH.first, currentH.second)
-        }
-        functionControlView.setErrorCallback {
-            Log.i("ayy", "错误了，调回原来的样子！")
         }
     }
 
@@ -124,7 +100,7 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
             PointF(700F, 200F), R.drawable.playground_virus.idToBitmap()
         )
 
-        bodyManager.createBody<BallRing>(
+        bodyManager.createBody<FlyPathBody>(
             BodyManager.BodyType.OTHERS,
             PointF(300F, 900F), R.drawable.playground_diamond.idToBitmap()
         )
@@ -145,7 +121,7 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
 
     private fun initPlayGround() {
         val y = stage.getCoordinateRect()
-            .height() - localContext.resources.getDimension(R.dimen.ellipse_level1_coordinate_init_bottom_offset_bottom)
+            .height() - localContext.resources.getDimension(R.dimen.parabola_level1_coordinate_init_bottom_offset_bottom)
         box2DView.updatePlayGround(y)
     }
 

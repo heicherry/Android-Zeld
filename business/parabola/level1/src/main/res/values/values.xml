@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="parabola_level1_coordinate_center_offset_bottom">200dp</dimen>
+    <dimen name="parabola_level1_coordinate_init_bottom_offset_bottom">141dp</dimen>
+    <dimen name="parabola_level1_margin_left">30dp</dimen>
+    <dimen name="parabola_level1_margin_right">30dp</dimen>
+</resources>
