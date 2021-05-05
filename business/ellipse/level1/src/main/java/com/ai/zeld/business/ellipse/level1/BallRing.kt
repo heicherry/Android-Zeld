@@ -7,6 +7,7 @@ import com.ai.zeld.playground.BodyManager
 import com.ai.zeld.playground.IGameResult
 import com.ai.zeld.playground.body.Diamond
 import com.ai.zeld.util.containRectF
+import com.ai.zeld.util.distance
 import com.ai.zeld.util.firstPointF
 import com.ai.zeld.util.path.createPath
 import com.ai.zeld.util.path.moveOrLineTo
@@ -26,7 +27,7 @@ class BallRing(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
 
     private var gameResultListener: IGameResult? = null
     private val allDiamonds = mutableListOf<Diamond>()
-    private var containRectF: RectF? = null
+    var containRectF: RectF? = null
     private var hPoint: PointF? = null
 
     fun setGameListener(listener: IGameResult) {
@@ -45,7 +46,7 @@ class BallRing(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
             start,
             end,
             step = 3F,
-            { cal(it, true) }
+            { cal.cal(it, true) }
         )
 
         path = createPath(
@@ -54,7 +55,7 @@ class BallRing(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
             end,
             start,
             step = -3F,
-            { cal(it, false) },
+            { cal.cal(it, false) },
             upPath
         )
 
@@ -92,6 +93,7 @@ class BallRing(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         if (isAlive) {
             super.draw(canvas)
         }
+        checkIsOverlapTarget()
     }
 
     private val ww = 100
@@ -135,6 +137,17 @@ class BallRing(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         if (allCollisionBody.count { it.bodyType == BodyManager.BodyType.BARRIER } > 0) {
             isAlive = false
             gameResultListener?.onFailed()
+        }
+    }
+
+    private fun checkIsOverlapTarget() {
+        val currentContainer = containRectF ?: return
+        val targetRectF =
+            bodyManager.allBody.filterIsInstance<TargetBallRing>().firstOrNull()?.containRectF
+                ?: return
+        if (targetRectF.distance(currentContainer) < 5) {
+            gameResultListener?.onSucceed(1)
+            gameResultListener = null
         }
     }
 }

@@ -170,3 +170,9 @@ fun Int.px2sp(): Int {
     return (this / fontScale + 0.5f).toInt()
 }
 
+fun RectF.distance(target: RectF): Float {
+    return ((left - target.left).square()
+            + (right - target.right).square()
+            + (top - target.top).square()
+            + (bottom - target.bottom).square()).sqrt()
+}

@@ -20,7 +20,6 @@ import com.ai.zeld.playground.Box2DView
 import com.ai.zeld.playground.IGameResult
 import com.ai.zeld.playground.body.BarrierBody
 import com.ai.zeld.playground.body.Coin
-import com.ai.zeld.playground.body.ShakeBarrierBody
 import com.ai.zeld.playground.body.VirusBody
 import com.ai.zeld.util.claymore.load
 import com.ai.zeld.util.idToBitmap
@@ -36,6 +35,7 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
     private lateinit var functionControlView: EllipseFunctionCalView
     private lateinit var bodyManager: BodyManager
     private lateinit var flyBody: BallRing
+    private lateinit var targetBody: TargetBallRing
 
     @SuppressLint("InflateParams")
     override fun onBuildViewTree(): View {
@@ -53,6 +53,7 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
         initFlyBody()
         initMonsters()
         initFunctionControlPanel()
+        initTargetBody()
     }
 
     private fun initCoordinate() {
@@ -84,6 +85,15 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
         flyBody.setGameListener(this)
     }
 
+    private fun initTargetBody() {
+        targetBody = bodyManager.createBody(
+            BodyManager.BodyType.OTHERS,
+            RectF(),
+            R.drawable.playground_rose.idToBitmap()
+        )
+        targetBody.setFunctionCal(TriangleFunction(EllipseData(1F, 100F, 100F, 100F)))
+    }
+
     private fun initFunctionControlPanel() {
         functionControlView = rootViewTree!!.findViewById(R.id.function_control)
         functionControlView.setFunctionChangeListener {
@@ -101,7 +111,7 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
             flyBody.setNearestH(currentH.first, currentH.second)
         }
         functionControlView.setErrorCallback {
-            Log.i("ayy","错误了，调回原来的样子！")
+            Log.i("ayy", "错误了，调回原来的样子！")
         }
     }
 

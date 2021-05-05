@@ -2,14 +2,8 @@ package com.ai.zeld.business.ellipse.level1
 
 import android.content.Context
 import android.graphics.PointF
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.style.RelativeSizeSpan
-import android.text.style.SuperscriptSpan
 import android.util.AttributeSet
 import android.view.View
-import com.ai.zeld.util.sqrt
-import com.ai.zeld.util.square
 import com.shawnlin.numberpicker.NumberPicker
 import kotlinx.android.synthetic.main.ellipse_level1_cal.view.*
 import kotlinx.android.synthetic.main.ellipse_level1_cal2.view.*
@@ -17,7 +11,6 @@ import kotlin.math.abs
 import kotlin.math.asin
 import kotlin.math.sin
 
-typealias TriangleFunction = (x: Float, positive: Boolean) -> Float
 typealias ErrorCallback = () -> Unit
 
 class EllipseFunctionCalView(context: Context, attrs: AttributeSet?) :
@@ -40,6 +33,8 @@ class EllipseFunctionCalView(context: Context, attrs: AttributeSet?) :
         }
         y_offset.numberPicker().apply {
             value = 100
+            maxValue = 1000
+            minValue = -300
             setOnValueChangedListener(this@EllipseFunctionCalView)
             setOnScrollListener(this@EllipseFunctionCalView)
         }
@@ -73,26 +68,19 @@ class EllipseFunctionCalView(context: Context, attrs: AttributeSet?) :
         if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {
             if (isDataIllegal()) {
                 lastEllipseData = EllipseData(
-                    x_offset.numberPicker().value,
-                    a.numberPicker().value,
-                    y_offset.numberPicker().value,
-                    b.numberPicker().value
+                    x_offset.numberPicker().value.toFloat(),
+                    a.numberPicker().value.toFloat(),
+                    y_offset.numberPicker().value.toFloat(),
+                    b.numberPicker().value.toFloat()
                 )
-                listener?.invoke { x, positive ->
-                    val pos1 =
-                        (x - x_offset.numberPicker().value).square() / (a.numberPicker().value.toFloat()).square()
-                    val yAndOffset =
-                        ((1 - pos1) * (1.0F * b.numberPicker().value.toFloat()).square()).sqrt()
-                    if (positive) yAndOffset + y_offset.numberPicker().value
-                    else y_offset.numberPicker().value - yAndOffset
-                }
+                listener?.invoke(TriangleFunction(lastEllipseData!!))
             } else {
                 errorCallback?.invoke()
                 lastEllipseData?.let {
-                    x_offset.numberPicker().value = it.xOffset
-                    a.numberPicker().value = it.a
-                    y_offset.numberPicker().value = it.yOffset
-                    b.numberPicker().value = it.b
+                    x_offset.numberPicker().value = it.xOffset.toInt()
+                    a.numberPicker().value = it.a.toInt()
+                    y_offset.numberPicker().value = it.yOffset.toInt()
+                    b.numberPicker().value = it.b.toInt()
                 }
             }
         }
@@ -135,5 +123,3 @@ class EllipseFunctionCalView(context: Context, attrs: AttributeSet?) :
 
     private fun View.numberPicker(): NumberPicker = this as NumberPicker
 }
-
-data class EllipseData(val xOffset: Int, val a: Int, val yOffset: Int, val b: Int)
