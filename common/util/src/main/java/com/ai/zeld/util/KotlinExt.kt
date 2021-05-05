@@ -10,6 +10,8 @@ import androidx.lifecycle.Lifecycle
 import com.ai.zeld.util.app.App
 import com.ai.zeld.util.thread.ThreadPlus
 import com.badlogic.gdx.math.Vector2
+import kotlin.math.max
+import kotlin.math.min
 
 fun View.gone() {
     visibility = View.GONE
@@ -147,6 +149,19 @@ fun FloatArray.eachPoint(action: (index: Int, point: PointF) -> Unit) {
 fun FloatArray.firstPointF() = PointF(get(0), get(1))
 
 fun FloatArray.lastPointF() = PointF(get(lastIndex - 1), get(lastIndex))
+
+fun FloatArray.containRectF(): RectF {
+    val rectF = RectF(Float.MAX_VALUE, Float.MAX_VALUE, Float.MIN_VALUE, Float.MIN_VALUE)
+    eachPoint { _, point ->
+        rectF.apply {
+            left = min(left, point.x)
+            right = max(right, point.x)
+            top = min(top, point.y)
+            bottom = max(bottom, point.y)
+        }
+    }
+    return rectF
+}
 
 fun RectF.center() = PointF(centerX(), centerY())
 

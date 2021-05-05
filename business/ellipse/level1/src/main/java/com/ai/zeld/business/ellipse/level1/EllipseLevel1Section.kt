@@ -88,6 +88,20 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
         functionControlView = rootViewTree!!.findViewById(R.id.function_control)
         functionControlView.setFunctionChangeListener {
             flyBody.setFunctionCal(it)
+            val center = stage.getCenterPointF()
+            val currentH = functionControlView.calCurrentH()
+            currentH.first.apply {
+                x += center.x
+                y = center.y - y
+            }
+            currentH.second.apply {
+                x += center.x
+                y = center.y - y
+            }
+            flyBody.setNearestH(currentH.first, currentH.second)
+        }
+        functionControlView.setErrorCallback {
+            Log.i("ayy","错误了，调回原来的样子！")
         }
     }
 
