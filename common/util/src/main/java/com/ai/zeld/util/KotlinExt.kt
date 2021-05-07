@@ -5,6 +5,7 @@ import android.graphics.*
 import android.view.View
 import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
+import androidx.core.graphics.toRectF
 import androidx.core.os.postDelayed
 import androidx.lifecycle.Lifecycle
 import com.ai.zeld.util.app.App
@@ -148,6 +149,10 @@ fun FloatArray.eachPoint(action: (index: Int, point: PointF) -> Unit) {
 
 fun FloatArray.firstPointF() = PointF(get(0), get(1))
 
+fun FloatArray.point(index: Int): PointF {
+    return PointF(get(index), get(index + 1))
+}
+
 fun FloatArray.lastPointF() = PointF(get(lastIndex - 1), get(lastIndex))
 
 fun FloatArray.containRectF(): RectF {
@@ -175,4 +180,11 @@ fun RectF.distance(target: RectF): Float {
             + (right - target.right).square()
             + (top - target.top).square()
             + (bottom - target.bottom).square()).sqrt()
+}
+
+fun View.showRectF(): RectF {
+    val rect = Rect()
+    getLocalVisibleRect(rect)
+    rect.offset(left, top)
+    return rect.toRectF()
 }

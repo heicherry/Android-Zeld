@@ -20,22 +20,24 @@ class ParabolaFunctionCalView(context: Context, attrs: AttributeSet?) :
         inflate(context, R.layout.parabola_level1_cal, this)
 
         a.numberPicker().apply {
-            value = -60
             maxValue = 300
             minValue = -300
+            value = -96
             setOnValueChangedListener(this@ParabolaFunctionCalView)
             setOnScrollListener(this@ParabolaFunctionCalView)
         }
         b.numberPicker().apply {
-            value = 100
             maxValue = 1000
             minValue = -300
+            value = 63
             setOnValueChangedListener(this@ParabolaFunctionCalView)
             setOnScrollListener(this@ParabolaFunctionCalView)
         }
 
         c.numberPicker().apply {
-            value = 100
+            maxValue = 1000
+            minValue = -1000
+            value = 95
             setOnValueChangedListener(this@ParabolaFunctionCalView)
             setOnScrollListener(this@ParabolaFunctionCalView)
         }
@@ -50,7 +52,7 @@ class ParabolaFunctionCalView(context: Context, attrs: AttributeSet?) :
         super.onScrollStateChange(view, scrollState)
         if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {
             listener?.invoke {
-                a.numberPicker().value.toFloat()/5 * (it / 80).square() + b.numberPicker().value * it / 80 + c.numberPicker().value * 4
+                a.numberPicker().value.toFloat() / 5 * (it / 80).square() + b.numberPicker().value * it / 80 + c.numberPicker().value * 4
             }
         }
     }

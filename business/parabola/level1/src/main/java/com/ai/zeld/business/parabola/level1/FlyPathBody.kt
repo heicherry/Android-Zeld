@@ -5,8 +5,10 @@ import com.ai.zeld.playground.Body
 import com.ai.zeld.playground.BodyManager
 import com.ai.zeld.playground.IGameResult
 import com.ai.zeld.playground.body.Diamond
+import com.ai.zeld.util.eachPoint
 import com.ai.zeld.util.path.createPath
 import com.ai.zeld.util.path.path2Array
+import com.ai.zeld.util.point
 
 class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
 
@@ -18,17 +20,22 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
 
     private var gameResultListener: IGameResult? = null
     private val allDiamonds = mutableListOf<Diamond>()
+    private var startRectF: RectF? = null
+    private var endRectF: RectF? = null
 
     fun setGameListener(listener: IGameResult) {
         gameResultListener = listener
     }
 
+    fun setStartAndEndRectF(start: RectF, end: RectF) {
+        startRectF = start
+        endRectF = end
+    }
+
     fun setFunctionCal(cal: ParabolaFunction) {
         this.cal = cal
-        val start =
-            -(stage.getCenterPointF().x - resources.getDimension(R.dimen.parabola_level1_margin_left))
-        val end =
-            stage.getCenterPointF().x - resources.getDimension(R.dimen.parabola_level1_margin_right)
+        val start = -stage.getCenterPointF().x
+        val end = stage.getCenterPointF().x
         path = createPath(
             stage.getCenterPointF(),
             stage.getCoordinateRect(),
@@ -55,6 +62,17 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = 3F
         path?.let { canvas.drawPath(it, paint) }
+
+        startRectF?.let {
+            canvas.drawRect(it, paint)
+            val pointIndex = calRectFLeavePoint(it)
+            if (pointIndex == -1) return@let
+            val point = floatArray!!.point(pointIndex)
+            canvas.drawCircle(point.x, point.y, 10F, paint)
+        }
+        endRectF?.let { canvas.drawRect(it, paint) }
+
+
     }
 
     override fun onCollision(allCollisionBody: List<Body>) {
@@ -69,4 +87,22 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
             gameResultListener?.onFailed()
         }
     }
+
+    private fun calRectFLeavePoint(rectF: RectF): Int {
+        val array = floatArray ?: return -1
+        var isEnter = false
+        var leavePointIndex = -1
+        array.eachPoint { index, point ->
+            if (!isEnter) {
+                isEnter = rectF.contains(point.x, point.y)
+            } else {
+                if (!rectF.contains(point.x, point.y)) {
+                    leavePointIndex = index
+                    return@eachPoint
+                }
+            }
+        }
+        return leavePointIndex
+    }
+
 }

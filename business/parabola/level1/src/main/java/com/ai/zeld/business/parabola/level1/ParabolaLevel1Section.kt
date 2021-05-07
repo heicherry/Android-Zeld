@@ -24,6 +24,7 @@ import com.ai.zeld.playground.body.VirusBody
 import com.ai.zeld.util.claymore.load
 import com.ai.zeld.util.idToBitmap
 import com.ai.zeld.util.postInMainDelay
+import com.ai.zeld.util.showRectF
 import com.badlogic.gdx.physics.box2d.Box2D
 
 
@@ -38,7 +39,26 @@ class ParabolaLevel1Section : BaseSection(), IGameResult {
 
     @SuppressLint("InflateParams")
     override fun onBuildViewTree(): View {
-        return LayoutInflater.from(localContext).inflate(R.layout.parabola_level1_main, null)
+        return LayoutInflater.from(localContext).inflate(R.layout.parabola_level1_main, null).let {
+            val stage = IStage::class.java.load()
+            it.measure(
+                View.MeasureSpec.makeMeasureSpec(
+                    stage.getCoordinateRect().width().toInt(),
+                    View.MeasureSpec.EXACTLY
+                ),
+                View.MeasureSpec.makeMeasureSpec(
+                    stage.getCoordinateRect().height().toInt(),
+                    View.MeasureSpec.EXACTLY
+                )
+            )
+            it.layout(
+                0,
+                0,
+                stage.getCoordinateRect().width().toInt(),
+                stage.getCoordinateRect().height().toInt()
+            )
+            it
+        }
     }
 
     override fun onPreload() {
@@ -81,6 +101,9 @@ class ParabolaLevel1Section : BaseSection(), IGameResult {
             }
         }
         flyBody.setGameListener(this)
+        val leftStep = rootViewTree!!.findViewById<ImageView>(R.id.step_left)
+        val rightStep = rootViewTree!!.findViewById<ImageView>(R.id.step_right)
+        flyBody.setStartAndEndRectF(leftStep.showRectF(), rightStep.showRectF())
     }
 
     private fun initFunctionControlPanel() {
@@ -132,7 +155,6 @@ class ParabolaLevel1Section : BaseSection(), IGameResult {
 
     override fun onSectionEnter() {
         super.onSectionEnter()
-
     }
 
     override fun onSucceed(diamondCount: Int) {

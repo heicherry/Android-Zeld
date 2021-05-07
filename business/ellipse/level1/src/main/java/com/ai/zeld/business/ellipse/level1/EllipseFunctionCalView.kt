@@ -25,16 +25,16 @@ class EllipseFunctionCalView(context: Context, attrs: AttributeSet?) :
         inflate(context, R.layout.ellipse_level1_cal2, this)
 
         x_offset.numberPicker().apply {
-            value = 1
             maxValue = 300
             minValue = -300
+            value = 1
             setOnValueChangedListener(this@EllipseFunctionCalView)
             setOnScrollListener(this@EllipseFunctionCalView)
         }
         y_offset.numberPicker().apply {
-            value = 100
             maxValue = 1000
             minValue = -300
+            value = 100
             setOnValueChangedListener(this@EllipseFunctionCalView)
             setOnScrollListener(this@EllipseFunctionCalView)
         }
