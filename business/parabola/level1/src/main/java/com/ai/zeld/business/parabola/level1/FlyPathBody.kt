@@ -1,6 +1,7 @@
 package com.ai.zeld.business.parabola.level1
 
 import android.graphics.*
+import android.util.Log
 import com.ai.zeld.playground.Body
 import com.ai.zeld.playground.BodyManager
 import com.ai.zeld.playground.IGameResult
@@ -44,7 +45,7 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
             step = 3F,
             cal
         )
-        floatArray = path2Array(path!!, 1F)
+        floatArray = path2Array(path!!, 3F)
         postInvalidate()
     }
 
@@ -68,11 +69,15 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
             val pointIndex = calRectFLeavePoint(it)
             if (pointIndex == -1) return@let
             val point = floatArray!!.point(pointIndex)
-            canvas.drawCircle(point.x, point.y, 10F, paint)
+            canvas.drawCircle(point.x, point.y, 20F, paint)
         }
-        endRectF?.let { canvas.drawRect(it, paint) }
-
-
+        endRectF?.let {
+            canvas.drawRect(it, paint)
+            val pointIndex = calRectFInPoint(it)
+            if (pointIndex == -1) return@let
+            val point = floatArray!!.point(pointIndex)
+            canvas.drawCircle(point.x, point.y, 20F, paint)
+        }
     }
 
     override fun onCollision(allCollisionBody: List<Body>) {
@@ -93,16 +98,27 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         var isEnter = false
         var leavePointIndex = -1
         array.eachPoint { index, point ->
+            if (leavePointIndex != -1) return@eachPoint
             if (!isEnter) {
                 isEnter = rectF.contains(point.x, point.y)
             } else {
                 if (!rectF.contains(point.x, point.y)) {
                     leavePointIndex = index
-                    return@eachPoint
                 }
             }
         }
         return leavePointIndex
     }
 
+    private fun calRectFInPoint(rectF: RectF): Int {
+        val array = floatArray ?: return -1
+        var inIndex = -1
+        array.eachPoint { index, point ->
+            if (inIndex != -1) return@eachPoint
+            if (rectF.contains(point.x, point.y)) {
+                inIndex = index
+            }
+        }
+        return inIndex
+    }
 }

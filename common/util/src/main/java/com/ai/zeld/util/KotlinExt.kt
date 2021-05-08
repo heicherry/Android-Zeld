@@ -142,7 +142,7 @@ fun FloatArray.eachPoint(action: (index: Int, point: PointF) -> Unit) {
     while (index < size) {
         tempPointF.x = get(index)
         tempPointF.y = get(index + 1)
-        action(index, tempPointF)
+        action(index / 2, tempPointF)
         index += 2
     }
 }
@@ -150,7 +150,7 @@ fun FloatArray.eachPoint(action: (index: Int, point: PointF) -> Unit) {
 fun FloatArray.firstPointF() = PointF(get(0), get(1))
 
 fun FloatArray.point(index: Int): PointF {
-    return PointF(get(index), get(index + 1))
+    return PointF(get(index * 2), get(index * 2 + 1))
 }
 
 fun FloatArray.lastPointF() = PointF(get(lastIndex - 1), get(lastIndex))
