@@ -1,4 +1,4 @@
-package com.ai.zeld.business.wave.level1
+package com.ai.zeld.business.parabola.level1
 
 import android.annotation.SuppressLint
 import android.graphics.PointF
@@ -20,26 +20,43 @@ import com.ai.zeld.playground.Box2DView
 import com.ai.zeld.playground.IGameResult
 import com.ai.zeld.playground.body.BarrierBody
 import com.ai.zeld.playground.body.Coin
-import com.ai.zeld.playground.body.ShakeBarrierBody
 import com.ai.zeld.playground.body.VirusBody
+import com.ai.zeld.util.*
 import com.ai.zeld.util.claymore.load
-import com.ai.zeld.util.idToBitmap
-import com.ai.zeld.util.postInMainDelay
 import com.badlogic.gdx.physics.box2d.Box2D
 
 
 @Section(SectionConfig.HERO_CAN_NOT_FLY)
-class EllipseLevel1Section : BaseSection(), IGameResult {
+class ParabolaLevel1Section : BaseSection(), IGameResult {
     private lateinit var world: IWorld
     private lateinit var stage: IStage
     private lateinit var box2DView: Box2DView
-    private lateinit var functionControlView: TriangleFunctionCalView
+    private lateinit var functionControlView: ParabolaFunctionCalView
     private lateinit var bodyManager: BodyManager
-    private lateinit var flyBody: FlyBody
+    private lateinit var flyBody: FlyPathBody
 
     @SuppressLint("InflateParams")
     override fun onBuildViewTree(): View {
-        return LayoutInflater.from(localContext).inflate(R.layout.wave_main, null)
+        return LayoutInflater.from(localContext).inflate(R.layout.parabola_level1_main, null).let {
+            val stage = IStage::class.java.load()
+            it.measure(
+                View.MeasureSpec.makeMeasureSpec(
+                    stage.getCoordinateRect().width().toInt(),
+                    View.MeasureSpec.EXACTLY
+                ),
+                View.MeasureSpec.makeMeasureSpec(
+                    stage.getCoordinateRect().height().toInt(),
+                    View.MeasureSpec.EXACTLY
+                )
+            )
+            it.layout(
+                0,
+                0,
+                stage.getCoordinateRect().width().toInt(),
+                stage.getCoordinateRect().height().toInt()
+            )
+            it
+        }
     }
 
     override fun onPreload() {
@@ -58,7 +75,7 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
     private fun initCoordinate() {
         val resource = localContext.resources
         val newCenterY = stage.getCoordinateRect()
-            .height() - resource.getDimension(R.dimen.wave_coordinate_center_offset_bottom)
+            .height() - resource.getDimension(R.dimen.parabola_level1_coordinate_center_offset_bottom)
         val newCoordinateCenter = PointF(stage.getCenterPointF().x, newCenterY)
         stage.updateCoordinate(stage.getCoordinateRect(), newCoordinateCenter)
     }
@@ -73,8 +90,8 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
         flyBody = bodyManager.createBody(
             BodyManager.BodyType.HERO,
             RectF(),
-            R.drawable.playground_bean_eater.idToBitmap()
-        ) as FlyBody
+            R.drawable.playground_diamond.idToBitmap()
+        ) as FlyPathBody
         rootViewTree!!.findViewById<ImageView>(R.id.go).setOnClickListener {
             MusicClipsPlayerManager.play(MusicClip.GO)
             postInMainDelay(500) {
@@ -82,6 +99,33 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
             }
         }
         flyBody.setGameListener(this)
+        val leftStep = rootViewTree!!.findViewById<ImageView>(R.id.step_left)
+        val rightStep = rootViewTree!!.findViewById<ImageView>(R.id.step_right)
+        flyBody.setStartAndEndRectF(leftStep.showRectF(), rightStep.showRectF())
+        initSuperMan()
+    }
+
+    private fun initSuperMan() {
+        val superMan = rootViewTree!!.findViewById<ImageView>(R.id.superman)
+        flyBody.bindView(superMan)
+        val flyingBitmap = R.drawable.uikit_superman_flying.idToBitmap()
+        val flySuccessBitmap = R.drawable.uikit_superman_fly_succeed.idToBitmap()
+        flyBody.setFlyListener(object : IFlyStateListener {
+            override fun onFlyStart() {
+                superMan.setImageBitmap(flyingBitmap)
+            }
+
+            override fun onFlyEnd() {
+                superMan.setImageBitmap(flySuccessBitmap)
+                moveSuperManToSuperWomenAhead()
+            }
+        })
+    }
+
+    private fun moveSuperManToSuperWomenAhead() {
+        val superWomen = rootViewTree!!.findViewById<ImageView>(R.id.superwomen)
+        val superMan = rootViewTree!!.findViewById<ImageView>(R.id.superman)
+        superMan.translationX = (superWomen.left - superMan.right - 30.px2dp()).toFloat()
     }
 
     private fun initFunctionControlPanel() {
@@ -101,9 +145,9 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
             PointF(700F, 200F), R.drawable.playground_virus.idToBitmap()
         )
 
-        bodyManager.createBody<ShakeBarrierBody>(
-            BodyManager.BodyType.BARRIER,
-            PointF(300F, 900F), R.drawable.playground_mine_2.idToBitmap()
+        bodyManager.createBody<FlyPathBody>(
+            BodyManager.BodyType.OTHERS,
+            PointF(300F, 900F), R.drawable.playground_diamond.idToBitmap()
         )
 
         bodyManager.createBody<Coin>(
@@ -122,7 +166,7 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
 
     private fun initPlayGround() {
         val y = stage.getCoordinateRect()
-            .height() - localContext.resources.getDimension(R.dimen.wave_coordinate_init_bottom_offset_bottom)
+            .height() - localContext.resources.getDimension(R.dimen.parabola_level1_coordinate_init_bottom_offset_bottom)
         box2DView.updatePlayGround(y)
     }
 
@@ -133,7 +177,6 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
 
     override fun onSectionEnter() {
         super.onSectionEnter()
-
     }
 
     override fun onSucceed(diamondCount: Int) {

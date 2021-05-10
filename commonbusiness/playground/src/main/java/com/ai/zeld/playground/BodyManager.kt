@@ -55,7 +55,7 @@ class BodyManager(val world: World, internal val updateCallback: () -> Unit) {
     }
 
     enum class BodyType {
-        BARRIER, HERO, COIN
+        BARRIER, HERO, COIN, OTHERS
     }
 
     fun step() {

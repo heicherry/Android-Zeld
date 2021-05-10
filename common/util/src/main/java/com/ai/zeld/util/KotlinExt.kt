@@ -2,16 +2,17 @@ package com.ai.zeld.util
 
 import android.animation.Animator
 import android.graphics.*
-import android.util.Log
 import android.view.View
 import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
+import androidx.core.graphics.toRectF
 import androidx.core.os.postDelayed
 import androidx.lifecycle.Lifecycle
 import com.ai.zeld.util.app.App
 import com.ai.zeld.util.thread.ThreadPlus
 import com.badlogic.gdx.math.Vector2
-import java.lang.ref.WeakReference
+import kotlin.math.max
+import kotlin.math.min
 
 fun View.gone() {
     visibility = View.GONE
@@ -125,4 +126,76 @@ fun RectF.draw(canvas: Canvas, color: Int, des: String? = null) {
             commonPaint
         )
     }
+}
+
+fun Float.square(): Float {
+    return this * this
+}
+
+fun Float.sqrt(): Float {
+    return kotlin.math.sqrt(this.toDouble()).toFloat()
+}
+
+private val tempPointF = PointF()
+fun FloatArray.eachPoint(action: (index: Int, point: PointF) -> Unit) {
+    var index = 0
+    while (index < size) {
+        tempPointF.x = get(index)
+        tempPointF.y = get(index + 1)
+        action(index / 2, tempPointF)
+        index += 2
+    }
+}
+
+fun FloatArray.firstPointF() = PointF(get(0), get(1))
+
+fun FloatArray.point(index: Int): PointF {
+    return PointF(get(index * 2), get(index * 2 + 1))
+}
+
+fun FloatArray.lastPointF() = PointF(get(lastIndex - 1), get(lastIndex))
+
+fun FloatArray.containRectF(): RectF {
+    val rectF = RectF(Float.MAX_VALUE, Float.MAX_VALUE, Float.MIN_VALUE, Float.MIN_VALUE)
+    eachPoint { _, point ->
+        rectF.apply {
+            left = min(left, point.x)
+            right = max(right, point.x)
+            top = min(top, point.y)
+            bottom = max(bottom, point.y)
+        }
+    }
+    return rectF
+}
+
+fun RectF.center() = PointF(centerX(), centerY())
+
+fun Int.px2sp(): Int {
+    val fontScale: Float = App.application.resources.displayMetrics.scaledDensity
+    return (this / fontScale + 0.5f).toInt()
+}
+
+fun Int.px2dp(): Float {
+    val scale: Float = App.application.resources.displayMetrics.density
+    return this / scale + 0.5f
+}
+
+fun RectF.distance(target: RectF): Float {
+    return ((left - target.left).square()
+            + (right - target.right).square()
+            + (top - target.top).square()
+            + (bottom - target.bottom).square()).sqrt()
+}
+
+fun View.showRectF(): RectF {
+    val rect = Rect()
+    getLocalVisibleRect(rect)
+    rect.offset(left, top)
+    return rect.toRectF()
+}
+
+fun View.moveCenterTo(center: PointF) {
+    val originCenter = showRectF().center()
+    translationX = center.x - originCenter.x
+    translationY = center.y - originCenter.y
 }
