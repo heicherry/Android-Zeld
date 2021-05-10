@@ -21,10 +21,8 @@ import com.ai.zeld.playground.IGameResult
 import com.ai.zeld.playground.body.BarrierBody
 import com.ai.zeld.playground.body.Coin
 import com.ai.zeld.playground.body.VirusBody
+import com.ai.zeld.util.*
 import com.ai.zeld.util.claymore.load
-import com.ai.zeld.util.idToBitmap
-import com.ai.zeld.util.postInMainDelay
-import com.ai.zeld.util.showRectF
 import com.badlogic.gdx.physics.box2d.Box2D
 
 
@@ -104,6 +102,30 @@ class ParabolaLevel1Section : BaseSection(), IGameResult {
         val leftStep = rootViewTree!!.findViewById<ImageView>(R.id.step_left)
         val rightStep = rootViewTree!!.findViewById<ImageView>(R.id.step_right)
         flyBody.setStartAndEndRectF(leftStep.showRectF(), rightStep.showRectF())
+        initSuperMan()
+    }
+
+    private fun initSuperMan() {
+        val superMan = rootViewTree!!.findViewById<ImageView>(R.id.superman)
+        flyBody.bindView(superMan)
+        val flyingBitmap = R.drawable.uikit_superman_flying.idToBitmap()
+        val flySuccessBitmap = R.drawable.uikit_superman_fly_succeed.idToBitmap()
+        flyBody.setFlyListener(object : IFlyStateListener {
+            override fun onFlyStart() {
+                superMan.setImageBitmap(flyingBitmap)
+            }
+
+            override fun onFlyEnd() {
+                superMan.setImageBitmap(flySuccessBitmap)
+                moveSuperManToSuperWomenAhead()
+            }
+        })
+    }
+
+    private fun moveSuperManToSuperWomenAhead() {
+        val superWomen = rootViewTree!!.findViewById<ImageView>(R.id.superwomen)
+        val superMan = rootViewTree!!.findViewById<ImageView>(R.id.superman)
+        superMan.translationX = (superWomen.left - superMan.right - 30.px2dp()).toFloat()
     }
 
     private fun initFunctionControlPanel() {

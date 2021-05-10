@@ -2,20 +2,26 @@ package com.ai.zeld.business.parabola.level1
 
 import android.graphics.*
 import android.util.Log
+import android.view.View
 import com.ai.zeld.playground.Body
 import com.ai.zeld.playground.BodyManager
 import com.ai.zeld.playground.IGameResult
 import com.ai.zeld.playground.body.Diamond
-import com.ai.zeld.util.eachPoint
+import com.ai.zeld.util.*
 import com.ai.zeld.util.path.createPath
 import com.ai.zeld.util.path.path2Array
-import com.ai.zeld.util.point
 
 class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
 
     // 轨迹信息
     var floatArray: FloatArray? = null
     var path: Path? = null
+    private var bandingView: View? = null
+    private var runningIndex = -1
+    private var startIndex = -1
+    private var endIndex = -1
+    private var flyListener: IFlyStateListener? = null
+    private var isRunning = false
 
     private var cal: ParabolaFunction? = null
 
@@ -49,13 +55,70 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         postInvalidate()
     }
 
+    fun bindView(view: View) {
+        bandingView = view
+    }
+
+    fun setFlyListener(listener: IFlyStateListener) {
+        flyListener = listener
+    }
+
     override fun startPlay() {
         super.startPlay()
+        calStartAndEnd()
+        prepareRun()
         run()
     }
 
-    private fun run() {
+    private fun calStartAndEnd() {
+        startRectF?.let {
+            startIndex = calRectFLeavePoint(it)
+        }
+        endRectF?.let {
+            endIndex = calRectFInPoint(it)
+        }
+    }
 
+    private fun prepareRun() {
+        runningIndex = -1
+        if (startIndex == -1) {
+            Log.e("ayy", "找不到起点呀！！！！")
+            return
+        }
+        if (endIndex == -1) {
+            Log.e("ayy", "找不到终点呀！！！！")
+            return
+        }
+        if (startIndex >= endIndex) {
+            Log.e("ayy", "坐标错误： startIndex:$startIndex  endIndex:$endIndex")
+            return
+        }
+        runningIndex = startIndex
+        isRunning = true
+        flyListener?.onFlyStart()
+    }
+
+    private fun run() {
+        if (!isRunning) return
+        if (runningIndex != -1 && runningIndex < endIndex) {
+            floatArray?.point(runningIndex)?.let {
+                bandingView?.let { view ->
+                    val originY = view.showRectF().center().y
+                    if (originY >= it.y) {
+                        view.moveCenterTo(it)
+                    }
+                }
+            }
+            runningIndex += 2
+            postInMainDelay(8) {
+                run()
+            }
+        } else {
+            isRunning = false
+            if (runningIndex >= endIndex) {
+                flyListener?.onFlyEnd()
+            }
+        }
     }
 
     override fun draw(canvas: Canvas) {
@@ -63,21 +126,6 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = 3F
         path?.let { canvas.drawPath(it, paint) }
-
-        startRectF?.let {
-            canvas.drawRect(it, paint)
-            val pointIndex = calRectFLeavePoint(it)
-            if (pointIndex == -1) return@let
-            val point = floatArray!!.point(pointIndex)
-            canvas.drawCircle(point.x, point.y, 20F, paint)
-        }
-        endRectF?.let {
-            canvas.drawRect(it, paint)
-            val pointIndex = calRectFInPoint(it)
-            if (pointIndex == -1) return@let
-            val point = floatArray!!.point(pointIndex)
-            canvas.drawCircle(point.x, point.y, 20F, paint)
-        }
     }
 
     override fun onCollision(allCollisionBody: List<Body>) {

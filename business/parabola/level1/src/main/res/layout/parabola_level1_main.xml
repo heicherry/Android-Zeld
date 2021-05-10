@@ -28,14 +28,16 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <ImageView
+        android:id="@+id/superman"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:src="@drawable/uikit_superman_stand"
+        android:src="@drawable/uikit_superman_waiting_for_fly"
         app:layout_constraintBottom_toTopOf="@id/step_left"
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <ImageView
+        android:id="@+id/superwomen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="4dp"

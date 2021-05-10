@@ -175,6 +175,11 @@ fun Int.px2sp(): Int {
     return (this / fontScale + 0.5f).toInt()
 }
 
+fun Int.px2dp(): Float {
+    val scale: Float = App.application.resources.displayMetrics.density
+    return this / scale + 0.5f
+}
+
 fun RectF.distance(target: RectF): Float {
     return ((left - target.left).square()
             + (right - target.right).square()
@@ -187,4 +192,10 @@ fun View.showRectF(): RectF {
     getLocalVisibleRect(rect)
     rect.offset(left, top)
     return rect.toRectF()
+}
+
+fun View.moveCenterTo(center: PointF) {
+    val originCenter = showRectF().center()
+    translationX = center.x - originCenter.x
+    translationY = center.y - originCenter.y
 }
