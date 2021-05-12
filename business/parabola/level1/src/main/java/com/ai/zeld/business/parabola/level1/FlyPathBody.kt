@@ -10,6 +10,7 @@ import com.ai.zeld.playground.body.Diamond
 import com.ai.zeld.util.*
 import com.ai.zeld.util.path.createPath
 import com.ai.zeld.util.path.path2Array
+import kotlin.math.atan
 
 class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
 
@@ -101,21 +102,30 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
     private fun run() {
         if (!isRunning) return
         if (runningIndex != -1 && runningIndex < endIndex) {
-            floatArray?.point(runningIndex)?.let {
+            val currentPointF = floatArray?.point(runningIndex)
+            val nextPointF = floatArray?.point(runningIndex + 1)
+            if (currentPointF != null && nextPointF != null) {
                 bandingView?.let { view ->
+                    view.setBackgroundColor(Color.WHITE)
                     val originY = view.showRectF().center().y
-                    if (originY >= it.y) {
-                        view.moveCenterTo(it)
+                    Log.i("ayy", "show_rect: ${view.showRectF()}")
+                    if (originY >= currentPointF.y) {
+                        view.moveCenterTo(PointF(100F,100F))
+                        val angle =
+                            atan(((nextPointF.y - currentPointF.y) / (nextPointF.x - currentPointF.x)).toDouble()) / Math.PI * 180
+                        Log.i("ayy", "angle: $angle")
+                        view.rotation = angle.toFloat()
                     }
                 }
             }
             runningIndex += 2
-            postInMainDelay(8) {
+            postInMainDelay(30) {
                 run()
             }
         } else {
             isRunning = false
             if (runningIndex >= endIndex) {
+                bandingView?.rotation = 0F
                 flyListener?.onFlyEnd()
             }
         }
