@@ -99,6 +99,8 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         flyListener?.onFlyStart()
     }
 
+    private var bandingViewRectF = RectF()
+
     private fun run() {
         if (!isRunning) return
         if (runningIndex != -1 && runningIndex < endIndex) {
@@ -106,15 +108,16 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
             val nextPointF = floatArray?.point(runningIndex + 1)
             if (currentPointF != null && nextPointF != null) {
                 bandingView?.let { view ->
-                    view.setBackgroundColor(Color.WHITE)
                     val originY = view.showRectF().center().y
-                    Log.i("ayy", "show_rect: ${view.showRectF()}")
                     if (originY >= currentPointF.y) {
-                        view.moveCenterTo(PointF(100F,100F))
                         val angle =
                             atan(((nextPointF.y - currentPointF.y) / (nextPointF.x - currentPointF.x)).toDouble()) / Math.PI * 180
-                        Log.i("ayy", "angle: $angle")
-                        view.rotation = angle.toFloat()
+                        view.rotation = (40F + angle).toFloat()
+                        view.moveCenterTo(currentPointF)
+                        bandingViewRectF =
+                            view.showRectF().apply {
+                                offset(currentPointF.x - centerX(), currentPointF.y - centerY())
+                            }
                     }
                 }
             }
@@ -136,6 +139,7 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = 3F
         path?.let { canvas.drawPath(it, paint) }
+        canvas.drawRect(bandingViewRectF, paint)
     }
 
     override fun onCollision(allCollisionBody: List<Body>) {
