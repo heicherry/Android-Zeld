@@ -10,6 +10,7 @@ import com.ai.zeld.playground.body.Diamond
 import com.ai.zeld.util.*
 import com.ai.zeld.util.path.createPath
 import com.ai.zeld.util.path.path2Array
+import kotlin.math.atan
 
 class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
 
@@ -101,24 +102,34 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
     private fun run() {
         if (!isRunning) return
         if (runningIndex != -1 && runningIndex < endIndex) {
-            floatArray?.point(runningIndex)?.let {
+            val currentPointF = floatArray?.point(runningIndex)
+            val nextPointF = floatArray?.point(runningIndex + 1)
+            if (currentPointF != null && nextPointF != null) {
                 bandingView?.let { view ->
                     val originY = view.showRectF().center().y
-                    if (originY >= it.y) {
-                        view.moveCenterTo(it)
+                    if (originY >= currentPointF.y) {
+                        val angle =
+                            atan(((nextPointF.y - currentPointF.y) / (nextPointF.x - currentPointF.x)).toDouble()) / Math.PI * 180
+                        view.rotation = (40F + angle).toFloat()
+                        view.moveCenterTo(currentPointF)
+                        rectF.set(view.showRectF().apply {
+                            offset(currentPointF.x - centerX(), currentPointF.y - centerY())
+                        })
                     }
                 }
             }
             runningIndex += 2
-            postInMainDelay(8) {
+            postInMainDelay(30) {
                 run()
             }
         } else {
             isRunning = false
             if (runningIndex >= endIndex) {
+                bandingView?.rotation = 0F
                 flyListener?.onFlyEnd()
             }
         }
+        postInvalidate()
     }
 
     override fun draw(canvas: Canvas) {
@@ -126,6 +137,7 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = 3F
         path?.let { canvas.drawPath(it, paint) }
+        canvas.drawRect(rectF, paint)
     }
 
     override fun onCollision(allCollisionBody: List<Body>) {

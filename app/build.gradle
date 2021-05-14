@@ -16,6 +16,7 @@ android {
 
         packagingOptions{
             exclude "META-INF/level1_debug.kotlin_module"
+            exclude "META-INF/level1_release.kotlin_module"
         }
     }
 

@@ -2,11 +2,13 @@ package com.ai.zeld.util
 
 import android.animation.Animator
 import android.graphics.*
+import android.util.Log
 import android.view.View
 import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
 import androidx.core.graphics.toRectF
 import androidx.core.os.postDelayed
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.Lifecycle
 import com.ai.zeld.util.app.App
 import com.ai.zeld.util.thread.ThreadPlus
@@ -149,8 +151,10 @@ fun FloatArray.eachPoint(action: (index: Int, point: PointF) -> Unit) {
 
 fun FloatArray.firstPointF() = PointF(get(0), get(1))
 
-fun FloatArray.point(index: Int): PointF {
-    return PointF(get(index * 2), get(index * 2 + 1))
+fun FloatArray.point(index: Int): PointF? {
+    return if (index * 2 + 1 < size)
+        PointF(get(index * 2), get(index * 2 + 1))
+    else null
 }
 
 fun FloatArray.lastPointF() = PointF(get(lastIndex - 1), get(lastIndex))
@@ -194,8 +198,12 @@ fun View.showRectF(): RectF {
     return rect.toRectF()
 }
 
+fun View.layoutRectF(): RectF {
+    return Rect(left, top, right, bottom).toRectF()
+}
+
 fun View.moveCenterTo(center: PointF) {
-    val originCenter = showRectF().center()
+    val originCenter = layoutRectF().center()
     translationX = center.x - originCenter.x
     translationY = center.y - originCenter.y
 }
