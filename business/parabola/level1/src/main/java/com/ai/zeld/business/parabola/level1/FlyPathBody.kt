@@ -99,8 +99,6 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         flyListener?.onFlyStart()
     }
 
-    private var bandingViewRectF = RectF()
-
     private fun run() {
         if (!isRunning) return
         if (runningIndex != -1 && runningIndex < endIndex) {
@@ -114,10 +112,9 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
                             atan(((nextPointF.y - currentPointF.y) / (nextPointF.x - currentPointF.x)).toDouble()) / Math.PI * 180
                         view.rotation = (40F + angle).toFloat()
                         view.moveCenterTo(currentPointF)
-                        bandingViewRectF =
-                            view.showRectF().apply {
-                                offset(currentPointF.x - centerX(), currentPointF.y - centerY())
-                            }
+                        rectF.set(view.showRectF().apply {
+                            offset(currentPointF.x - centerX(), currentPointF.y - centerY())
+                        })
                     }
                 }
             }
@@ -132,6 +129,7 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
                 flyListener?.onFlyEnd()
             }
         }
+        postInvalidate()
     }
 
     override fun draw(canvas: Canvas) {
@@ -139,7 +137,7 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = 3F
         path?.let { canvas.drawPath(it, paint) }
-        canvas.drawRect(bandingViewRectF, paint)
+        canvas.drawRect(rectF, paint)
     }
 
     override fun onCollision(allCollisionBody: List<Body>) {
