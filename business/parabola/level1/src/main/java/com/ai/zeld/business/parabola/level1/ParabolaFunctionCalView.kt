@@ -3,7 +3,7 @@ package com.ai.zeld.business.parabola.level1
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import com.ai.zeld.business.ellipse.level1.BaseFunctionControlView
+import com.ai.zeld.playground.BaseFunctionControlView
 import com.ai.zeld.util.square
 import com.shawnlin.numberpicker.NumberPicker
 import kotlinx.android.synthetic.main.parabola_level1_cal.view.*

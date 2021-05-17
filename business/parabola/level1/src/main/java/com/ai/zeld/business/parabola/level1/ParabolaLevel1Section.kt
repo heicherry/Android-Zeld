@@ -21,6 +21,7 @@ import com.ai.zeld.playground.IGameResult
 import com.ai.zeld.playground.body.BarrierBody
 import com.ai.zeld.playground.body.Coin
 import com.ai.zeld.playground.body.VirusBody
+import com.ai.zeld.playground.showFailedHintDialog
 import com.ai.zeld.util.*
 import com.ai.zeld.util.claymore.load
 import com.badlogic.gdx.physics.box2d.Box2D
@@ -185,5 +186,10 @@ class ParabolaLevel1Section : BaseSection(), IGameResult {
 
     override fun onFailed() {
         Log.i("ayy", "失败了！！")
+        val originalBitmap = R.drawable.uikit_superman_waiting_for_fly.idToBitmap()
+        val superMan = rootViewTree!!.findViewById<ImageView>(R.id.superman)
+        superMan.setImageBitmap(originalBitmap)
+
+        showFailedHintDialog()
     }
 }

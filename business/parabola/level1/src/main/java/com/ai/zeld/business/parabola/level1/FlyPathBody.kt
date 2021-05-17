@@ -119,7 +119,7 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
                 }
             }
             runningIndex += 2
-            postInMainDelay(30) {
+            postInMainDelay(8) {
                 run()
             }
         } else {
@@ -137,7 +137,6 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = 3F
         path?.let { canvas.drawPath(it, paint) }
-        canvas.drawRect(rectF, paint)
     }
 
     override fun onCollision(allCollisionBody: List<Body>) {
@@ -150,6 +149,9 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         if (allCollisionBody.count { it.bodyType == BodyManager.BodyType.BARRIER } > 0) {
             isAlive = false
             gameResultListener?.onFailed()
+            isRunning = false
+            bandingView?.resetPos()
+            postInvalidate()
         }
     }
 

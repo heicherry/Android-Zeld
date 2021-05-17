@@ -1,15 +1,8 @@
 package com.ai.zeld.business.ellipse.level1
 
 import android.content.Context
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.style.RelativeSizeSpan
-import android.text.style.SuperscriptSpan
 import android.util.AttributeSet
-import android.widget.TextView
-import com.ai.zeld.business.ellipse.level1.BaseFunctionControlView
-import com.shawnlin.numberpicker.NumberPicker
+import com.ai.zeld.playground.BaseFunctionControlView
 
 
 class CalView(context: Context, attrs: AttributeSet?) : BaseFunctionControlView(context, attrs) {
