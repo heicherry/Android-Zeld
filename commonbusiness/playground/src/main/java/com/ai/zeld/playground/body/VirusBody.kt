@@ -23,6 +23,11 @@ open class VirusBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         box2dBody = rectF.convertToBody(world, BodyDef.BodyType.DynamicBody, true)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        bodyManager.world.destroyBody(box2dBody)
+    }
+
     override fun getCurrentPos() = bitmap!!.realPos(box2dBody.position.toRealWorldPointF())
 
     override fun onCollision(allCollisionBody: List<Body>) {

@@ -51,6 +51,8 @@ abstract class BaseSection : Fragment() {
     open fun onExitSection() {
 
     }
+
+    abstract fun reset()
 }
 
 enum class State {

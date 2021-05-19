@@ -132,6 +132,12 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         postInvalidate()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        bandingView = null
+        isRunning = false
+    }
+
     override fun draw(canvas: Canvas) {
         paint.color = Color.BLUE
         paint.style = Paint.Style.STROKE

@@ -45,7 +45,6 @@ class FlyBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         floatArray = path2Array(path!!, 1F)
     }
 
-
     fun isEnd() = index >= floatArray?.size ?: Int.MAX_VALUE
 
     override fun startPlay() {
@@ -54,6 +53,7 @@ class FlyBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
     }
 
     private fun run() {
+        if (isDestroy) return
         if (isEnd()) return
         val array = floatArray ?: return
         val point = PointF(array[index], array[index + 1])

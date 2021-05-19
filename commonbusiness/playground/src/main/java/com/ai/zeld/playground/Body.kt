@@ -3,6 +3,7 @@ package com.ai.zeld.playground
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.*
+import androidx.annotation.CallSuper
 import com.ai.zeld.common.service.stage.IStage
 import com.ai.zeld.util.app.App
 import com.ai.zeld.util.claymore.load
@@ -22,6 +23,7 @@ open class Body(
     protected var world: World? = null
     var isAlive = true
     var bodyType: BodyManager.BodyType = BodyManager.BodyType.BARRIER
+    var isDestroy = false
 
     lateinit var bodyManager: BodyManager
 
@@ -56,5 +58,10 @@ open class Body(
 
     open fun startPlay() {
 
+    }
+
+    @CallSuper
+    open fun onDestroy() {
+        isDestroy = true
     }
 }

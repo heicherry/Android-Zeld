@@ -173,15 +173,18 @@ class ParabolaLevel1Section : BaseSection(), IGameResult {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        showGameResultHintDialog(true, {
-            Log.i("ayy", "点击了重来一次")
-        }, {
-            Log.i("ayy", "点击了继续下一步")
-        })
+
     }
 
     override fun onSectionEnter() {
         super.onSectionEnter()
+    }
+
+    override fun reset() {
+        bodyManager.reset()
+        initFlyBody()
+        initMonsters()
+        functionControlView.reset()
     }
 
     override fun onSucceed(diamondCount: Int) {
@@ -193,5 +196,11 @@ class ParabolaLevel1Section : BaseSection(), IGameResult {
         val originalBitmap = R.drawable.uikit_superman_waiting_for_fly.idToBitmap()
         val superMan = rootViewTree!!.findViewById<ImageView>(R.id.superman)
         superMan.setImageBitmap(originalBitmap)
+
+        showGameResultHintDialog(true, {
+            reset()
+        }, {
+            Log.i("ayy", "点击了继续下一步")
+        })
     }
 }

@@ -44,6 +44,15 @@ class BodyManager(val world: World, internal val updateCallback: () -> Unit) {
         return createBody(type, rectF, null)
     }
 
+    fun reset(){
+        val all = mutableListOf<Body>()
+        all.addAll(allBody)
+        all.forEach {
+            it.onDestroy()
+        }
+        allBody.clear()
+    }
+
     fun startPlay() {
         allBody.filter { it.isAlive }.forEach { it.startPlay() }
     }

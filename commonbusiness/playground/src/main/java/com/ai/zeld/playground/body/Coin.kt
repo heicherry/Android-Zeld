@@ -16,6 +16,7 @@ class Coin(rectF: RectF) : Body(null, rectF) {
 
     private val allBitmap = mutableListOf<Bitmap>()
     private var currentBitmap: Bitmap? = null
+    private var animator:ValueAnimator?= null
 
     override fun initBody(world: World) {
         super.initBody(world)
@@ -35,8 +36,8 @@ class Coin(rectF: RectF) : Body(null, rectF) {
     }
 
     private fun playCoinAnimator() {
-        val animator = ValueAnimator.ofInt(1, 6)
-        animator.apply {
+        animator = ValueAnimator.ofInt(1, 6)
+        animator?.apply {
             duration = 500
             addUpdateListener {
                 currentBitmap = allBitmap[it.animatedValue as Int]
@@ -45,7 +46,7 @@ class Coin(rectF: RectF) : Body(null, rectF) {
             repeatCount = ValueAnimator.INFINITE
         }
         postInMainDelay(1000) {
-            animator.start()
+            animator?.start()
         }
     }
 
@@ -63,5 +64,10 @@ class Coin(rectF: RectF) : Body(null, rectF) {
                 canvas.drawBitmap(it, null, rectF, paint)
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        animator?.cancel()
     }
 }

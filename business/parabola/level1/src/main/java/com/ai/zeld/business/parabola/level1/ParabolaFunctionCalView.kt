@@ -18,7 +18,28 @@ class ParabolaFunctionCalView(context: Context, attrs: AttributeSet?) :
 
     init {
         inflate(context, R.layout.parabola_level1_cal, this)
+        reset()
+    }
 
+    fun setFunctionChangeListener(listener: (function: ParabolaFunction) -> Unit) {
+        this.listener = listener
+        onScrollStateChange(a.numberPicker(), NumberPicker.OnScrollListener.SCROLL_STATE_IDLE)
+    }
+
+    override fun onScrollStateChange(view: NumberPicker?, scrollState: Int) {
+        super.onScrollStateChange(view, scrollState)
+        if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {
+            listener?.invoke {
+                a.numberPicker().value.toFloat() / 5 * (it / 80).square() + b.numberPicker().value * it / 80 + c.numberPicker().value * 4
+            }
+        }
+    }
+
+    private fun View.numberPicker(): NumberPicker = this as NumberPicker
+
+
+    override fun reset() {
+        super.reset()
         a.numberPicker().apply {
             maxValue = 300
             minValue = -300
@@ -41,21 +62,7 @@ class ParabolaFunctionCalView(context: Context, attrs: AttributeSet?) :
             setOnValueChangedListener(this@ParabolaFunctionCalView)
             setOnScrollListener(this@ParabolaFunctionCalView)
         }
-    }
 
-    fun setFunctionChangeListener(listener: (function: ParabolaFunction) -> Unit) {
-        this.listener = listener
         onScrollStateChange(a.numberPicker(), NumberPicker.OnScrollListener.SCROLL_STATE_IDLE)
     }
-
-    override fun onScrollStateChange(view: NumberPicker?, scrollState: Int) {
-        super.onScrollStateChange(view, scrollState)
-        if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {
-            listener?.invoke {
-                a.numberPicker().value.toFloat() / 5 * (it / 80).square() + b.numberPicker().value * it / 80 + c.numberPicker().value * 4
-            }
-        }
-    }
-
-    private fun View.numberPicker(): NumberPicker = this as NumberPicker
 }

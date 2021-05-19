@@ -44,6 +44,10 @@ class StorylineSection : BaseSection() {
         startTalkStoryLine()
     }
 
+    override fun reset() {
+
+    }
+
     private fun parseXml(): Storyline {
         val parser = localContext.resources.getXml(R.xml.storyline)
         val storyline = Storyline()

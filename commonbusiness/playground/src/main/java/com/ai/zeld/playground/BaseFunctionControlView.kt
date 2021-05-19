@@ -17,4 +17,8 @@ open class BaseFunctionControlView(context: Context, attrs: AttributeSet?) : Fra
 
     override fun onScrollStateChange(view: NumberPicker?, scrollState: Int) {
     }
+
+    open fun reset(){
+
+    }
 }

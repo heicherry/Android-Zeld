@@ -26,6 +26,10 @@ class SplashSection : BaseSection() {
         return LayoutInflater.from(localContext).inflate(R.layout.splash_main, null)
     }
 
+    override fun reset() {
+
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

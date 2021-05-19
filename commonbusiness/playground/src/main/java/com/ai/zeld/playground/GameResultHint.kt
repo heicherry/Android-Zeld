@@ -26,7 +26,13 @@ fun showGameResultHintDialog(succeed: Boolean, again: Block, next: Block) {
         it.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         it.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     }
-    view.findViewById<ImageView>(R.id.play_continue).setOnClickListener { next() }
-    view.findViewById<ImageView>(R.id.play_again).setOnClickListener { again() }
+    view.findViewById<ImageView>(R.id.play_continue).setOnClickListener {
+        next()
+        dialog.dismiss()
+    }
+    view.findViewById<ImageView>(R.id.play_again).setOnClickListener {
+        again()
+        dialog.dismiss()
+    }
     dialog.show()
 }
