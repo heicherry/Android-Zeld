@@ -173,7 +173,11 @@ class ParabolaLevel1Section : BaseSection(), IGameResult {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        showGameResultHintDialog()
+        showGameResultHintDialog(true, {
+            Log.i("ayy", "点击了重来一次")
+        }, {
+            Log.i("ayy", "点击了继续下一步")
+        })
     }
 
     override fun onSectionEnter() {

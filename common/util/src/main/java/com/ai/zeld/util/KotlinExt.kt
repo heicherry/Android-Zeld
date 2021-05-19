@@ -213,3 +213,5 @@ fun View.resetPos() {
     translationY = 0F
     rotation = 0F
 }
+
+typealias Block = () -> Unit
