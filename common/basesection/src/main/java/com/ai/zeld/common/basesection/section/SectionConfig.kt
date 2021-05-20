@@ -19,7 +19,7 @@ object SectionConfig {
     const val ELLIPSE_HIGH = 60
 
     // 英雄不能飞
-    const val WAVE_MIN = 1
-    const val WAVE_MIDDLE = 2
-    const val WAVE_HIGH = 3
+    const val WAVE_MIN = 70
+    const val WAVE_MIDDLE = 80
+    const val WAVE_HIGH = 90
 }
