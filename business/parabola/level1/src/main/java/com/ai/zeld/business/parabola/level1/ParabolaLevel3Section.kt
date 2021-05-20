@@ -15,7 +15,7 @@ class ParabolaLevel3Section : ParabolaLevel1Section() {
         createBarrier(240F, 1000F, R.drawable.playground_mine)
         createBarrier(350F, 790F, R.drawable.playground_mine)
         createBarrier(500F, 1300F, R.drawable.playground_mine)
-        createBarrier(700F, 1100F, R.drawable.playground_mine)
+        createBarrier(750F, 1100F, R.drawable.playground_mine)
 
         bodyManager.createBody<VirusBody>(
             BodyManager.BodyType.BARRIER,

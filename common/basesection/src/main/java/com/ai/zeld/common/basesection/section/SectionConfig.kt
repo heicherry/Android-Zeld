@@ -11,8 +11,8 @@ object SectionConfig {
 
     // 隔岸表白
     const val FLY_MIN = 10//SPLASH + 1
-    const val FLY_MIDDLE = 200//FLY_MIN + 1
-    const val FLY_HIGH = 1//FLY_MIDDLE + 1
+    const val FLY_MIDDLE = 20//FLY_MIN + 1
+    const val FLY_HIGH = 30//FLY_MIDDLE + 1
 
     // 砖石情缘
 //    const val MASONRY_LOVE = LEAP_FIRE_2 + 1

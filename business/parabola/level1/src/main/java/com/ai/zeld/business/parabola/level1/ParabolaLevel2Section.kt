@@ -13,9 +13,9 @@ import com.ai.zeld.util.idToBitmap
 class ParabolaLevel2Section : ParabolaLevel1Section() {
 
     override fun initMonsters() {
-        createBarrier(340F, 790F, R.drawable.playground_mine)
+        createBarrier(340F, 1200F, R.drawable.playground_mine)
         createBarrier(600F, 900F, R.drawable.playground_mine)
-        createBarrier(800F, 1000F, R.drawable.playground_mine)
+        createBarrier(800F, 1300F, R.drawable.playground_mine)
 
         bodyManager.createBody<VirusBody>(
             BodyManager.BodyType.BARRIER,

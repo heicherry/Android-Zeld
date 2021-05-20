@@ -46,7 +46,7 @@ class SectionUnitCenter(private val context: Context) {
         sectionMap.keys.sorted().let {
             val index = it.indexOf(id)
             return if (index + 1 < it.size) {
-                index + 1
+                it[index + 1]
             } else {
                 -1
             }

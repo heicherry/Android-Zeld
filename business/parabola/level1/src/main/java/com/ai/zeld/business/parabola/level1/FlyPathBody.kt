@@ -144,6 +144,7 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = 3F
         path?.let { canvas.drawPath(it, paint) }
+        paint.let { canvas.drawRect(rectF, paint) }
     }
 
     override fun onCollision(allCollisionBody: List<Body>) {

@@ -6,6 +6,7 @@ import android.view.animation.BounceInterpolator
 import com.ai.zeld.common.media.MusicClip
 import com.ai.zeld.common.media.MusicClipsPlayerManager
 import com.ai.zeld.playground.Body
+import com.ai.zeld.playground.BodyManager
 import com.ai.zeld.playground.R
 import com.ai.zeld.util.idToBitmap
 import com.ai.zeld.util.realPos
@@ -19,10 +20,12 @@ open class BarrierBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
 
     override fun onCollision(allCollisionBody: List<Body>) {
         super.onCollision(allCollisionBody)
-        isAlive = false
-        bombRectF.set(bombBitmap.realPos(PointF(rectF.centerX(), rectF.centerY())))
-        doBomb()
-        playDeadMusic()
+        if (allCollisionBody.count { it.bodyType == BodyManager.BodyType.HERO } > 0) {
+            isAlive = false
+            bombRectF.set(bombBitmap.realPos(PointF(rectF.centerX(), rectF.centerY())))
+            doBomb()
+            playDeadMusic()
+        }
     }
 
     open fun playDeadMusic() {
