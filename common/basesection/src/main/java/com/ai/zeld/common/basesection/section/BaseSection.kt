@@ -29,6 +29,10 @@ abstract class BaseSection : Fragment() {
         sectionId = id
     }
 
+    open fun getCoverId(): Int {
+        return -1
+    }
+
     fun getSectionId() = sectionId
 
     override fun onCreateView(

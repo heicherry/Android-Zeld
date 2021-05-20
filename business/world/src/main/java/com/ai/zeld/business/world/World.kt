@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.fragment.app.FragmentActivity
 import com.ai.zeld.business.world.views.HorseTextView
+import com.ai.zeld.common.basesection.section.BaseSection
 import com.ai.zeld.common.basesection.section.ISectionChangeListener
 import com.ai.zeld.common.service.stage.IStage
 import com.ai.zeld.common.service.world.IWorld
@@ -79,9 +80,11 @@ class World : IWorld {
         }
     }
 
-    override fun getCurrentSectionId(): Int {
-        return 1
-    }
+    override fun getCurrentSectionId() = currentSectionId
+
+    override fun getAllSectionId() = sectionCenter.getAllSectionId()
+
+    override fun getSectionById(id: Int) = sectionCenter.getSectionById(id)
 
     override fun preloadAllSection(progress: ((Float) -> Unit)?, onEnd: (() -> Unit)?) {
         val allSectionId = sectionCenter.getAllSectionId()

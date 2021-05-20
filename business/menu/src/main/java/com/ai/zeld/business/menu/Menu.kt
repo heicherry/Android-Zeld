@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ai.zeld.common.service.menu.IMenu
 import com.ai.zeld.common.uikit.panel.GlobalDialog
 import com.ai.zeld.util.app.App
@@ -46,5 +48,14 @@ class Menu : IMenu {
         }
         dialog.setCancelable(true)
         dialog.show()
+
+        setupRecycleView(view.findViewById(R.id.sections))
+    }
+
+    private fun setupRecycleView(recyclerView: RecyclerView) {
+        val layoutManager = LinearLayoutManager(App.activity)
+        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = MenuAdapter()
     }
 }

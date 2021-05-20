@@ -62,7 +62,6 @@ abstract class BaseBusinessSection : BaseSection(), IGameResult {
 
         view.findViewById<ImageView>(R.id.play_continue).apply {
             setOnClickListener {
-                //TODO: 跳转到下一个场景
                 IWorld::class.java.load().gotoNextSection()
                 dialog.dismiss()
             }
@@ -74,5 +73,9 @@ abstract class BaseBusinessSection : BaseSection(), IGameResult {
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    override fun getCoverId(): Int {
+        return R.drawable.playground_cover_sample
     }
 }
