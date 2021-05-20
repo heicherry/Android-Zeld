@@ -6,7 +6,6 @@ import android.util.AttributeSet
 import android.view.View
 import com.ai.zeld.playground.BaseFunctionControlView
 import com.shawnlin.numberpicker.NumberPicker
-import kotlinx.android.synthetic.main.ellipse_level1_cal.view.*
 import kotlinx.android.synthetic.main.ellipse_level1_cal2.view.*
 import kotlin.math.abs
 import kotlin.math.asin
@@ -24,40 +23,15 @@ class EllipseFunctionCalView(context: Context, attrs: AttributeSet?) :
 
     init {
         inflate(context, R.layout.ellipse_level1_cal2, this)
-
-        x_offset.numberPicker().apply {
-            maxValue = 300
-            minValue = -300
-            value = 1
-            setOnValueChangedListener(this@EllipseFunctionCalView)
-            setOnScrollListener(this@EllipseFunctionCalView)
-        }
-        y_offset.numberPicker().apply {
-            maxValue = 1000
-            minValue = -300
-            value = 100
-            setOnValueChangedListener(this@EllipseFunctionCalView)
-            setOnScrollListener(this@EllipseFunctionCalView)
-        }
-
-        a.numberPicker().apply {
-            value = 100
-            setOnValueChangedListener(this@EllipseFunctionCalView)
-            setOnScrollListener(this@EllipseFunctionCalView)
-        }
-
-        b.numberPicker().apply {
-            value = 150
-            setOnValueChangedListener(this@EllipseFunctionCalView)
-            setOnScrollListener(this@EllipseFunctionCalView)
-        }
-
-        initAre = a.numberPicker().value * b.numberPicker().value * Math.PI / 2
+        reset()
     }
 
     fun setFunctionChangeListener(listener: (function: TriangleFunction) -> Unit) {
         this.listener = listener
-        onScrollStateChange(x_2_end, NumberPicker.OnScrollListener.SCROLL_STATE_IDLE)
+        onScrollStateChange(
+            x_offset.numberPicker(),
+            NumberPicker.OnScrollListener.SCROLL_STATE_IDLE
+        )
     }
 
     fun setErrorCallback(errorCallback: ErrorCallback) {
@@ -123,4 +97,49 @@ class EllipseFunctionCalView(context: Context, attrs: AttributeSet?) :
         a.numberPicker().value * b.numberPicker().value * Math.PI >= initAre
 
     private fun View.numberPicker(): NumberPicker = this as NumberPicker
+
+    override fun reset() {
+        super.reset()
+
+        x_offset.numberPicker().apply {
+            maxValue = 300
+            minValue = -300
+            value = 0
+            setOnValueChangedListener(this@EllipseFunctionCalView)
+            setOnScrollListener(this@EllipseFunctionCalView)
+        }
+        y_offset.numberPicker().apply {
+            maxValue = 1000
+            minValue = -300
+            value = 0
+            setOnValueChangedListener(this@EllipseFunctionCalView)
+            setOnScrollListener(this@EllipseFunctionCalView)
+        }
+
+        a.numberPicker().apply {
+            value = 100
+            setOnValueChangedListener(this@EllipseFunctionCalView)
+            setOnScrollListener(this@EllipseFunctionCalView)
+        }
+
+        b.numberPicker().apply {
+            value = 150
+            setOnValueChangedListener(this@EllipseFunctionCalView)
+            setOnScrollListener(this@EllipseFunctionCalView)
+        }
+
+        initAre = a.numberPicker().value * b.numberPicker().value * Math.PI / 2
+    }
+
+    fun reset(x_offset: Int, y_offset: Int, a: Int, b: Int) {
+        this.x_offset.numberPicker().value = x_offset
+        this.y_offset.numberPicker().value = y_offset
+        this.a.numberPicker().value = a
+        this.b.numberPicker().value = b
+
+        onScrollStateChange(
+            this.x_offset.numberPicker(),
+            NumberPicker.OnScrollListener.SCROLL_STATE_IDLE
+        )
+    }
 }

@@ -15,6 +15,7 @@ import com.ai.zeld.common.media.MusicClip
 import com.ai.zeld.common.media.MusicClipsPlayerManager
 import com.ai.zeld.common.service.stage.IStage
 import com.ai.zeld.common.service.world.IWorld
+import com.ai.zeld.playground.BaseBusinessSection
 import com.ai.zeld.playground.BodyManager
 import com.ai.zeld.playground.Box2DView
 import com.ai.zeld.playground.IGameResult
@@ -26,15 +27,15 @@ import com.ai.zeld.util.idToBitmap
 import com.ai.zeld.util.postInMainDelay
 import com.badlogic.gdx.physics.box2d.Box2D
 
-
-class EllipseLevel1Section : BaseSection(), IGameResult {
+@Section(SectionConfig.ELLIPSE_MIN)
+open class EllipseLevel1Section : BaseBusinessSection() {
     private lateinit var world: IWorld
     private lateinit var stage: IStage
     private lateinit var box2DView: Box2DView
-    private lateinit var functionControlView: EllipseFunctionCalView
-    private lateinit var bodyManager: BodyManager
-    private lateinit var flyBody: BallRing
-    private lateinit var targetBody: TargetBallRing
+    protected lateinit var functionControlView: EllipseFunctionCalView
+    protected lateinit var bodyManager: BodyManager
+    protected lateinit var flyBody: BallRing
+    protected lateinit var targetBody: TargetBallRing
 
     @SuppressLint("InflateParams")
     override fun onBuildViewTree(): View {
@@ -69,7 +70,7 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
         box2DView.showBoundary(true)
     }
 
-    private fun initFlyBody() {
+    protected open fun initFlyBody() {
         flyBody = bodyManager.createBody(
             BodyManager.BodyType.HERO,
             RectF(),
@@ -84,7 +85,7 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
         flyBody.setGameListener(this)
     }
 
-    private fun initTargetBody() {
+    protected open fun initTargetBody() {
         targetBody = bodyManager.createBody(
             BodyManager.BodyType.OTHERS,
             RectF(),
@@ -93,7 +94,7 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
         targetBody.setFunctionCal(TriangleFunction(EllipseData(1F, 100F, 100F, 100F)))
     }
 
-    private fun initFunctionControlPanel() {
+    protected open fun initFunctionControlPanel() {
         functionControlView = rootViewTree!!.findViewById(R.id.function_control)
         functionControlView.setFunctionChangeListener {
             flyBody.setFunctionCal(it)
@@ -114,29 +115,12 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
         }
     }
 
-    private fun initMonsters() {
-        // createBarrier(240F, 900F, R.drawable.ellipse_level1_mine)
+    protected open fun initMonsters() {
         createBarrier(440F, 790F, R.drawable.playground_mine)
         createBarrier(600F, 1000F, R.drawable.playground_mine)
-
-        bodyManager.createBody<VirusBody>(
-            BodyManager.BodyType.BARRIER,
-            PointF(700F, 200F), R.drawable.playground_virus.idToBitmap()
-        )
-
-        bodyManager.createBody<BallRing>(
-            BodyManager.BodyType.OTHERS,
-            PointF(300F, 900F), R.drawable.playground_diamond.idToBitmap()
-        )
-
-        bodyManager.createBody<Coin>(
-            BodyManager.BodyType.COIN,
-            PointF(900F, 900F),
-            R.drawable.playground_coin_1.idToBitmap()
-        )
     }
 
-    private fun createBarrier(x: Float, y: Float, bitmapId: Int) {
+    protected fun createBarrier(x: Float, y: Float, bitmapId: Int) {
         bodyManager.createBody<BarrierBody>(
             BodyManager.BodyType.BARRIER,
             PointF(x, y), bitmapId.idToBitmap()
@@ -149,25 +133,22 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
         box2DView.updatePlayGround(y)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }
-
-    override fun onSectionEnter() {
-        super.onSectionEnter()
-
-    }
-
     override fun onReset() {
-        TODO("Not yet implemented")
+        bodyManager.reset()
+        initFlyBody()
+        initMonsters()
+        initTargetBody()
+        functionControlView.reset()
+        initFunctionControlPanel()
     }
 
     override fun onSucceed(diamondCount: Int) {
-        Log.i("ayy", "成功了")
+        super.onSucceed(diamondCount)
+        showGameResultHintDialog(true)
     }
 
     override fun onFailed() {
-        Log.i("ayy", "失败了！！")
+        super.onFailed()
+        showGameResultHintDialog(false)
     }
 }
