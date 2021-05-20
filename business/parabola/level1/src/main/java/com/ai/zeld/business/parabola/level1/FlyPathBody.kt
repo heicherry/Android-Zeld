@@ -127,6 +127,7 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
             if (runningIndex >= endIndex) {
                 bandingView?.rotation = 0F
                 flyListener?.onFlyEnd()
+                gameResultListener?.onSucceed(allDiamonds.size)
             }
         }
         postInvalidate()

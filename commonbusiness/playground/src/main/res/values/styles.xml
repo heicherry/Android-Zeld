@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="DialogInStyle">
+        <item name="android:windowEnterAnimation">@anim/playground_game_result_pop</item>
+    </style>
+</resources>

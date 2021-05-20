@@ -188,16 +188,18 @@ class ParabolaLevel1Section : BaseSection(), IGameResult {
     }
 
     override fun onSucceed(diamondCount: Int) {
-        Log.i("ayy", "成功了")
+        showGameResultHintDialog(true, {
+            reset()
+        }, {
+            Log.i("ayy", "点击了继续下一步")
+        })
     }
 
     override fun onFailed() {
-        Log.i("ayy", "失败了！！")
         val originalBitmap = R.drawable.uikit_superman_waiting_for_fly.idToBitmap()
         val superMan = rootViewTree!!.findViewById<ImageView>(R.id.superman)
         superMan.setImageBitmap(originalBitmap)
-
-        showGameResultHintDialog(true, {
+        showGameResultHintDialog(false, {
             reset()
         }, {
             Log.i("ayy", "点击了继续下一步")

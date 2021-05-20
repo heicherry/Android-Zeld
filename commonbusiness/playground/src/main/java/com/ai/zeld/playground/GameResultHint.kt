@@ -25,7 +25,9 @@ fun showGameResultHintDialog(succeed: Boolean, again: Block, next: Block) {
     dialog.window?.let {
         it.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         it.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        it.setWindowAnimations(R.style.DialogInStyle)
     }
+
     view.findViewById<ImageView>(R.id.play_continue).setOnClickListener {
         next()
         dialog.dismiss()
