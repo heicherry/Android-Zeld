@@ -14,10 +14,12 @@ object SectionConfig {
     const val FLY_HIGH = 30//FLY_MIDDLE + 1
 
     // 完璧归赵
-    const val ELLIPSE_MIN = 2
-    const val ELLIPSE_MIDDLE = 3
-    const val ELLIPSE_HIGH = 1
+    const val ELLIPSE_MIN = 40
+    const val ELLIPSE_MIDDLE = 50
+    const val ELLIPSE_HIGH = 60
 
     // 英雄不能飞
-    //const val HERO_CAN_NOT_FLY = MASONRY_LOVE_1 + 1
+    const val WAVE_MIN = 1
+    const val WAVE_MIDDLE = 2
+    const val WAVE_HIGH = 3
 }

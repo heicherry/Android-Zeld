@@ -44,11 +44,14 @@ open class EllipseLevel1Section : BaseBusinessSection() {
 
     override fun onPreload() {
         super.onPreload()
-        Box2D.init()
         world = IWorld::class.java.load()
         stage = IStage::class.java.load()
         initCoordinate()
         initViews()
+    }
+
+    override fun onSectionEnter() {
+        super.onSectionEnter()
         initPlayGround()
         initFlyBody()
         initMonsters()
