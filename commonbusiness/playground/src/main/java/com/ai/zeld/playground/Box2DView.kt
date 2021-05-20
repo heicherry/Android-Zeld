@@ -39,7 +39,6 @@ class Box2DView : View {
     private val stage = IStage::class.java.load()
     private var playGround: Box2dBody? = null
 
-
     // 非Box2d的世界
     private val bodyManager = BodyManager(world) {
         postInvalidate()
@@ -68,7 +67,6 @@ class Box2DView : View {
         )
     }
 
-
     fun showBoundary(show: Boolean) {
         if (boundaryShow != show) postInvalidate()
         boundaryShow = show
@@ -81,11 +79,8 @@ class Box2DView : View {
         val end =
             stage.getCoordinateRect().right - resources.getDimension(R.dimen.playground_margin_right)
         playGroundRectF.set(start, y, end, y + 1)
-        playGround?.let { world.destroyBody(it) }
-        playGround = playGroundRectF.convertToBody(world, BodyDef.BodyType.StaticBody, false)
         postInvalidate()
     }
-
 
     private fun drawBoundary(canvas: Canvas) {
         (boundaryLeftRectF + boundaryRightRectF + boundaryTopRectF + boundaryBottomRectF).forEach {
@@ -93,15 +88,10 @@ class Box2DView : View {
         }
     }
 
-
     private fun createBounds() {
         (boundaryLeftRectF + boundaryRightRectF + boundaryTopRectF + boundaryBottomRectF).forEach {
             it.convertToBody(world, BodyDef.BodyType.StaticBody, false, 0.8F)
         }
-    }
-
-    private fun drawPlayGround(canvas: Canvas) {
-        playGroundRectF.draw(canvas,Color.BLUE)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -110,7 +100,6 @@ class Box2DView : View {
         if (boundaryShow) {
             drawBoundary(canvas)
         }
-        drawPlayGround(canvas)
         bodyManager.draw(canvas)
         postInvalidate()
     }

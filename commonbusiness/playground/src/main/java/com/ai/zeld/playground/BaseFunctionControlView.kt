@@ -1,4 +1,4 @@
-package com.ai.zeld.business.ellipse.level1
+package com.ai.zeld.playground
 
 import android.content.Context
 import android.os.Vibrator
@@ -16,5 +16,9 @@ open class BaseFunctionControlView(context: Context, attrs: AttributeSet?) : Fra
     }
 
     override fun onScrollStateChange(view: NumberPicker?, scrollState: Int) {
+    }
+
+    open fun reset(){
+
     }
 }

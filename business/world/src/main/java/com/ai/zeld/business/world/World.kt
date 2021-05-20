@@ -140,6 +140,7 @@ class World : IWorld {
         val section = sectionCenter.getSectionById(targetId)
         fragmentActivity.supportFragmentManager.beginTransaction().replace(R.id.stage, section)
             .commitNowAllowingStateLoss()
+        currentSectionId = targetId
         section.onSectionEnter()
         sectionChangeListeners.dispatchInvoke {
             it.onSectionChanged(

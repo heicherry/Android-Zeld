@@ -75,15 +75,6 @@ class BallRing(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         hPoint = end
     }
 
-    override fun startPlay() {
-        super.startPlay()
-        run()
-    }
-
-    private fun run() {
-
-    }
-
     override fun draw(canvas: Canvas) {
         drawFloatingWave(canvas)
         paint.color = Color.BLUE

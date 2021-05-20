@@ -159,6 +159,10 @@ class EllipseLevel1Section : BaseSection(), IGameResult {
 
     }
 
+    override fun onReset() {
+        TODO("Not yet implemented")
+    }
+
     override fun onSucceed(diamondCount: Int) {
         Log.i("ayy", "成功了")
     }

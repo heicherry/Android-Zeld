@@ -3,7 +3,7 @@ package com.ai.zeld.business.parabola.level1
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import com.ai.zeld.business.ellipse.level1.BaseFunctionControlView
+import com.ai.zeld.playground.BaseFunctionControlView
 import com.ai.zeld.util.square
 import com.shawnlin.numberpicker.NumberPicker
 import kotlinx.android.synthetic.main.parabola_level1_cal.view.*
@@ -18,29 +18,7 @@ class ParabolaFunctionCalView(context: Context, attrs: AttributeSet?) :
 
     init {
         inflate(context, R.layout.parabola_level1_cal, this)
-
-        a.numberPicker().apply {
-            maxValue = 300
-            minValue = -300
-            value = -96
-            setOnValueChangedListener(this@ParabolaFunctionCalView)
-            setOnScrollListener(this@ParabolaFunctionCalView)
-        }
-        b.numberPicker().apply {
-            maxValue = 1000
-            minValue = -300
-            value = 15
-            setOnValueChangedListener(this@ParabolaFunctionCalView)
-            setOnScrollListener(this@ParabolaFunctionCalView)
-        }
-
-        c.numberPicker().apply {
-            maxValue = 1000
-            minValue = -1000
-            value = 95
-            setOnValueChangedListener(this@ParabolaFunctionCalView)
-            setOnScrollListener(this@ParabolaFunctionCalView)
-        }
+        reset()
     }
 
     fun setFunctionChangeListener(listener: (function: ParabolaFunction) -> Unit) {
@@ -58,4 +36,33 @@ class ParabolaFunctionCalView(context: Context, attrs: AttributeSet?) :
     }
 
     private fun View.numberPicker(): NumberPicker = this as NumberPicker
+
+
+    override fun reset() {
+        super.reset()
+        a.numberPicker().apply {
+            maxValue = 300
+            minValue = -300
+            value = -143
+            setOnValueChangedListener(this@ParabolaFunctionCalView)
+            setOnScrollListener(this@ParabolaFunctionCalView)
+        }
+        b.numberPicker().apply {
+            maxValue = 1000
+            minValue = -300
+            value = -7
+            setOnValueChangedListener(this@ParabolaFunctionCalView)
+            setOnScrollListener(this@ParabolaFunctionCalView)
+        }
+
+        c.numberPicker().apply {
+            maxValue = 1000
+            minValue = -1000
+            value = 118
+            setOnValueChangedListener(this@ParabolaFunctionCalView)
+            setOnScrollListener(this@ParabolaFunctionCalView)
+        }
+
+        onScrollStateChange(a.numberPicker(), NumberPicker.OnScrollListener.SCROLL_STATE_IDLE)
+    }
 }

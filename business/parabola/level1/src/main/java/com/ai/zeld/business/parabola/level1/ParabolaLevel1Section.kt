@@ -3,36 +3,36 @@ package com.ai.zeld.business.parabola.level1
 import android.annotation.SuppressLint
 import android.graphics.PointF
 import android.graphics.RectF
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import com.ai.zeld.common.basesection.annotation.Section
-import com.ai.zeld.common.basesection.section.BaseSection
 import com.ai.zeld.common.basesection.section.SectionConfig
 import com.ai.zeld.common.media.MusicClip
 import com.ai.zeld.common.media.MusicClipsPlayerManager
 import com.ai.zeld.common.service.stage.IStage
 import com.ai.zeld.common.service.world.IWorld
+import com.ai.zeld.playground.BaseBusinessSection
 import com.ai.zeld.playground.BodyManager
 import com.ai.zeld.playground.Box2DView
-import com.ai.zeld.playground.IGameResult
 import com.ai.zeld.playground.body.BarrierBody
 import com.ai.zeld.playground.body.Coin
 import com.ai.zeld.playground.body.VirusBody
-import com.ai.zeld.util.*
 import com.ai.zeld.util.claymore.load
+import com.ai.zeld.util.idToBitmap
+import com.ai.zeld.util.postInMainDelay
+import com.ai.zeld.util.px2dp
+import com.ai.zeld.util.showRectF
 import com.badlogic.gdx.physics.box2d.Box2D
 
 
-@Section(SectionConfig.HERO_CAN_NOT_FLY)
-class ParabolaLevel1Section : BaseSection(), IGameResult {
+@Section(SectionConfig.FLY_MIN)
+open class ParabolaLevel1Section : BaseBusinessSection() {
     private lateinit var world: IWorld
     private lateinit var stage: IStage
     private lateinit var box2DView: Box2DView
     private lateinit var functionControlView: ParabolaFunctionCalView
-    private lateinit var bodyManager: BodyManager
+    protected lateinit var bodyManager: BodyManager
     private lateinit var flyBody: FlyPathBody
 
     @SuppressLint("InflateParams")
@@ -135,29 +135,12 @@ class ParabolaLevel1Section : BaseSection(), IGameResult {
         }
     }
 
-    private fun initMonsters() {
-        // createBarrier(240F, 900F, R.drawable.ellipse_level1_mine)
+    protected open fun initMonsters() {
         createBarrier(440F, 790F, R.drawable.playground_mine)
         createBarrier(600F, 1000F, R.drawable.playground_mine)
-
-        bodyManager.createBody<VirusBody>(
-            BodyManager.BodyType.BARRIER,
-            PointF(700F, 200F), R.drawable.playground_virus.idToBitmap()
-        )
-
-        bodyManager.createBody<FlyPathBody>(
-            BodyManager.BodyType.OTHERS,
-            PointF(300F, 900F), R.drawable.playground_diamond.idToBitmap()
-        )
-
-        bodyManager.createBody<Coin>(
-            BodyManager.BodyType.COIN,
-            PointF(900F, 900F),
-            R.drawable.playground_coin_1.idToBitmap()
-        )
     }
 
-    private fun createBarrier(x: Float, y: Float, bitmapId: Int) {
+    protected fun createBarrier(x: Float, y: Float, bitmapId: Int) {
         bodyManager.createBody<BarrierBody>(
             BodyManager.BodyType.BARRIER,
             PointF(x, y), bitmapId.idToBitmap()
@@ -170,20 +153,21 @@ class ParabolaLevel1Section : BaseSection(), IGameResult {
         box2DView.updatePlayGround(y)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }
-
-    override fun onSectionEnter() {
-        super.onSectionEnter()
+    override fun onReset() {
+        bodyManager.reset()
+        initFlyBody()
+        initMonsters()
+        functionControlView.reset()
     }
 
     override fun onSucceed(diamondCount: Int) {
-        Log.i("ayy", "成功了")
+        showGameResultHintDialog(true)
     }
 
     override fun onFailed() {
-        Log.i("ayy", "失败了！！")
+        val originalBitmap = R.drawable.uikit_superman_waiting_for_fly.idToBitmap()
+        val superMan = rootViewTree!!.findViewById<ImageView>(R.id.superman)
+        superMan.setImageBitmap(originalBitmap)
+        showGameResultHintDialog(false)
     }
 }

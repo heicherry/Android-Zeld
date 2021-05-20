@@ -207,3 +207,11 @@ fun View.moveCenterTo(center: PointF) {
     translationX = center.x - originCenter.x
     translationY = center.y - originCenter.y
 }
+
+fun View.resetPos() {
+    translationX = 0F
+    translationY = 0F
+    rotation = 0F
+}
+
+typealias Block = () -> Unit
