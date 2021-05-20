@@ -136,7 +136,7 @@ class WaveLevel1Section : BaseSection(), IGameResult {
 
     }
 
-    override fun reset() {
+    override fun onReset() {
         TODO("Not yet implemented")
     }
 

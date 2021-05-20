@@ -44,7 +44,7 @@ class StorylineSection : BaseSection() {
         startTalkStoryLine()
     }
 
-    override fun reset() {
+    override fun onReset() {
 
     }
 

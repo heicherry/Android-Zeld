@@ -9,7 +9,7 @@ import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import com.ai.zeld.common.basesection.speak.ISpeakStage
 
-abstract class BaseSection : Fragment() {
+abstract class BaseSection : Fragment(){
     protected var rootViewTree: View? = null
     private var sectionId = 0
     protected lateinit var localContext: Context
@@ -52,7 +52,7 @@ abstract class BaseSection : Fragment() {
 
     }
 
-    abstract fun reset()
+    abstract fun onReset()
 }
 
 enum class State {

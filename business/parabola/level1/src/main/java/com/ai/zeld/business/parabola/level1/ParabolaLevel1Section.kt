@@ -3,32 +3,31 @@ package com.ai.zeld.business.parabola.level1
 import android.annotation.SuppressLint
 import android.graphics.PointF
 import android.graphics.RectF
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import com.ai.zeld.common.basesection.annotation.Section
-import com.ai.zeld.common.basesection.section.BaseSection
 import com.ai.zeld.common.basesection.section.SectionConfig
 import com.ai.zeld.common.media.MusicClip
 import com.ai.zeld.common.media.MusicClipsPlayerManager
 import com.ai.zeld.common.service.stage.IStage
 import com.ai.zeld.common.service.world.IWorld
+import com.ai.zeld.playground.BaseBusinessSection
 import com.ai.zeld.playground.BodyManager
 import com.ai.zeld.playground.Box2DView
-import com.ai.zeld.playground.IGameResult
 import com.ai.zeld.playground.body.BarrierBody
 import com.ai.zeld.playground.body.Coin
 import com.ai.zeld.playground.body.VirusBody
-import com.ai.zeld.playground.showGameResultHintDialog
-import com.ai.zeld.util.*
 import com.ai.zeld.util.claymore.load
+import com.ai.zeld.util.idToBitmap
+import com.ai.zeld.util.postInMainDelay
+import com.ai.zeld.util.px2dp
+import com.ai.zeld.util.showRectF
 import com.badlogic.gdx.physics.box2d.Box2D
 
 
 @Section(SectionConfig.HERO_CAN_NOT_FLY)
-class ParabolaLevel1Section : BaseSection(), IGameResult {
+class ParabolaLevel1Section : BaseBusinessSection() {
     private lateinit var world: IWorld
     private lateinit var stage: IStage
     private lateinit var box2DView: Box2DView
@@ -171,16 +170,7 @@ class ParabolaLevel1Section : BaseSection(), IGameResult {
         box2DView.updatePlayGround(y)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }
-
-    override fun onSectionEnter() {
-        super.onSectionEnter()
-    }
-
-    override fun reset() {
+    override fun onReset() {
         bodyManager.reset()
         initFlyBody()
         initMonsters()
@@ -188,21 +178,13 @@ class ParabolaLevel1Section : BaseSection(), IGameResult {
     }
 
     override fun onSucceed(diamondCount: Int) {
-        showGameResultHintDialog(true, {
-            reset()
-        }, {
-            Log.i("ayy", "点击了继续下一步")
-        })
+        showGameResultHintDialog(true)
     }
 
     override fun onFailed() {
         val originalBitmap = R.drawable.uikit_superman_waiting_for_fly.idToBitmap()
         val superMan = rootViewTree!!.findViewById<ImageView>(R.id.superman)
         superMan.setImageBitmap(originalBitmap)
-        showGameResultHintDialog(false, {
-            reset()
-        }, {
-            Log.i("ayy", "点击了继续下一步")
-        })
+        showGameResultHintDialog(false)
     }
 }
