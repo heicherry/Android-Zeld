@@ -26,13 +26,13 @@ import com.ai.zeld.util.showRectF
 import com.badlogic.gdx.physics.box2d.Box2D
 
 
-@Section(SectionConfig.HERO_CAN_NOT_FLY)
-class ParabolaLevel1Section : BaseBusinessSection() {
+@Section(SectionConfig.FLY_MIN)
+open class ParabolaLevel1Section : BaseBusinessSection() {
     private lateinit var world: IWorld
     private lateinit var stage: IStage
     private lateinit var box2DView: Box2DView
     private lateinit var functionControlView: ParabolaFunctionCalView
-    private lateinit var bodyManager: BodyManager
+    protected lateinit var bodyManager: BodyManager
     private lateinit var flyBody: FlyPathBody
 
     @SuppressLint("InflateParams")
@@ -135,29 +135,12 @@ class ParabolaLevel1Section : BaseBusinessSection() {
         }
     }
 
-    private fun initMonsters() {
-        // createBarrier(240F, 900F, R.drawable.ellipse_level1_mine)
+    protected open fun initMonsters() {
         createBarrier(440F, 790F, R.drawable.playground_mine)
         createBarrier(600F, 1000F, R.drawable.playground_mine)
-
-        bodyManager.createBody<VirusBody>(
-            BodyManager.BodyType.BARRIER,
-            PointF(700F, 200F), R.drawable.playground_virus.idToBitmap()
-        )
-
-        bodyManager.createBody<FlyPathBody>(
-            BodyManager.BodyType.OTHERS,
-            PointF(300F, 900F), R.drawable.playground_diamond.idToBitmap()
-        )
-
-        bodyManager.createBody<Coin>(
-            BodyManager.BodyType.COIN,
-            PointF(900F, 900F),
-            R.drawable.playground_coin_1.idToBitmap()
-        )
     }
 
-    private fun createBarrier(x: Float, y: Float, bitmapId: Int) {
+    protected fun createBarrier(x: Float, y: Float, bitmapId: Int) {
         bodyManager.createBody<BarrierBody>(
             BodyManager.BodyType.BARRIER,
             PointF(x, y), bitmapId.idToBitmap()

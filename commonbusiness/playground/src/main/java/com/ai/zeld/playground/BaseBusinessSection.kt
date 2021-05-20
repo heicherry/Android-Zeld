@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.ai.zeld.common.basesection.section.BaseSection
+import com.ai.zeld.common.service.world.IWorld
 import com.ai.zeld.common.uikit.panel.GlobalDialog
 import com.ai.zeld.util.app.App
+import com.ai.zeld.util.claymore.load
 import com.ai.zeld.util.idToBitmap
 
 abstract class BaseBusinessSection : BaseSection(), IGameResult {
@@ -38,6 +40,7 @@ abstract class BaseBusinessSection : BaseSection(), IGameResult {
 
         view.findViewById<ImageView>(R.id.play_continue).setOnClickListener {
             //TODO: 跳转到下一个场景
+            IWorld::class.java.load().gotoNextSection()
             dialog.dismiss()
         }
 

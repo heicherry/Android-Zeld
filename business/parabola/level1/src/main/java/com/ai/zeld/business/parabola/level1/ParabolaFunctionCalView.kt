@@ -43,14 +43,14 @@ class ParabolaFunctionCalView(context: Context, attrs: AttributeSet?) :
         a.numberPicker().apply {
             maxValue = 300
             minValue = -300
-            value = -96
+            value = -125
             setOnValueChangedListener(this@ParabolaFunctionCalView)
             setOnScrollListener(this@ParabolaFunctionCalView)
         }
         b.numberPicker().apply {
             maxValue = 1000
             minValue = -300
-            value = 15
+            value = -59
             setOnValueChangedListener(this@ParabolaFunctionCalView)
             setOnScrollListener(this@ParabolaFunctionCalView)
         }
@@ -58,7 +58,7 @@ class ParabolaFunctionCalView(context: Context, attrs: AttributeSet?) :
         c.numberPicker().apply {
             maxValue = 1000
             minValue = -1000
-            value = 95
+            value = 85
             setOnValueChangedListener(this@ParabolaFunctionCalView)
             setOnScrollListener(this@ParabolaFunctionCalView)
         }
