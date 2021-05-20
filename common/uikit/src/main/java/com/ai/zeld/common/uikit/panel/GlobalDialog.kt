@@ -7,12 +7,16 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import com.ai.zeld.util.app.App
 
-class GlobalDialog(context: Context, val view: View) : Dialog(context) {
+class GlobalDialog(val view: View) : Dialog(App.activity) {
+
+    init {
+        setCancelable(false)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setCancelable(false)
         setContentView(view)
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         //一定要在setContentView之后调用，否则无效
