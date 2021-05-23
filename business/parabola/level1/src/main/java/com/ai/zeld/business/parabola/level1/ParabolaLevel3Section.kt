@@ -3,13 +3,15 @@ package com.ai.zeld.business.parabola.level1
 import android.graphics.PointF
 import com.ai.zeld.common.basesection.annotation.Section
 import com.ai.zeld.common.basesection.section.SectionConfig
+import com.ai.zeld.common.basesection.section.SectionLevel
+import com.ai.zeld.common.basesection.section.SectionTitle
 import com.ai.zeld.playground.BodyManager
 import com.ai.zeld.playground.body.Coin
 import com.ai.zeld.playground.body.VirusBody
 import com.ai.zeld.util.idToBitmap
 
 
-@Section(SectionConfig.FLY_HIGH)
+@Section(SectionConfig.FLY_HIGH,  title = SectionTitle.PARABOLA, level = SectionLevel.HARD)
 class ParabolaLevel3Section : ParabolaLevel1Section() {
     override fun initMonsters() {
         createBarrier(240F, 1000F, R.drawable.playground_mine)

@@ -12,12 +12,14 @@ import com.ai.zeld.common.media.BackgroundMusicPlayer
 import com.ai.zeld.common.service.world.IWorld
 import com.ai.zeld.util.claymore.load
 import com.ai.zeld.util.postInMainDelay
+import com.badlogic.gdx.physics.box2d.Box2D
 import kotlinx.android.synthetic.main.splash_main.*
 
-@Section(SectionConfig.SPLASH)
+@Section(SectionConfig.SPLASH, level = "", title = "")
 class SplashSection : BaseSection() {
     override fun onPreload() {
         super.onPreload()
+        Box2D.init()
         // 这里不能做任何事情。
     }
 

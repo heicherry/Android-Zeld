@@ -6,7 +6,6 @@ import androidx.annotation.Keep
 object SectionConfig {
     const val SPLASH = 0
 
-//    const val STORYLINE = HERO_CAN_NOT_FLY + 1
     const val STORYLINE = 100//SPLASH + 1
 
     // 隔岸表白
@@ -14,10 +13,25 @@ object SectionConfig {
     const val FLY_MIDDLE = 20//FLY_MIN + 1
     const val FLY_HIGH = 30//FLY_MIDDLE + 1
 
-    // 砖石情缘
-//    const val MASONRY_LOVE = LEAP_FIRE_2 + 1
-//    const val MASONRY_LOVE_1 = MASONRY_LOVE + 1
+    // 完璧归赵
+    const val ELLIPSE_MIN = 40
+    const val ELLIPSE_MIDDLE = 50
+    const val ELLIPSE_HIGH = 60
 
     // 英雄不能飞
-    //const val HERO_CAN_NOT_FLY = MASONRY_LOVE_1 + 1
+    const val WAVE_MIN = 70
+    const val WAVE_MIDDLE = 80
+    const val WAVE_HIGH = 90
+}
+
+object SectionTitle {
+    const val PARABOLA = "抛物线"
+    const val ELLIPSE = "椭圆"
+    const val WAVE = "三角函数"
+}
+
+object SectionLevel {
+    const val EASY = "easy"
+    const val MIDDLE = "middle"
+    const val HARD = "hard"
 }

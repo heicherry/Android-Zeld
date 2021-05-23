@@ -111,6 +111,7 @@ dependencies {
     implementation(project(":business:storyline"))
     implementation(project(":business:splash"))
     implementation(project(":business:world"))
+    implementation(project(":business:menu"))
 
     // common business
     implementation(project(":commonbusiness:playground"))

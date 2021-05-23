@@ -53,7 +53,7 @@ class FlyBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
     }
 
     private fun run() {
-        if (isDestroy) return
+        if (isDestroy || !isAlive) return
         if (isEnd()) return
         val array = floatArray ?: return
         val point = PointF(array[index], array[index + 1])

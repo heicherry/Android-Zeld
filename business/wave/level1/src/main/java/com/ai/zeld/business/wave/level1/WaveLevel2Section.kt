@@ -1,4 +1,4 @@
-package com.ai.zeld.business.parabola.level1
+package com.ai.zeld.business.wave.level1
 
 import android.graphics.PointF
 import com.ai.zeld.common.basesection.annotation.Section
@@ -7,22 +7,21 @@ import com.ai.zeld.common.basesection.section.SectionLevel
 import com.ai.zeld.common.basesection.section.SectionTitle
 import com.ai.zeld.playground.BodyManager
 import com.ai.zeld.playground.body.Coin
+import com.ai.zeld.playground.body.ShakeBarrierBody
 import com.ai.zeld.playground.body.VirusBody
 import com.ai.zeld.util.idToBitmap
 
-
-@Section(SectionConfig.FLY_MIDDLE, title = SectionTitle.PARABOLA, level = SectionLevel.MIDDLE)
-class ParabolaLevel2Section : ParabolaLevel1Section() {
+@Section(SectionConfig.WAVE_MIDDLE, title = SectionTitle.WAVE, level = SectionLevel.MIDDLE)
+class WaveLevel2Section : WaveLevel1Section() {
 
     override fun initMonsters() {
-        createBarrier(340F, 1200F, R.drawable.playground_mine)
-        createBarrier(600F, 900F, R.drawable.playground_mine)
-        createBarrier(800F, 1300F, R.drawable.playground_mine)
+        // createBarrier(240F, 900F, R.drawable.ellipse_level1_mine)
+        createBarrier(440F, 790F, R.drawable.playground_mine)
+        createBarrier(600F, 1000F, R.drawable.playground_mine)
 
         bodyManager.createBody<VirusBody>(
             BodyManager.BodyType.BARRIER,
-            PointF(500F, 200F), R.drawable.playground_virus.idToBitmap()
+            PointF(700F, 200F), R.drawable.playground_virus.idToBitmap()
         )
     }
-
 }

@@ -1,6 +1,7 @@
 package com.ai.zeld.common.service.world
 
 import android.content.Context
+import com.ai.zeld.common.basesection.section.BaseSection
 import com.ai.zeld.common.basesection.section.ISectionChangeListener
 
 interface IWorld {
@@ -11,6 +12,10 @@ interface IWorld {
     fun gotoNextSectionLater()
 
     fun getCurrentSectionId(): Int
+
+    fun getAllSectionId(): List<Int>
+
+    fun getSectionById(id: Int): BaseSection
 
     fun preloadAllSection(progress: ((Float) -> Unit)? = null, onEnd: (() -> Unit)? = null)
 

@@ -20,7 +20,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.xmlpull.v1.XmlPullParser
 
-@Section(SectionConfig.STORYLINE)
+@Section(SectionConfig.STORYLINE, level = "", title = "")
 class StorylineSection : BaseSection() {
     private lateinit var storyline: Storyline
     override fun onPreload() {

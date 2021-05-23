@@ -7,7 +7,7 @@ class Versions{
 
 
     static androidx_constraintlayout                        = "1.1.3"
-    static androidx_recyclerview                            = "1.1.0"
+    static androidx_recyclerview                            = "1.2.0"
     static androidx_material                                = "1.0"
 
     static kotlin_coroutines                                = "1.3.3"
