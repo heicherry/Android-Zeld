@@ -15,7 +15,7 @@ import com.ai.zeld.util.postInMainDelay
 import com.badlogic.gdx.physics.box2d.Box2D
 import kotlinx.android.synthetic.main.splash_main.*
 
-@Section(SectionConfig.SPLASH)
+@Section(SectionConfig.SPLASH, level = "", title = "")
 class SplashSection : BaseSection() {
     override fun onPreload() {
         super.onPreload()

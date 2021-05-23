@@ -8,6 +8,8 @@ import android.view.View
 import android.widget.ImageView
 import com.ai.zeld.common.basesection.annotation.Section
 import com.ai.zeld.common.basesection.section.SectionConfig
+import com.ai.zeld.common.basesection.section.SectionLevel
+import com.ai.zeld.common.basesection.section.SectionTitle
 import com.ai.zeld.common.media.MusicClip
 import com.ai.zeld.common.media.MusicClipsPlayerManager
 import com.ai.zeld.common.service.stage.IStage
@@ -26,7 +28,7 @@ import com.ai.zeld.util.showRectF
 import com.badlogic.gdx.physics.box2d.Box2D
 
 
-@Section(SectionConfig.FLY_MIN)
+@Section(SectionConfig.FLY_MIN, title = SectionTitle.PARABOLA, level = SectionLevel.EASY)
 open class ParabolaLevel1Section : BaseBusinessSection() {
     private lateinit var world: IWorld
     private lateinit var stage: IStage

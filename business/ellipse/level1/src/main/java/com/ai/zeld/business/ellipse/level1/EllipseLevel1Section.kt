@@ -11,6 +11,8 @@ import android.widget.ImageView
 import com.ai.zeld.common.basesection.annotation.Section
 import com.ai.zeld.common.basesection.section.BaseSection
 import com.ai.zeld.common.basesection.section.SectionConfig
+import com.ai.zeld.common.basesection.section.SectionLevel
+import com.ai.zeld.common.basesection.section.SectionTitle
 import com.ai.zeld.common.media.MusicClip
 import com.ai.zeld.common.media.MusicClipsPlayerManager
 import com.ai.zeld.common.service.stage.IStage
@@ -27,7 +29,7 @@ import com.ai.zeld.util.idToBitmap
 import com.ai.zeld.util.postInMainDelay
 import com.badlogic.gdx.physics.box2d.Box2D
 
-@Section(SectionConfig.ELLIPSE_MIN)
+@Section(SectionConfig.ELLIPSE_MIN, title = SectionTitle.ELLIPSE, level = SectionLevel.EASY)
 open class EllipseLevel1Section : BaseBusinessSection() {
     private lateinit var world: IWorld
     private lateinit var stage: IStage

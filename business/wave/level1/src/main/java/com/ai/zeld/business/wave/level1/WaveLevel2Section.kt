@@ -3,13 +3,15 @@ package com.ai.zeld.business.wave.level1
 import android.graphics.PointF
 import com.ai.zeld.common.basesection.annotation.Section
 import com.ai.zeld.common.basesection.section.SectionConfig
+import com.ai.zeld.common.basesection.section.SectionLevel
+import com.ai.zeld.common.basesection.section.SectionTitle
 import com.ai.zeld.playground.BodyManager
 import com.ai.zeld.playground.body.Coin
 import com.ai.zeld.playground.body.ShakeBarrierBody
 import com.ai.zeld.playground.body.VirusBody
 import com.ai.zeld.util.idToBitmap
 
-@Section(SectionConfig.WAVE_MIDDLE)
+@Section(SectionConfig.WAVE_MIDDLE, title = SectionTitle.WAVE, level = SectionLevel.MIDDLE)
 class WaveLevel2Section : WaveLevel1Section() {
 
     override fun initMonsters() {

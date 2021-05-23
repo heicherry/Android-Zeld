@@ -3,10 +3,12 @@ package com.ai.zeld.business.ellipse.level1
 import android.graphics.RectF
 import com.ai.zeld.common.basesection.annotation.Section
 import com.ai.zeld.common.basesection.section.SectionConfig
+import com.ai.zeld.common.basesection.section.SectionLevel
+import com.ai.zeld.common.basesection.section.SectionTitle
 import com.ai.zeld.playground.BodyManager
 import com.ai.zeld.util.idToBitmap
 
-@Section(SectionConfig.ELLIPSE_HIGH)
+@Section(SectionConfig.ELLIPSE_HIGH,  title = SectionTitle.ELLIPSE, level = SectionLevel.HARD)
 class EllipseLevel3Section : EllipseLevel1Section() {
 
     override fun initTargetBody() {

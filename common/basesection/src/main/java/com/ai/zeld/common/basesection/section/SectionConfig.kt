@@ -23,3 +23,15 @@ object SectionConfig {
     const val WAVE_MIDDLE = 80
     const val WAVE_HIGH = 90
 }
+
+object SectionTitle {
+    const val PARABOLA = "抛物线"
+    const val ELLIPSE = "椭圆"
+    const val WAVE = "三角函数"
+}
+
+object SectionLevel {
+    const val EASY = "easy"
+    const val MIDDLE = "middle"
+    const val HARD = "hard"
+}
