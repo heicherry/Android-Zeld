@@ -78,4 +78,9 @@ abstract class BaseBusinessSection : BaseSection(), IGameResult {
     override fun getCoverId(): Int {
         return R.drawable.playground_cover_sample
     }
+
+    override fun onSectionEnter() {
+        super.onSectionEnter()
+        IWorld::class.java.load().lockSection(getSectionId(), false)
+    }
 }

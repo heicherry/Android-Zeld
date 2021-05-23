@@ -17,4 +17,8 @@ class Versions{
     static box2d                                            = "1.9.14"
 
     static number_picker                                    = "2.4.11"
+
+    static easy_store                                       = "1.1.0"
+
+    static gson                                             = "2.8.6"
 }

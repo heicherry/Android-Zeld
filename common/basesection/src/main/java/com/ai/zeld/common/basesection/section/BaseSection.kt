@@ -51,8 +51,12 @@ abstract class BaseSection : Fragment() {
     /**
      * 在fragment切换前调用
      */
-    open fun onSectionEnter() {}
+    @CallSuper
+    open fun onSectionEnter() {
 
+    }
+
+    @CallSuper
     open fun onExitSection() {
 
     }

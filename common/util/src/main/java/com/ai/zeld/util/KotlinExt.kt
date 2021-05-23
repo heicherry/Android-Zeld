@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import com.ai.zeld.util.app.App
 import com.ai.zeld.util.thread.ThreadPlus
 import com.badlogic.gdx.math.Vector2
+import com.google.gson.Gson
 import kotlin.math.max
 import kotlin.math.min
 
@@ -215,3 +216,7 @@ fun View.resetPos() {
 }
 
 typealias Block = () -> Unit
+
+inline fun <reified T> String.toOb(): T = Gson().fromJson<T>(this, T::class.java)
+
+inline fun  Any.toJson(): String = Gson().toJson(this)

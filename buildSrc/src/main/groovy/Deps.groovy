@@ -25,4 +25,8 @@ class Deps{
     static box2d_native_x86_64                     = "com.badlogicgames.gdx:gdx-box2d-platform:${Versions.box2d}:natives-x86_64"
 
     static number_picker                           = "com.shawnlin:number-picker:${Versions.number_picker}"
+
+    static easy_store                              = "com.zhangzheng.easystore:library:${Versions.easy_store}"
+
+    static gson                                    =  "com.google.code.gson:gson:${Versions.gson}"
 }

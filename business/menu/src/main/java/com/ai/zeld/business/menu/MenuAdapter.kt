@@ -29,7 +29,8 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
     @RequiresApi(Build.VERSION_CODES.N)
     fun parseSections() {
         sections.clear()
-        IWorld::class.java.load().getAllSectionId().filter {
+        val world = IWorld::class.java.load()
+        world.getAllSectionId().filter {
             IWorld::class.java.load().getSectionById(it).getCoverId() != -1
         }.forEach {
             val section = IWorld::class.java.load().getSectionById(it)
@@ -37,7 +38,13 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
                 section::class.java.getAnnotationsByType(Section::class.java).firstOrNull()
                     ?: return@forEach
             val unit =
-                SectionUnit(section, annotation.title, annotation.level, true, section.getCoverId())
+                SectionUnit(
+                    section,
+                    annotation.title,
+                    annotation.level,
+                    world.isSectionLock(section.getSectionId()),
+                    section.getCoverId()
+                )
             sections.add(unit)
         }
     }

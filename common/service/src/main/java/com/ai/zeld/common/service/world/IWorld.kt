@@ -22,4 +22,8 @@ interface IWorld {
     fun setOnSectionChangeListener(listener: ISectionChangeListener)
 
     fun removeSectionChangeListener(listener: ISectionChangeListener)
+
+    fun lockSection(id: Int, isLock: Boolean)
+
+    fun isSectionLock(id: Int): Boolean
 }
