@@ -40,7 +40,6 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
                 SectionUnit(section, annotation.title, annotation.level, true, section.getCoverId())
             sections.add(unit)
         }
-
     }
 
     class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {

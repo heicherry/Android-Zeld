@@ -8,12 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ai.zeld.common.service.menu.IMenu
 import com.ai.zeld.common.uikit.panel.GlobalDialog
 import com.ai.zeld.util.app.App
+import com.ai.zeld.util.clickWithTrigger
+import com.ai.zeld.util.extendTouchRect
 import com.ai.zeld.util.px2dp
+import kotlin.math.roundToInt
 
 class Menu : IMenu {
     override fun getView(): View {
@@ -23,13 +27,16 @@ class Menu : IMenu {
             FrameLayout.LayoutParams.WRAP_CONTENT
         )
         menuView.setImageResource(R.drawable.menu_icon)
-        menuView.setOnClickListener {
+        menuView.clickWithTrigger {
             openMenu()
         }
         lp.gravity = Gravity.RIGHT
         lp.marginEnd = 150.px2dp().toInt()
         lp.topMargin = 120.px2dp().toInt()
         menuView.layoutParams = lp
+        menuView.doOnLayout {
+            it.extendTouchRect(10.px2dp().roundToInt())
+        }
         return menuView
     }
 
