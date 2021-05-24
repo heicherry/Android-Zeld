@@ -10,7 +10,6 @@ import android.widget.FrameLayout
 import androidx.fragment.app.FragmentActivity
 import com.ai.zeld.business.world.sectionstate.SectionStateCenter
 import com.ai.zeld.business.world.views.HorseTextView
-import com.ai.zeld.common.basesection.section.BaseSection
 import com.ai.zeld.common.basesection.section.ISectionChangeListener
 import com.ai.zeld.common.service.stage.IStage
 import com.ai.zeld.common.service.world.IWorld
@@ -75,6 +74,11 @@ class World : IWorld {
         if (-1 != nextSectionId) {
             switchSection(nextSectionId)
         }
+    }
+
+    override fun gotoSection(id: Int) {
+        if (currentSectionId != id)
+            switchSection(id)
     }
 
     override fun gotoNextSectionLater() {

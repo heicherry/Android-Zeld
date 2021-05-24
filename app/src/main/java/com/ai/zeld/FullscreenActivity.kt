@@ -9,6 +9,7 @@ import com.ai.zeld.common.media.MusicClipsPlayerManager
 import com.ai.zeld.common.service.world.IWorld
 import com.ai.zeld.util.app.App
 import com.ai.zeld.util.claymore.load
+import com.hjq.toast.ToastUtils
 import kotlin.system.exitProcess
 
 
@@ -26,9 +27,10 @@ class FullscreenActivity : AppCompatActivity() {
         (IWorld::class.java.load() as World).initWorld(this, R.id.main_container)
     }
 
-    fun initApp() {
+    private fun initApp() {
         App.activity = this
         App.application = application
+        ToastUtils.init(application)
     }
 
     override fun onDestroy() {

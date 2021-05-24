@@ -28,5 +28,7 @@ class Deps{
 
     static easy_store                              = "com.zhangzheng.easystore:library:${Versions.easy_store}"
 
-    static gson                                    =  "com.google.code.gson:gson:${Versions.gson}"
+    static gson                                    = "com.google.code.gson:gson:${Versions.gson}"
+
+    static toast                                   = "com.github.getActivity:ToastUtils:${Versions.toast}"
 }

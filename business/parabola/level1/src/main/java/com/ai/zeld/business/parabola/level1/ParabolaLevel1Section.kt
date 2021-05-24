@@ -165,6 +165,11 @@ open class ParabolaLevel1Section : BaseBusinessSection() {
         functionControlView.reset()
     }
 
+    override fun onExitSection() {
+        super.onExitSection()
+        bodyManager.reset()
+    }
+
     override fun onSucceed(diamondCount: Int) {
         showGameResultHintDialog(true)
     }

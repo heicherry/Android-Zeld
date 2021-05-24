@@ -38,4 +38,5 @@ dependencies {
     implementation Deps.kotlin_coroutines_android
     implementation Deps.easy_store
     implementation Deps.gson
+    implementation Deps.toast
 }

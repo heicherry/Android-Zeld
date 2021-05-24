@@ -1,5 +1,6 @@
 package com.ai.zeld.business.menu
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.Gravity
@@ -20,6 +21,10 @@ import com.ai.zeld.util.px2dp
 import kotlin.math.roundToInt
 
 class Menu : IMenu {
+    override fun preload() {
+
+    }
+
     override fun getView(): View {
         val menuView = ImageView(App.activity)
         val lp = FrameLayout.LayoutParams(
@@ -56,13 +61,14 @@ class Menu : IMenu {
         dialog.setCancelable(true)
         dialog.show()
 
-        setupRecycleView(view.findViewById(R.id.sections))
+        setupRecycleView(dialog, view.findViewById(R.id.sections))
     }
 
-    private fun setupRecycleView(recyclerView: RecyclerView) {
+    @SuppressLint("NewApi")
+    private fun setupRecycleView(dialog: GlobalDialog, recyclerView: RecyclerView) {
         val layoutManager = LinearLayoutManager(App.activity)
         layoutManager.orientation = LinearLayoutManager.HORIZONTAL
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = MenuAdapter()
+        recyclerView.adapter = MenuAdapter(dialog)
     }
 }

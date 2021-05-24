@@ -21,4 +21,6 @@ class Versions{
     static easy_store                                       = "1.1.0"
 
     static gson                                             = "2.8.6"
+
+    static toast                                            = "9.2"
 }

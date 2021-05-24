@@ -43,6 +43,12 @@ abstract class BaseSection : Fragment() {
         if (rootViewTree == null) {
             rootViewTree = onBuildViewTree()
         }
+        rootViewTree?.let {
+            val parent = it.parent
+            if (parent != null && parent is ViewGroup) {
+                parent.removeAllViews()
+            }
+        }
         return rootViewTree
     }
 

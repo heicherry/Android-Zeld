@@ -9,6 +9,8 @@ interface IWorld {
 
     fun gotoNextSection()
 
+    fun gotoSection(id: Int)
+
     fun gotoNextSectionLater()
 
     fun getCurrentSectionId(): Int

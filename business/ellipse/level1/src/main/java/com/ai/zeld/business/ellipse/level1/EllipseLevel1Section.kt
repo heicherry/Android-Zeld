@@ -156,4 +156,9 @@ open class EllipseLevel1Section : BaseBusinessSection() {
         super.onFailed()
         showGameResultHintDialog(false)
     }
+
+    override fun onExitSection() {
+        super.onExitSection()
+        bodyManager.reset()
+    }
 }
