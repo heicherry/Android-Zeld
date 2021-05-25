@@ -24,7 +24,8 @@ import com.ai.zeld.util.visible
 import com.hjq.toast.ToastUtils
 
 @RequiresApi(Build.VERSION_CODES.N)
-class MenuAdapter(private val attachDialog: Dialog) : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
+class MenuAdapter(private val attachDialog: Dialog) :
+    RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
     private val sections = mutableListOf<SectionUnit>()
 
     init {
@@ -66,9 +67,7 @@ class MenuAdapter(private val attachDialog: Dialog) : RecyclerView.Adapter<MenuA
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val startTime = System.currentTimeMillis()
         val item = LayoutInflater.from(parent.context).inflate(R.layout.menu_item, null)
-        Log.i("ayy","xml load: ${System.currentTimeMillis() - startTime}")
         return ViewHolder(item)
     }
 
@@ -77,12 +76,12 @@ class MenuAdapter(private val attachDialog: Dialog) : RecyclerView.Adapter<MenuA
         val unit = sections[position]
         holder.coverView.setImageBitmap(unit.coverId.idToBitmap())
         holder.coverView.clickWithTrigger {
-            // if (unit.isLock) {
-            //    ToastUtils.show(R.string.menu_lock_hint)
-            // } else {
-            IWorld::class.java.load().gotoSection(unit.section.getSectionId())
-            attachDialog.dismiss()
-            //}
+            if (unit.isLock) {
+                ToastUtils.show(R.string.menu_lock_hint)
+            } else {
+                IWorld::class.java.load().gotoSection(unit.section.getSectionId())
+                attachDialog.dismiss()
+            }
         }
 
         holder.title.text = unit.title
