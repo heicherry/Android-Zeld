@@ -1,6 +1,7 @@
 package com.ai.zeld.business.storyline
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,9 @@ import com.ai.zeld.common.basesection.section.BaseSection
 import com.ai.zeld.common.basesection.section.SectionConfig
 import com.ai.zeld.common.media.BackgroundMusicPlayer
 import com.ai.zeld.common.media.MusicClipsPlayerManager
+import com.ai.zeld.common.service.world.IWorld
+import com.ai.zeld.util.app.App
+import com.ai.zeld.util.claymore.load
 import com.ai.zeld.util.postInMainDelay
 import kotlinx.android.synthetic.main.storyline_main.*
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +27,14 @@ import org.xmlpull.v1.XmlPullParser
 @Section(SectionConfig.STORYLINE, level = "", title = "")
 class StorylineSection : BaseSection() {
     private lateinit var storyline: Storyline
+    private val sp = App.application.getSharedPreferences("main", Context.MODE_PRIVATE)
+
+    private var hasLoadStoryLine: Boolean
+        get() = sp.getBoolean("hasLoadStoryLine", false)
+        set(value) {
+            sp.edit().putBoolean("hasLoadStoryLine", value).apply()
+        }
+
     override fun onPreload() {
         super.onPreload()
         storyline = parseXml()
@@ -41,7 +53,11 @@ class StorylineSection : BaseSection() {
 
     override fun onSectionEnter() {
         super.onSectionEnter()
-        startTalkStoryLine()
+        if (!hasLoadStoryLine) {
+            startTalkStoryLine()
+        } else {
+            IWorld::class.java.load().gotoNextSectionLater()
+        }
     }
 
     override fun onReset() {
@@ -104,6 +120,8 @@ class StorylineSection : BaseSection() {
                     speakStage.speakWaitForClick(prefix, it.text, it.elapseTime)
                 }
             }
+            hasLoadStoryLine = true
+            IWorld::class.java.load().gotoNextSection()
         }
     }
 
