@@ -3,13 +3,11 @@ package com.ai.zeld.business.ellipse.level1
 import android.annotation.SuppressLint
 import android.graphics.PointF
 import android.graphics.RectF
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import com.ai.zeld.common.basesection.annotation.Section
-import com.ai.zeld.common.basesection.section.BaseSection
 import com.ai.zeld.common.basesection.section.SectionConfig
 import com.ai.zeld.common.basesection.section.SectionLevel
 import com.ai.zeld.common.basesection.section.SectionTitle
@@ -20,14 +18,10 @@ import com.ai.zeld.common.service.world.IWorld
 import com.ai.zeld.playground.BaseBusinessSection
 import com.ai.zeld.playground.BodyManager
 import com.ai.zeld.playground.Box2DView
-import com.ai.zeld.playground.IGameResult
 import com.ai.zeld.playground.body.BarrierBody
-import com.ai.zeld.playground.body.Coin
-import com.ai.zeld.playground.body.VirusBody
 import com.ai.zeld.util.claymore.load
 import com.ai.zeld.util.idToBitmap
 import com.ai.zeld.util.postInMainDelay
-import com.badlogic.gdx.physics.box2d.Box2D
 
 @Section(SectionConfig.ELLIPSE_MIN, title = SectionTitle.ELLIPSE, level = SectionLevel.EASY)
 open class EllipseLevel1Section : BaseBusinessSection() {

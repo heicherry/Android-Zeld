@@ -83,11 +83,11 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
     private fun prepareRun() {
         runningIndex = -1
         if (startIndex == -1) {
-            Log.e("ayy", "找不到起点呀！！！！")
+            flyListener?.onError(true)
             return
         }
         if (endIndex == -1) {
-            Log.e("ayy", "找不到终点呀！！！！")
+            flyListener?.onError(false)
             return
         }
         if (startIndex >= endIndex) {
@@ -145,6 +145,8 @@ class FlyPathBody(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         paint.strokeWidth = 3F
         path?.let { canvas.drawPath(it, paint) }
         paint.let { canvas.drawRect(rectF, paint) }
+        startRectF?.let { canvas.drawRect(it, paint) }
+        endRectF?.let { canvas.drawRect(it, paint) }
     }
 
     override fun onCollision(allCollisionBody: List<Body>) {

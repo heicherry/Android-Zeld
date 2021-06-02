@@ -197,10 +197,13 @@ fun RectF.distance(target: RectF): Float {
 
 fun View.showRectF(): RectF {
     val rect = Rect()
-    getLocalVisibleRect(rect)
-    rect.offset(left, top)
+    val ret = getLocalVisibleRect(rect)
+    if(ret){
+        rect.offset(left, top)
+    }
     return rect.toRectF()
 }
+
 
 fun View.layoutRectF(): RectF {
     return Rect(left, top, right, bottom).toRectF()

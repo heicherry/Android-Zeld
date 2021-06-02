@@ -10,7 +10,7 @@ class SpeakStage(private val speakStage: HorseTextView) : ISpeakStage {
         waitingForClick: (() -> Unit)?,
         onEnd: (() -> Unit)?
     ) {
-        speakStage.update(content, "女英雄:", onEnd, waitingForClick, 1000L, timeElapse)
+        speakStage.update(content, "女英雄:", onEnd, waitingForClick, 200L, timeElapse)
     }
 
     override fun boySpeak(
@@ -19,7 +19,7 @@ class SpeakStage(private val speakStage: HorseTextView) : ISpeakStage {
         waitingForClick: (() -> Unit)?,
         onEnd: (() -> Unit)?
     ) {
-        speakStage.update(content, "男英雄:", onEnd, waitingForClick, 1000L, timeElapse)
+        speakStage.update(content, "男英雄:", onEnd, waitingForClick, 200L, timeElapse)
     }
 
     override fun speak(
@@ -29,6 +29,6 @@ class SpeakStage(private val speakStage: HorseTextView) : ISpeakStage {
         waitingForClick: (() -> Unit)?,
         onEnd: (() -> Unit)?
     ) {
-        speakStage.update(content, prefix, onEnd, waitingForClick, 1000L, timeElapse)
+        speakStage.update(content, prefix, onEnd, waitingForClick, 200L, timeElapse)
     }
 }

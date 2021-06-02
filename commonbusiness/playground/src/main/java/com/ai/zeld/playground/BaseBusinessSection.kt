@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.lifecycle.ViewModel
 import com.ai.zeld.common.basesection.ext.speakWaitForClick
 import com.ai.zeld.common.basesection.section.BaseSection
 import com.ai.zeld.common.service.menu.IMenu
@@ -20,6 +21,7 @@ import com.ai.zeld.util.gone
 import com.ai.zeld.util.idToBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.xmlpull.v1.XmlPullParser
 
@@ -28,6 +30,8 @@ abstract class BaseBusinessSection : BaseSection(), IGameResult {
     private val failedBitmap = R.drawable.playground_failed.idToBitmap()
 
     private var needShowPrologue = true
+    private var isPrologueSpeeching = true
+    private var prologueSpeechTask: Job? = null
 
     override fun onFailed() {
     }
@@ -97,23 +101,40 @@ abstract class BaseBusinessSection : BaseSection(), IGameResult {
         }
     }
 
-    private fun startTalkPrologue(prologue: List<String>) {
-        GlobalScope.launch(Dispatchers.Main) {
+    private fun startTalkPrologue(prologue: List<SpeechNode>) {
+        prologueSpeechTask = GlobalScope.launch(Dispatchers.Main) {
+            isPrologueSpeeching = true
             prologue.forEach {
-                speakStage.speakWaitForClick("", it, 2000)
+                speakStage.speakWaitForClick(it.prefix, it.content, it.content.length * 200L)
+            }
+            isPrologueSpeeching = false
+        }
+    }
+
+    override fun onExitSection() {
+        super.onExitSection()
+        prologueSpeechTask?.let {
+            if(it.isActive){
+                it.cancel()
             }
         }
     }
 
-    private fun parsePrologueXml(xmlId: Int): List<String> {
+    fun isPrologueSpeeching() = isPrologueSpeeching
+
+    private fun parsePrologueXml(xmlId: Int): List<SpeechNode> {
         val parser = localContext.resources.getXml(xmlId)
-        val speech = mutableListOf<String>()
+        val speech = mutableListOf<SpeechNode>()
         while (parser.eventType != XmlPullParser.END_DOCUMENT) {
             when (parser.eventType) {
                 XmlPullParser.START_TAG -> {
                     when (parser.name) {
                         "node" -> {
-                            speech.add(parser.getAttributeValue(null, "text"))
+                            val prefix = parser.getAttributeValue(null, "prefix")?.let {
+                                "$it:"
+                            } ?: ""
+                            val content = parser.getAttributeValue(null, "text") ?: ""
+                            speech.add(SpeechNode(prefix, content))
                         }
                     }
                 }
@@ -122,4 +143,6 @@ abstract class BaseBusinessSection : BaseSection(), IGameResult {
         }
         return speech
     }
+
+    data class SpeechNode(val prefix: String, val content: String)
 }

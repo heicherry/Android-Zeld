@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import com.ai.zeld.common.basesection.annotation.Section
+import com.ai.zeld.common.basesection.ext.speakWaitForClick
 import com.ai.zeld.common.basesection.section.SectionConfig
 import com.ai.zeld.common.basesection.section.SectionLevel
 import com.ai.zeld.common.basesection.section.SectionTitle
@@ -18,14 +19,12 @@ import com.ai.zeld.playground.BaseBusinessSection
 import com.ai.zeld.playground.BodyManager
 import com.ai.zeld.playground.Box2DView
 import com.ai.zeld.playground.body.BarrierBody
-import com.ai.zeld.playground.body.Coin
-import com.ai.zeld.playground.body.VirusBody
 import com.ai.zeld.util.claymore.load
 import com.ai.zeld.util.idToBitmap
 import com.ai.zeld.util.postInMainDelay
 import com.ai.zeld.util.px2dp
 import com.ai.zeld.util.showRectF
-import com.badlogic.gdx.physics.box2d.Box2D
+import com.hjq.toast.ToastUtils
 
 
 @Section(SectionConfig.FLY_MIN, title = SectionTitle.PARABOLA, level = SectionLevel.EASY)
@@ -98,9 +97,13 @@ open class ParabolaLevel1Section : BaseBusinessSection() {
             R.drawable.playground_diamond.idToBitmap()
         ) as FlyPathBody
         rootViewTree!!.findViewById<ImageView>(R.id.go).setOnClickListener {
-            MusicClipsPlayerManager.play(MusicClip.GO)
-            postInMainDelay(500) {
-                bodyManager.startPlay()
+            if (isPrologueSpeeching()) {
+                ToastUtils.show(R.string.playground_prologue_speeching_notice)
+            } else {
+                MusicClipsPlayerManager.play(MusicClip.GO)
+                postInMainDelay(500) {
+                    bodyManager.startPlay()
+                }
             }
         }
         flyBody.setGameListener(this)
@@ -118,11 +121,21 @@ open class ParabolaLevel1Section : BaseBusinessSection() {
         flyBody.setFlyListener(object : IFlyStateListener {
             override fun onFlyStart() {
                 superMan.setImageBitmap(flyingBitmap)
+                val content = getString(R.string.parabola_level1_fighting)
+                speakStage.speak("林克：", content, content.length * 100L, null, null)
             }
 
             override fun onFlyEnd() {
                 superMan.setImageBitmap(flySuccessBitmap)
                 moveSuperManToSuperWomenAhead()
+            }
+
+            override fun onError(isStartError: Boolean) {
+                val content = if (isStartError)
+                    getString(R.string.parabola_level1_start_error)
+                else
+                    getString(R.string.parabola_level1_end_error)
+                speakStage.speak("林克：", content, content.length * 100L, null, null)
             }
         })
     }
@@ -130,7 +143,7 @@ open class ParabolaLevel1Section : BaseBusinessSection() {
     private fun moveSuperManToSuperWomenAhead() {
         val superWomen = rootViewTree!!.findViewById<ImageView>(R.id.superwomen)
         val superMan = rootViewTree!!.findViewById<ImageView>(R.id.superman)
-        superMan.translationX = (superWomen.left - superMan.right - 30.px2dp()).toFloat()
+        superMan.translationX = (superWomen.left - superMan.right - 30.px2dp())
     }
 
     private fun initFunctionControlPanel() {
@@ -180,4 +193,6 @@ open class ParabolaLevel1Section : BaseBusinessSection() {
         superMan.setImageBitmap(originalBitmap)
         showGameResultHintDialog(false)
     }
+
+    override fun getPrologueXmlId() = R.xml.parabola_level1_prologue
 }
