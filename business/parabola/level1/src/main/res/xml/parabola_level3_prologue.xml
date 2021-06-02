@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<prologue>
+    <node
+        prefix="露易丝"
+        text="不错哟，身手不错，但最近新冠病毒肆虐，得看看你有没有抗体，抵抗病毒" />
+    <node
+        prefix="超人"
+        text="这么多病毒，还这么多雷呢..." />
+    <node
+        prefix="林克"
+        text="路上的金币是干啥的？" />
+    <node
+        prefix="露易丝"
+        text="我得看看超人挣钱能力，看看他买不买的起房，至少要抓到两个金币哦！" />
+    <node
+        prefix="林克"
+        text="露易丝要求很高呀！路上的病毒，它们掉到地上会反弹，注意计算起飞时间" />
+    <node
+        prefix="超人"
+        text="好嘞！干它！" />
+    <node
+        prefix="林克"
+        text="加油！！！" />
+</prologue>

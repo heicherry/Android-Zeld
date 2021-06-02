@@ -25,4 +25,5 @@ class ParabolaLevel2Section : ParabolaLevel1Section() {
         )
     }
 
+    override fun getPrologueXmlId() = R.xml.parabola_level2_prologue
 }
