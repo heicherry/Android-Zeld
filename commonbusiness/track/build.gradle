@@ -1,0 +1,5 @@
+apply from: rootProject.file("commonbusiness.gradle")
+
+dependencies {
+    implementation Deps.okhttp
+}

@@ -184,10 +184,12 @@ open class ParabolaLevel1Section : BaseBusinessSection() {
     }
 
     override fun onSucceed(diamondCount: Int) {
+        super.onSucceed(diamondCount)
         showGameResultHintDialog(true)
     }
 
     override fun onFailed() {
+        super.onFailed()
         val originalBitmap = R.drawable.uikit_superman_waiting_for_fly.idToBitmap()
         val superMan = rootViewTree!!.findViewById<ImageView>(R.id.superman)
         superMan.setImageBitmap(originalBitmap)

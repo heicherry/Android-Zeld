@@ -15,6 +15,7 @@ abstract class BaseSection : Fragment() {
     private var sectionId = 0
     protected lateinit var localContext: Context
     lateinit var speakStage: ISpeakStage
+    var sectionName = "unknown"
 
     fun setContext(context: Context) {
         localContext = context
@@ -68,8 +69,4 @@ abstract class BaseSection : Fragment() {
     }
 
     abstract fun onReset()
-}
-
-enum class State {
-    FOREPLAY, DINNER
 }

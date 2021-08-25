@@ -31,4 +31,8 @@ class Deps{
     static gson                                    = "com.google.code.gson:gson:${Versions.gson}"
 
     static toast                                   = "com.github.getActivity:ToastUtils:${Versions.toast}"
+
+    static retrofit                                = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
+
+    static okhttp                                  = "com.squareup.okhttp3:okhttp:${Versions.okhttp}"
 }

@@ -23,4 +23,8 @@ class Versions{
     static gson                                             = "2.8.6"
 
     static toast                                            = "9.2"
+
+    static retrofit                                         = "2.4.0"
+
+    static okhttp                                           = "4.2.2"
 }

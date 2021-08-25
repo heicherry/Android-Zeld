@@ -9,12 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
 import com.ai.zeld.common.basesection.ext.speakWaitForClick
 import com.ai.zeld.common.basesection.section.BaseSection
 import com.ai.zeld.common.service.menu.IMenu
 import com.ai.zeld.common.service.world.IWorld
 import com.ai.zeld.common.uikit.panel.GlobalDialog
+import com.ai.zeld.track.Track
 import com.ai.zeld.util.app.App
 import com.ai.zeld.util.claymore.load
 import com.ai.zeld.util.gone
@@ -33,11 +35,14 @@ abstract class BaseBusinessSection : BaseSection(), IGameResult {
     private var isPrologueSpeeching = true
     private var prologueSpeechTask: Job? = null
 
+    @CallSuper
     override fun onFailed() {
+        Track.onSceneFinished(sectionName, false)
     }
 
+    @CallSuper
     override fun onSucceed(diamondCount: Int) {
-
+        Track.onSceneFinished(sectionName, true)
     }
 
     override fun onCreateView(
@@ -94,6 +99,7 @@ abstract class BaseBusinessSection : BaseSection(), IGameResult {
 
     override fun onSectionEnter() {
         super.onSectionEnter()
+        Track.onSceneEnter(sectionName)
         IWorld::class.java.load().lockSection(getSectionId(), false)
         val prologueId = getPrologueXmlId()
         if (prologueId != -1) {
@@ -114,7 +120,7 @@ abstract class BaseBusinessSection : BaseSection(), IGameResult {
     override fun onExitSection() {
         super.onExitSection()
         prologueSpeechTask?.let {
-            if(it.isActive){
+            if (it.isActive) {
                 it.cancel()
             }
         }

@@ -10,6 +10,7 @@ import com.ai.zeld.common.basesection.section.BaseSection
 import com.ai.zeld.common.basesection.section.SectionConfig
 import com.ai.zeld.common.media.BackgroundMusicPlayer
 import com.ai.zeld.common.service.world.IWorld
+import com.ai.zeld.track.Track
 import com.ai.zeld.util.claymore.load
 import com.ai.zeld.util.postInMainDelay
 import com.ai.zeld.util.resource.ResourceFactory
@@ -43,6 +44,7 @@ class SplashSection : BaseSection() {
         }) {
             onPreloadFinished()
         }
+        Track.onAppLaunch()
     }
 
     @SuppressLint("SetTextI18n")
