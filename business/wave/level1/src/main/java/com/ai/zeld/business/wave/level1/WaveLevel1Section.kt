@@ -121,11 +121,18 @@ open class WaveLevel1Section : BaseBusinessSection() {
         initFunctionControlPanel()
     }
 
+    override fun onExitSection() {
+        super.onExitSection()
+        bodyManager.reset()
+    }
+
     override fun onSucceed(diamondCount: Int) {
+        super.onSucceed(diamondCount)
         showGameResultHintDialog(true)
     }
 
     override fun onFailed() {
+        super.onFailed()
         showGameResultHintDialog(false)
     }
 }

@@ -8,11 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import androidx.fragment.app.FragmentActivity
+import com.ai.zeld.business.world.sectionstate.SectionStateCenter
 import com.ai.zeld.business.world.views.HorseTextView
-import com.ai.zeld.common.basesection.section.BaseSection
 import com.ai.zeld.common.basesection.section.ISectionChangeListener
 import com.ai.zeld.common.service.stage.IStage
 import com.ai.zeld.common.service.world.IWorld
+import com.ai.zeld.track.Track
 import com.ai.zeld.util.*
 import com.ai.zeld.util.claymore.load
 import com.ai.zeld.util.thread.ThreadPlus
@@ -25,6 +26,7 @@ class World : IWorld {
 
     private lateinit var context: Activity
     private lateinit var sectionCenter: SectionUnitCenter
+    private val sectionStateCenter = SectionStateCenter()
     private var currentSectionId = 0
     private val sectionChangeListeners = ListenerWrap<ISectionChangeListener>()
     private var worldContainerViewId = 0
@@ -40,7 +42,9 @@ class World : IWorld {
         worldContainerViewId = container
         sectionCenter = SectionUnitCenter(context)
         sectionCenter.init()
-        currentSectionId = sectionCenter.getInitialSectionId()
+        val initialId = sectionCenter.getInitialSectionId()
+        currentSectionId = initialId
+        sectionStateCenter.initInitialState(initialId)
         initStage()
         initSpeakStage()
         switchSection(currentSectionId)
@@ -71,6 +75,11 @@ class World : IWorld {
         if (-1 != nextSectionId) {
             switchSection(nextSectionId)
         }
+    }
+
+    override fun gotoSection(id: Int) {
+        if (currentSectionId != id)
+            switchSection(id)
     }
 
     override fun gotoNextSectionLater() {
@@ -120,6 +129,15 @@ class World : IWorld {
     override fun removeSectionChangeListener(listener: ISectionChangeListener) {
         sectionChangeListeners.removeLister(listener)
     }
+
+    override fun lockSection(id: Int, isLock: Boolean) {
+        sectionStateCenter.apply {
+            if (isLock) lockSection(id)
+            else unlockSection(id)
+        }
+    }
+
+    override fun isSectionLock(id: Int) = sectionStateCenter.getStateById(id)?.isLock ?: true
 
     private fun switchSection(targetId: Int) {
         checkMainThread("section switch must do in main thread!")

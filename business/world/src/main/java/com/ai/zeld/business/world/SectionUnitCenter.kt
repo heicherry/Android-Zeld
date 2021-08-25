@@ -29,7 +29,7 @@ class SectionUnitCenter(private val context: Context) {
         sectionUnits.forEach {
             ids.add(it.id)
         }
-        return ids.toList()
+        return ids.toList().sorted()
     }
 
     fun getInitialSectionId(): Int {
@@ -67,6 +67,7 @@ class SectionUnitCenter(private val context: Context) {
             it.section = it.clazz.newInstance() as BaseSection
             it.section.setSectionId(it.id)
             it.section.setContext(context)
+            it.section.sectionName = it.name
         }
     }
 

@@ -11,8 +11,10 @@ import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Lifecycle
 import com.ai.zeld.util.app.App
+import com.ai.zeld.util.resource.ResourceFactory
 import com.ai.zeld.util.thread.ThreadPlus
 import com.badlogic.gdx.math.Vector2
+import com.google.gson.Gson
 import kotlin.math.max
 import kotlin.math.min
 
@@ -71,10 +73,12 @@ operator fun MutableList<RectF>.plus(rectF: RectF): MutableList<RectF> {
 }
 
 fun Int.idToBitmap(): Bitmap {
-    return BitmapFactory.decodeResource(
-        App.application.resources,
-        this
-    )
+    val tempResource = ResourceFactory.loadDrawable(this)
+    return tempResource
+        ?: BitmapFactory.decodeResource(
+            App.application.resources,
+            this
+        )
 }
 
 fun Bitmap.realPos(center: PointF) = RectF(
@@ -193,10 +197,13 @@ fun RectF.distance(target: RectF): Float {
 
 fun View.showRectF(): RectF {
     val rect = Rect()
-    getLocalVisibleRect(rect)
-    rect.offset(left, top)
+    val ret = getLocalVisibleRect(rect)
+    if(ret){
+        rect.offset(left, top)
+    }
     return rect.toRectF()
 }
+
 
 fun View.layoutRectF(): RectF {
     return Rect(left, top, right, bottom).toRectF()
@@ -215,3 +222,7 @@ fun View.resetPos() {
 }
 
 typealias Block = () -> Unit
+
+inline fun <reified T> String.toOb(): T = Gson().fromJson<T>(this, T::class.java)
+
+inline fun Any.toJson(): String = Gson().toJson(this)

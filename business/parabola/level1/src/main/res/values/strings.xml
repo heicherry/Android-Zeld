@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parabola_level1_start_error">起点没在台阶上，超人飞不了哦</string>
+    <string name="parabola_level1_end_error">终点没在台阶上，超人飞不到心上人那哦</string>
+    <string name="parabola_level1_fighting">加油！！！</string>
+</resources>

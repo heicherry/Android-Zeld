@@ -6,7 +6,7 @@ import androidx.annotation.Keep
 object SectionConfig {
     const val SPLASH = 0
 
-    const val STORYLINE = 100//SPLASH + 1
+    const val STORYLINE =1
 
     // 隔岸表白
     const val FLY_MIN = 10//SPLASH + 1

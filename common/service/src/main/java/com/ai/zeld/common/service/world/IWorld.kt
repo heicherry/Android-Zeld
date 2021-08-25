@@ -9,6 +9,8 @@ interface IWorld {
 
     fun gotoNextSection()
 
+    fun gotoSection(id: Int)
+
     fun gotoNextSectionLater()
 
     fun getCurrentSectionId(): Int
@@ -22,4 +24,8 @@ interface IWorld {
     fun setOnSectionChangeListener(listener: ISectionChangeListener)
 
     fun removeSectionChangeListener(listener: ISectionChangeListener)
+
+    fun lockSection(id: Int, isLock: Boolean)
+
+    fun isSectionLock(id: Int): Boolean
 }

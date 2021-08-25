@@ -99,7 +99,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
-
+    implementation Deps.toast
 
     // common
     implementation(project(":common:basesection"))
@@ -115,6 +115,7 @@ dependencies {
 
     // common business
     implementation(project(":commonbusiness:playground"))
+    implementation(project(":commonbusiness:track"))
 
     //sections
     implementation(project(":business:wave:level1"))

@@ -47,4 +47,6 @@ class ParabolaLevel3Section : ParabolaLevel1Section() {
             R.drawable.playground_coin_1.idToBitmap()
         )
     }
+
+    override fun getPrologueXmlId() = R.xml.parabola_level3_prologue
 }

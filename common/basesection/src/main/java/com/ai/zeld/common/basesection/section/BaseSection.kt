@@ -15,6 +15,7 @@ abstract class BaseSection : Fragment() {
     private var sectionId = 0
     protected lateinit var localContext: Context
     lateinit var speakStage: ISpeakStage
+    var sectionName = "unknown"
 
     fun setContext(context: Context) {
         localContext = context
@@ -43,6 +44,12 @@ abstract class BaseSection : Fragment() {
         if (rootViewTree == null) {
             rootViewTree = onBuildViewTree()
         }
+        rootViewTree?.let {
+            val parent = it.parent
+            if (parent != null && parent is ViewGroup) {
+                parent.removeAllViews()
+            }
+        }
         return rootViewTree
     }
 
@@ -51,15 +58,15 @@ abstract class BaseSection : Fragment() {
     /**
      * 在fragment切换前调用
      */
-    open fun onSectionEnter() {}
+    @CallSuper
+    open fun onSectionEnter() {
 
+    }
+
+    @CallSuper
     open fun onExitSection() {
 
     }
 
     abstract fun onReset()
-}
-
-enum class State {
-    FOREPLAY, DINNER
 }
