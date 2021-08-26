@@ -15,6 +15,7 @@ import com.ai.zeld.util.resource.ResourceFactory
 import com.ai.zeld.util.thread.ThreadPlus
 import com.badlogic.gdx.math.Vector2
 import com.google.gson.Gson
+import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 
@@ -48,10 +49,28 @@ fun postInMain(run: () -> Unit) {
     }
 }
 
+/**
+ * 超过1秒钟的延时不要用这个
+ */
 fun postInMainDelay(delay: Long, run: () -> Unit) {
-    ThreadPlus.mainHandler.postDelayed(delay) {
-        run.invoke()
+    if (delay <= 1000) {
+        ThreadPlus.mainHandler.postDelayed(delay) {
+            run.invoke()
+        }
+    } else {
+        postInMainLongDelay(delay, run)
     }
+}
+
+fun postInMainLongDelay(delay: Long, run: () -> Unit) {
+    val timer = Timer()
+    timer.schedule(object : TimerTask() {
+        override fun run() {
+            postInMain {
+                run()
+            }
+        }
+    }, delay)
 }
 
 fun postInPreload(run: () -> Unit) {
@@ -198,7 +217,7 @@ fun RectF.distance(target: RectF): Float {
 fun View.showRectF(): RectF {
     val rect = Rect()
     val ret = getLocalVisibleRect(rect)
-    if(ret){
+    if (ret) {
         rect.offset(left, top)
     }
     return rect.toRectF()
