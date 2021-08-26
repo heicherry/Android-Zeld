@@ -1,6 +1,7 @@
 package com.ai.zeld.common.media
 
 import android.media.MediaPlayer
+import android.util.Log
 import com.ai.zeld.util.app.App
 
 object BackgroundMusicPlayer {
@@ -11,11 +12,14 @@ object BackgroundMusicPlayer {
     }
 
     fun play() {
+        Log.i("haha","start play")
+        mediaPlayer.isLooping = true
         mediaPlayer.start()
-        mediaPlayer.setOnCompletionListener {
-            it.reset()
-            it.start()
-        }
+//        mediaPlayer.setOnCompletionListener {
+//            it.reset()
+//            it.start()
+//            it.isLooping = true
+//        }
     }
 
     fun stop() {

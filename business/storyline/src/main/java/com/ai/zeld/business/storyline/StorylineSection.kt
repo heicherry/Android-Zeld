@@ -3,6 +3,7 @@ package com.ai.zeld.business.storyline
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -40,6 +41,7 @@ class StorylineSection : BaseSection() {
         storyline = parseXml()
         preloadAllResource()
         BackgroundMusicPlayer.init()
+        Log.i("haha","onPreload  start play")
         postInMainDelay(2000) {
             BackgroundMusicPlayer.play()
         }
