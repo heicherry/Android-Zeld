@@ -32,6 +32,9 @@ object MusicClipsPlayerManager {
         loadResId(MusicClip.DEAD, R.raw.media_dead)
         loadResId(MusicClip.COIN, R.raw.media_coin)
         loadResId(MusicClip.GO, R.raw.media_go)
+        loadResId(MusicClip.SUCCEED, R.raw.media_succeed)
+        loadResId(MusicClip.FAILED, R.raw.media_failed)
+
     }
 
     private fun loadResId(clip: MusicClip, resId: Int) {
@@ -99,5 +102,5 @@ object MusicClipsPlayerManager {
 }
 
 enum class MusicClip {
-    BOMB, DEAD, COIN, GO
+    BOMB, DEAD, COIN, GO,SUCCEED,FAILED
 }

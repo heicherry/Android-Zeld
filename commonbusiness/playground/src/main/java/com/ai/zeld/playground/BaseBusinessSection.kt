@@ -13,6 +13,8 @@ import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
 import com.ai.zeld.common.basesection.ext.speakWaitForClick
 import com.ai.zeld.common.basesection.section.BaseSection
+import com.ai.zeld.common.media.MusicClip
+import com.ai.zeld.common.media.MusicClipsPlayerManager
 import com.ai.zeld.common.service.menu.IMenu
 import com.ai.zeld.common.service.world.IWorld
 import com.ai.zeld.common.uikit.panel.GlobalDialog
@@ -21,6 +23,7 @@ import com.ai.zeld.util.app.App
 import com.ai.zeld.util.claymore.load
 import com.ai.zeld.util.gone
 import com.ai.zeld.util.idToBitmap
+import com.ai.zeld.util.postInMainDelay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -38,11 +41,17 @@ abstract class BaseBusinessSection : BaseSection(), IGameResult {
     @CallSuper
     override fun onFailed() {
         Track.onSceneFinished(sectionName, false)
+        postInMainDelay(1000){
+            MusicClipsPlayerManager.play(MusicClip.FAILED)
+        }
     }
 
     @CallSuper
     override fun onSucceed(diamondCount: Int) {
         Track.onSceneFinished(sectionName, true)
+        postInMainDelay(100){
+            MusicClipsPlayerManager.play(MusicClip.SUCCEED)
+        }
     }
 
     override fun onCreateView(
