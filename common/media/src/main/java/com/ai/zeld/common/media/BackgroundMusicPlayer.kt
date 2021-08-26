@@ -23,6 +23,14 @@ object BackgroundMusicPlayer {
 //        }
     }
 
+    fun pause(){
+        mediaPlayer.pause()
+    }
+
+    fun resume(){
+        mediaPlayer.start()
+    }
+
     fun stop() {
         mediaPlayer.stop()
     }

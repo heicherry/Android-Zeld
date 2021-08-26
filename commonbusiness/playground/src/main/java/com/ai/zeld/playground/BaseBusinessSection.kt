@@ -13,6 +13,7 @@ import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
 import com.ai.zeld.common.basesection.ext.speakWaitForClick
 import com.ai.zeld.common.basesection.section.BaseSection
+import com.ai.zeld.common.media.BackgroundMusicPlayer
 import com.ai.zeld.common.media.MusicClip
 import com.ai.zeld.common.media.MusicClipsPlayerManager
 import com.ai.zeld.common.service.menu.IMenu
@@ -42,6 +43,10 @@ abstract class BaseBusinessSection : BaseSection(), IGameResult {
     override fun onFailed() {
         Track.onSceneFinished(sectionName, false)
         postInMainDelay(1000){
+            BackgroundMusicPlayer.pause()
+            postInMainDelay(6000){
+                BackgroundMusicPlayer.resume()
+            }
             MusicClipsPlayerManager.play(MusicClip.FAILED)
         }
     }
@@ -50,6 +55,10 @@ abstract class BaseBusinessSection : BaseSection(), IGameResult {
     override fun onSucceed(diamondCount: Int) {
         Track.onSceneFinished(sectionName, true)
         postInMainDelay(100){
+            BackgroundMusicPlayer.pause()
+            postInMainDelay(3000){
+                BackgroundMusicPlayer.resume()
+            }
             MusicClipsPlayerManager.play(MusicClip.SUCCEED)
         }
     }
