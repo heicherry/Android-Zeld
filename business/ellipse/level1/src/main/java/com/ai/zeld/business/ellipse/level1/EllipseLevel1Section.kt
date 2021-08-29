@@ -67,6 +67,7 @@ open class EllipseLevel1Section : BaseBusinessSection() {
         box2DView = rootViewTree!!.findViewById(R.id.box2d)
         bodyManager = box2DView.getBodyManager()
         box2DView.showBoundary(true)
+        functionControlView = rootViewTree!!.findViewById(R.id.function_control)
     }
 
     protected open fun initFlyBody() {
@@ -94,7 +95,6 @@ open class EllipseLevel1Section : BaseBusinessSection() {
     }
 
     protected open fun initFunctionControlPanel() {
-        functionControlView = rootViewTree!!.findViewById(R.id.function_control)
         functionControlView.setFunctionChangeListener {
             flyBody.setFunctionCal(it)
             val center = stage.getCenterPointF()
