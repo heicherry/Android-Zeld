@@ -11,42 +11,42 @@ var connection = mysql.createConnection({
 connection.connect();
  
 function recordAppLaunch(uuid){
-    var launchSql = 'INSERT INTO launch(uuid) VALUES(?)';
+    var launchSql = 'INSERT INTO launch(uuid,time) VALUES(?,now())';
     var launchSqlParams = [uuid];
 
     connection.query(launchSql,launchSqlParams,function (err, result) {
         if(err){
          console.log('[INSERT ERROR] -recordAppLaunch- ',err.message);
          return;
-        }        
- 
+        }
+
        console.log('--------------------------INSERT-recordAppLaunch----------------------------');
        console.log('uuid:',uuid)
-       console.log('INSERT ID:',result);        
-       console.log('-----------------------------------------------------------------\n\n');  
+       console.log('INSERT ID:',result);
+       console.log('-----------------------------------------------------------------\n\n');
     });
 }
 
 function recordSceneEnter(uuid,scene){
-    var sceneEnterSql = 'INSERT INTO scene(uuid,scene) VALUES(?,?)';
+    var sceneEnterSql = 'INSERT INTO scene(uuid,scene,time) VALUES(?,?,now())';
     var sceneEnterParams = [uuid,scene];
 
     connection.query(sceneEnterSql,sceneEnterParams,function (err, result) {
         if(err){
          console.log('[INSERT ERROR] -recordSceneEnter- ',err.message);
          return;
-        }        
- 
+        }
+
        console.log('--------------------------INSERT-recordSceneEnter---------------------------');
        console.log('uuid:',uuid)
        console.log('scene:',scene)
-       console.log('INSERT ID:',result);        
-       console.log('-----------------------------------------------------------------\n\n');  
+       console.log('INSERT ID:',result);
+       console.log('-----------------------------------------------------------------\n\n');
     });
 }
 
 function recordGameResult(uuid,scene,result){
-    var gameResultSql = 'INSERT INTO gameresult(uuid,scene,result) VALUES(?,?,?)';
+    var gameResultSql = 'INSERT INTO gameresult(uuid,scene,result,time) VALUES(?,?,?,now())';
     var gameResultParams = [uuid,scene,result];
 
     connection.query(gameResultSql,gameResultParams,function (err, result) {

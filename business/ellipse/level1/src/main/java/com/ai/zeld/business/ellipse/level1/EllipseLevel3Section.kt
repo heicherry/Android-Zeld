@@ -27,11 +27,11 @@ class EllipseLevel3Section : EllipseLevel1Section() {
 
         createBarrier(300F, 1200F, R.drawable.playground_mine)
         //TODO:地雷显示不全
-        createBarrier(450F, 1450F, R.drawable.playground_mine)
+        createBarrier(500F, 1350F, R.drawable.playground_mine)
     }
 
     override fun initFunctionControlPanel() {
-        super.initFunctionControlPanel()
         functionControlView.reset(-288, -19, 100, 150)
+        super.initFunctionControlPanel()
     }
 }
