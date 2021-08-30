@@ -34,7 +34,6 @@ object MusicClipsPlayerManager {
         loadResId(MusicClip.GO, R.raw.media_go)
         loadResId(MusicClip.SUCCEED, R.raw.media_succeed)
         loadResId(MusicClip.FAILED, R.raw.media_failed)
-
     }
 
     private fun loadResId(clip: MusicClip, resId: Int) {

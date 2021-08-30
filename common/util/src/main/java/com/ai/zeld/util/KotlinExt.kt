@@ -53,13 +53,13 @@ fun postInMain(run: () -> Unit) {
  * 超过1秒钟的延时不要用这个
  */
 fun postInMainDelay(delay: Long, run: () -> Unit) {
-    if (delay <= 1000) {
-        ThreadPlus.mainHandler.postDelayed(delay) {
-            run.invoke()
-        }
-    } else {
-        postInMainLongDelay(delay, run)
-    }
+//    if (delay <= 1000) {
+//        ThreadPlus.mainHandler.postDelayed(delay) {
+//            run.invoke()
+//        }
+//    } else {
+    postInMainLongDelay(delay, run)
+//    }
 }
 
 fun postInMainLongDelay(delay: Long, run: () -> Unit) {
@@ -207,12 +207,16 @@ fun Int.px2dp(): Float {
     return this / scale + 0.5f
 }
 
-fun RectF.distance(target: RectF): Float {
-    return ((left - target.left).square()
-            + (right - target.right).square()
-            + (top - target.top).square()
-            + (bottom - target.bottom).square()).sqrt()
+fun RectF.distance(target: RectF): RectDistance {
+    return RectDistance(((left - target.left).square() + (right - target.right).square()).sqrt(),
+        ((top - target.top).square() +  (bottom - target.bottom).square()).sqrt())
+//    return ((left - target.left).square()
+//            + (right - target.right).square()
+//            + (top - target.top).square()
+//            + (bottom - target.bottom).square()).sqrt()
 }
+
+data class RectDistance(val width: Float, val height: Float)
 
 fun View.showRectF(): RectF {
     val rect = Rect()

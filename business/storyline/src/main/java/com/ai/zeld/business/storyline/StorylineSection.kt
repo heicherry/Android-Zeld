@@ -41,7 +41,6 @@ class StorylineSection : BaseSection() {
         storyline = parseXml()
         preloadAllResource()
         BackgroundMusicPlayer.init()
-        Log.i("haha","onPreload  start play")
         postInMainDelay(2000) {
             BackgroundMusicPlayer.play()
         }

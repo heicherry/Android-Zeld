@@ -46,7 +46,9 @@ class Coin(rectF: RectF) : Body(null, rectF) {
             repeatCount = ValueAnimator.INFINITE
         }
         postInMainDelay(1000) {
-            animator?.start()
+            if(animator?.isRunning != true) {
+                animator?.start()
+            }
         }
     }
 

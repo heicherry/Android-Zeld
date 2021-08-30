@@ -44,6 +44,7 @@ object Track {
 
         val urlBuilder = url.toHttpUrlOrNull()!!.newBuilder()
         urlBuilder.addQueryParameter("uuid", uuid)
+        urlBuilder.addQueryParameter("os_model", Build.BRAND + "_" + Build.MODEL)
         val realParameters = mutableMapOf<String, String>()
         parametersInvoke?.invoke(realParameters)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

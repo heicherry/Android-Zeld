@@ -7,16 +7,20 @@ import android.util.AndroidRuntimeException
 
 object ThreadPlus {
     val mainHandler = Handler(Looper.getMainLooper())
-
     var preloadThread: HandlerThread? = null
-    val preloadHandler: Handler
-        get() {
-            if (preloadThread == null) {
-                preloadThread = HandlerThread("app_preload")
-                preloadThread!!.start()
-            }
-            return Handler(preloadThread!!.looper)
+    lateinit var preloadHandler: Handler
+
+    init {
+        initPreloadHandlerIfNeed()
+    }
+
+    private  fun initPreloadHandlerIfNeed(){
+        if (preloadThread == null) {
+            preloadThread = HandlerThread("app_preload")
+            preloadThread!!.start()
+            preloadHandler = Handler(preloadThread!!.looper)
         }
+    }
 }
 
 fun checkMainThread(msg: String? = null) {
