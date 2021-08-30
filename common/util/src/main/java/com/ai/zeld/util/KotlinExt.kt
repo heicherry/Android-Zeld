@@ -53,13 +53,13 @@ fun postInMain(run: () -> Unit) {
  * 超过1秒钟的延时不要用这个
  */
 fun postInMainDelay(delay: Long, run: () -> Unit) {
-    if (delay <= 1000) {
-        ThreadPlus.mainHandler.postDelayed(delay) {
-            run.invoke()
-        }
-    } else {
+//    if (delay <= 1000) {
+//        ThreadPlus.mainHandler.postDelayed(delay) {
+//            run.invoke()
+//        }
+//    } else {
         postInMainLongDelay(delay, run)
-    }
+//    }
 }
 
 fun postInMainLongDelay(delay: Long, run: () -> Unit) {
