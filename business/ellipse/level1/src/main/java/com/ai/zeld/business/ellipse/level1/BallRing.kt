@@ -135,7 +135,8 @@ class BallRing(bitmap: Bitmap, rectF: RectF) : Body(bitmap, rectF) {
         val targetRectF =
             bodyManager.allBody.filterIsInstance<TargetBallRing>()
                 .firstOrNull()?.containRectF ?: return
-        if (targetRectF.distance(currentContainer) < 5) {
+        val distance = targetRectF.distance(currentContainer)
+        if (distance.width < 8 && distance.height < 8) {
             gameResultListener?.onSucceed(1)
             gameResultListener = null
         }

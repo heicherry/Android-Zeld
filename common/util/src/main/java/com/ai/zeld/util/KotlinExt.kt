@@ -58,7 +58,7 @@ fun postInMainDelay(delay: Long, run: () -> Unit) {
 //            run.invoke()
 //        }
 //    } else {
-        postInMainLongDelay(delay, run)
+    postInMainLongDelay(delay, run)
 //    }
 }
 
@@ -207,12 +207,16 @@ fun Int.px2dp(): Float {
     return this / scale + 0.5f
 }
 
-fun RectF.distance(target: RectF): Float {
-    return ((left - target.left).square()
-            + (right - target.right).square()
-            + (top - target.top).square()
-            + (bottom - target.bottom).square()).sqrt()
+fun RectF.distance(target: RectF): RectDistance {
+    return RectDistance(((left - target.left).square() + (right - target.right).square()).sqrt(),
+        ((top - target.top).square() +  (bottom - target.bottom).square()).sqrt())
+//    return ((left - target.left).square()
+//            + (right - target.right).square()
+//            + (top - target.top).square()
+//            + (bottom - target.bottom).square()).sqrt()
 }
+
+data class RectDistance(val width: Float, val height: Float)
 
 fun View.showRectF(): RectF {
     val rect = Rect()
